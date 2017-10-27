@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
@@ -8,7 +9,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="CLIENTES" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
@@ -26,22 +27,22 @@
          <children>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/24/doublearrow_left24.png" />
+                  <Image url="@../../../../resources/img/24/doublearrow_left24.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/24/arrow_left24.png" />
+                  <Image url="@../../../../resources/img/24/arrow_left24.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/24/arrow_right24.png" />
+                  <Image url="@../../../../resources/img/24/arrow_right24.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/24/doublearrow_right24.png" />
+                  <Image url="@../../../../resources/img/24/doublearrow_right24.png" />
                </image>
             </ImageView>
          </children>
@@ -50,7 +51,7 @@
          <children>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/24/edit-icon.png" />
+                  <Image url="@../../../../resources/img/24/edit-icon.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -58,7 +59,7 @@
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/24/delete-icon.png" />
+                  <Image url="@../../../../resources/img/24/delete-icon.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -66,7 +67,7 @@
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/24/add-icon.png" />
+                  <Image url="@../../../../resources/img/24/add-icon.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -83,11 +84,14 @@
       </HBox>
       <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
          <image>
-            <Image url="@../../img/32/check-out.png" />
+            <Image url="@../../../../resources/img/32/check-out.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
    </children>
+   <stylesheets>
+      <URL value="@../../style/styles.css" />
+   </stylesheets>
 </AnchorPane>

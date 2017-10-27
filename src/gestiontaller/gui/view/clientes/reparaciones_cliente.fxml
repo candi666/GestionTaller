@@ -7,69 +7,57 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="PIEZAS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <TableView layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
+      <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="HISTORIAL DE (Nombre de Cliente)" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <TableView layoutX="141.0" layoutY="253.0" prefHeight="397.0" prefWidth="720.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
         <columns>
-          <TableColumn maxWidth="150.0" minWidth="150.0" prefWidth="150.0" styleClass="first-col" text="ID" />
-          <TableColumn maxWidth="500.0" minWidth="500.0" prefWidth="500.0" text="DESCRIPCION" />
-            <TableColumn maxWidth="292.0" minWidth="292.0" prefWidth="292.0" text="FABRICANTE" />
+          <TableColumn maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
+          <TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="FECHA INICIO" />
+            <TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="FECHA FIN" />
+            <TableColumn maxWidth="500.0" minWidth="190.0" prefWidth="190.0" text="DESCRIPCION" />
+            <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="ORDEN PIEZAS" />
+            <TableColumn maxWidth="128.0" minWidth="128.0" prefWidth="128.0" text="COCHE" />
         </columns>
       </TableView>
-      <HBox alignment="CENTER" layoutX="448.0" layoutY="635.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" spacing="20.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+      <HBox alignment="CENTER" layoutX="448.0" layoutY="635.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" spacing="20.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
          <children>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../resources/img/24/doublearrow_left24.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../resources/img/24/arrow_left24.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../resources/img/24/arrow_right24.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../resources/img/24/doublearrow_right24.png" />
                </image>
-            </ImageView>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_RIGHT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
-         <children>
-            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/edit-icon.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/delete-icon.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/add-icon.png" />
-               </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
          </children>
       </HBox>
+      <HBox alignment="CENTER_RIGHT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0" />
       <HBox alignment="CENTER" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="80.0">
          <children>
             <ComboBox maxHeight="32.0" maxWidth="140.0" minHeight="32.0" minWidth="140.0" prefHeight="32.0" prefWidth="140.0" />

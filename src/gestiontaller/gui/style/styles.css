@@ -1,39 +1,73 @@
+.root{
+    -toppane-color:#0097A7;
+    -primarybtn-color:#BDBDBD;
+    -background-color:#EDF2F8
+}
+
 .anchor-pane{
-	/*-fx-background-color:#E0F7FA;*/
-	-fx-background-color:#EDF2F8;
+    /*-fx-background-color:#E0F7FA;*/
+    -fx-background-color: -background-color;
 }
 
 .header-pane{
-	-fx-background-color:#0097A7;
+    -fx-background-color: -toppane-color;
 }
 
 .mod-title{
-	-fx-font-size:26;
-	-fx-text-fill:#ffffff;
+    -fx-font-size:26;
+    -fx-text-fill:#ffffff;
 }
 
 .text-field, .table-view, .combo-box, .button, .column-header{
-	-fx-border-color:#757575;
+    -fx-border-color:#757575;
 }
 
 .combo-box, .button{
-	-fx-background-color:#BDBDBD;
-	
+    -fx-background-color:#BDBDBD;
+
 }
 
 .column-header{
-	-fx-background-color:#BDBDBD;
-	-fx-border-width:2;
-	
+    -fx-background-color:#BDBDBD;
+    -fx-border-width:2;
+
 }
 
 .column-header .label{
-	-fx-text-fill:#ffffff;
+    -fx-text-fill:#ffffff;
 }
 
 .table-view{
--fx-padding:0;
+    -fx-padding:0;
 }
 
 /* CUSTOM */
-	
+
+/* Top Menu Styles */
+.top-menu-bar{
+    -fx-padding:0;
+    -fx-border-color:transparent transparent #E7E7E7 transparent;
+    -fx-border-width:2;
+    -fx-background-color:-toppane-color;
+}
+.top-menu-bar .menu-button{
+    -fx-background-color:transparent;
+    -fx-background-radius:2;
+    -fx-border-radius:2;
+    -fx-font-family:"Roboto Condensed";
+    -fx-font-size:14;
+    -fx-min-height:30;
+    -fx-max-height:30;
+    -fx-pref-height:60;
+}
+.top-menu-bar .menu-button:hover{
+    -fx-background-color:derive(-toppane-color,-26%);
+}
+
+.top-menu-bar .menu-button > .arrow-button {
+    -fx-padding: 0;
+}
+
+.top-menu-bar .menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
