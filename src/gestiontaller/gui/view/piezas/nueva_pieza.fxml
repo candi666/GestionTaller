@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectodin.AltaClienteController">
+    <children>
+      <Pane maxHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+   
+                 <Label alignment="CENTER" maxHeight="50.0" maxWidth="340.0" minHeight="50.0" minWidth="340.0" prefHeight="50.0" prefWidth="340.0" styleClass="mod-title" text="Nueva Pieza">
+                    <font>
+                       <Font size="26.0" />
+                    </font>
+                 </Label>
+         </children>
+      </Pane>
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="260.0" spacing="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="70.0">
+           <children>
+                 <TextField promptText="Fabricante" />
+            <TextArea prefHeight="170.0" prefWidth="260.0" />
+                 <HBox alignment="CENTER" prefHeight="24.0" prefWidth="258.0" spacing="50.0">
+                    <children>
+                       <Button mnemonicParsing="false" text="Añadir pieza">
+                          <cursor>
+                             <Cursor fx:constant="HAND" />
+                          </cursor>
+                       </Button>
+                       <Button mnemonicParsing="false" text="Volver">
+                          <cursor>
+                             <Cursor fx:constant="HAND" />
+                          </cursor>
+                       </Button>
+                    </children>
+                    <VBox.margin>
+                       <Insets />
+                    </VBox.margin>
+                 </HBox>
+           </children>
+        </VBox>
+   </children>
+</AnchorPane>

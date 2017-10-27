@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="FACTURAS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <TableView layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
+        <columns>
+          <TableColumn maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
+          <TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="FECHA" />
+            <TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="FECHA VENC" />
+            <TableColumn maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="ID REPARACIÓN" />
+            <TableColumn maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="ID CLIENTE" />
+            <TableColumn maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TOTAL" />
+            <TableColumn maxWidth="80.0" minWidth="80.0" text="ESTADO" />
+        </columns>
+      </TableView>
+      <HBox alignment="CENTER" layoutX="448.0" layoutY="635.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" spacing="20.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+         <children>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/doublearrow_left24.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/arrow_left24.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/arrow_right24.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/doublearrow_right24.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="12.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <ImageView fitHeight="24.0" fitWidth="24.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../../img/24/setpaid.png" />
+               </image>
+               <HBox.margin>
+                  <Insets right="-5.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/edit-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/delete-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/add-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </HBox>
+	  <HBox alignment="CENTER_LEFT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="660.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <ComboBox maxHeight="32.0" maxWidth="140.0" minHeight="32.0" minWidth="140.0" prefHeight="32.0" prefWidth="140.0" promptText="CLIENTE" />
+            <TextField maxHeight="32.0" maxWidth="300.0" minHeight="32.0" minWidth="300.0" prefHeight="32.0" prefWidth="300.0" />
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/24/ic_search.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <CheckBox mnemonicParsing="false" text="Solo facturas pendientes">
+               <HBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </HBox.margin>
+            </CheckBox>
+         </children>
+      </HBox>
+	  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
+         <image>
+            <Image url="@../../img/32/check-out.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+   </children>
+</AnchorPane>
