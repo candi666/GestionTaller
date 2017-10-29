@@ -50,6 +50,17 @@
       <HBox alignment="BOTTOM_RIGHT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
          <children>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../../../../resources/img/24/historial-icon.png" />
+               </image>
+               <HBox.margin>
+                  <Insets right="-10.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../resources/img/24/edit-icon.png" />
                </image>
