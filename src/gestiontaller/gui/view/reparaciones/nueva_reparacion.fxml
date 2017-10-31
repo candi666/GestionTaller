@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectodin.AltaClienteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectodin.AltaClienteController">
     <children>
       <Pane maxHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -28,22 +25,22 @@
                  </Label>
          </children>
       </Pane>
-        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="260.0" spacing="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="70.0">
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="260.0" spacing="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="70.0">
            <children>
-                 <TextField promptText="Fecha Inicio" />
-                 <TextField promptText="Fecha Fin" />
-            <TextArea maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="260.0" />
-            <ComboBox maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Pieza" />
-            <ComboBox maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Cliente" />
-            <TextField promptText="Coche" />
+                 <TextField fx:id="tfFechaIn" promptText="Fecha Inicio" />
+                 <TextField fx:id="tfFechaFi" promptText="Fecha Fin" />
+            <TextArea fx:id="taDescripcion" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="260.0" />
+            <ComboBox fx:id="cbPieza" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Pieza" />
+            <ComboBox fx:id="cbCliente" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Cliente" />
+            <TextField fx:id="tfCoche" promptText="Coche" />
                  <HBox alignment="CENTER" prefHeight="24.0" prefWidth="258.0" spacing="50.0">
                     <children>
-                       <Button mnemonicParsing="false" text="Dar de Alta">
+                       <Button fx:id="btnCrear" mnemonicParsing="false" text="Crear">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>
                        </Button>
-                       <Button mnemonicParsing="false" text="Volver">
+                       <Button fx:id="btnVolver" mnemonicParsing="false" text="Volver">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>
