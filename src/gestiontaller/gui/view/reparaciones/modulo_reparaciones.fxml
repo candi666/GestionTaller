@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.reparaciones.ReparacionesController">
    <children>
       <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="REPARACIONES" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
