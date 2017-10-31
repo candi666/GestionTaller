@@ -5,6 +5,8 @@
  */
 package gestiontaller;
 
+import gestiontaller.gui.controller.HomeController;
+import gestiontaller.gui.controller.clientes.ClientesController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,18 +15,21 @@ import javafx.stage.Stage;
 
 /**
  * Clase principal
+ *
  * @author Carlos
  */
 public class App extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("gui/view/home.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/view/home.fxml"));
+        Parent root = (Parent) loader.load();
         
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+        HomeController ctr = ((HomeController) loader.getController());
+
+        ctr.setStage(new Stage());
+        ctr.initStage(root);
     }
 
     /**
@@ -33,5 +38,5 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
