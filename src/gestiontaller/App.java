@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiontaller;
 
 import gestiontaller.gui.controller.HomeController;
-import gestiontaller.gui.controller.clientes.ClientesController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,15 +13,14 @@ import javafx.stage.Stage;
  * @author Carlos
  */
 public class App extends Application {
-
+    
     @Override
     public void start(Stage stage) throws Exception {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/view/home.fxml"));
         Parent root = (Parent) loader.load();
         
         HomeController ctr = ((HomeController) loader.getController());
-
+        
         ctr.setStage(new Stage());
         ctr.initStage(root);
     }

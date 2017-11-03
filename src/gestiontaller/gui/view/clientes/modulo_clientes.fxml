@@ -21,12 +21,12 @@
       <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="CLIENTES" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <TableView fx:id="tvClientes" layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
         <columns>
-          <TableColumn maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
-          <TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="DNI" />
-            <TableColumn maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="NOMBRE" />
-            <TableColumn maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="APELLIDOS" />
-            <TableColumn maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="EMAIL" />
-            <TableColumn maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TELEFONO" />
+          <TableColumn fx:id="id" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
+          <TableColumn fx:id="DNI" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="DNI" />
+            <TableColumn fx:id="nombre" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="NOMBRE" />
+            <TableColumn fx:id="apellidos" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="APELLIDOS" />
+            <TableColumn fx:id="email" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="EMAIL" />
+            <TableColumn fx:id="telefono" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TELEFONO" />
         </columns>
       </TableView>
       <HBox alignment="CENTER" layoutX="448.0" layoutY="635.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" spacing="20.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
