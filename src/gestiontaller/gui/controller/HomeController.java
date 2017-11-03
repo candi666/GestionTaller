@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiontaller.gui.controller;
 
 import gestiontaller.App;
@@ -10,6 +5,8 @@ import gestiontaller.gui.controller.clientes.ClientesController;
 import gestiontaller.gui.controller.facturas.FacturasController;
 import gestiontaller.gui.controller.piezas.PiezasController;
 import gestiontaller.gui.controller.reparaciones.ReparacionesController;
+import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
+import gestiontaller.logic.interfaces.ClientesManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -107,10 +104,13 @@ public class HomeController implements Initializable {
     @FXML
     private void btnClientesActionHandler(ActionEvent event) {
         try {
+            ClientesManager businessLogicController=new ClientesManagerTestDataGenerator();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/clientes/modulo_clientes.fxml"));
             AnchorPane root = (AnchorPane)loader.load();
             
             ClientesController ctr = ((ClientesController)loader.getController());
+            
+            ctr.setClientesManager(businessLogicController);
             
             ctr.setOwnerStage(stage);
             ctr.setStage(new Stage());
@@ -166,4 +166,9 @@ public class HomeController implements Initializable {
         logger.info("Fin de ejecución.");
         Platform.exit();
     }
+
+    public void setClientesManager(ClientesManager businessLogicController) {
+        
+    }
+
 }
