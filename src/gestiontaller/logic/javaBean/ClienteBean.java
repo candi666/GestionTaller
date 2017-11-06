@@ -5,15 +5,15 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class ClienteBean {
     private final SimpleIntegerProperty id;
-    private final SimpleStringProperty DNI;
+    private final SimpleStringProperty dni;
     private final SimpleStringProperty nombre;
     private final SimpleStringProperty apellidos;
     private final SimpleStringProperty email;
     private final SimpleIntegerProperty telefono;
     
-    public ClienteBean(Integer id, String DNI, String nombre, String apellidos, String email, Integer telefono){
+    public ClienteBean(Integer id, String dni, String nombre, String apellidos, String email, Integer telefono){
         this.id=new SimpleIntegerProperty(id);
-        this.DNI=new SimpleStringProperty(DNI);
+        this.dni=new SimpleStringProperty(dni);
         this.nombre=new SimpleStringProperty(nombre);
         this.apellidos=new SimpleStringProperty(apellidos);
         this.email=new SimpleStringProperty(email);
@@ -26,11 +26,11 @@ public class ClienteBean {
     public void setId(Integer id){
         this.id.set(id);
     }
-    public String getDNI(){
-        return this.DNI.get();
+    public String getDni(){
+        return this.dni.get();
     }
-    public void setDNI(String DNI){
-        this.DNI.set(DNI);
+    public void setDni(String dni){
+        this.dni.set(dni);
     }
     public String getNombre(){
         return this.nombre.get();
