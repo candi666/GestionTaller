@@ -6,7 +6,9 @@ import gestiontaller.gui.controller.facturas.FacturasController;
 import gestiontaller.gui.controller.piezas.PiezasController;
 import gestiontaller.gui.controller.reparaciones.ReparacionesController;
 import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
+import gestiontaller.logic.controller.FacturasManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.ClientesManager;
+import gestiontaller.logic.interfaces.FacturasManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -104,13 +106,13 @@ public class HomeController implements Initializable {
     @FXML
     private void btnClientesActionHandler(ActionEvent event) {
         try {
-            ClientesManager businessLogicController=new ClientesManagerTestDataGenerator();
+            ClientesManager clientesLogicController=new ClientesManagerTestDataGenerator();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/clientes/modulo_clientes.fxml"));
             AnchorPane root = (AnchorPane)loader.load();
             
             ClientesController ctr = ((ClientesController)loader.getController());
             
-            ctr.setClientesManager(businessLogicController);
+            ctr.setClientesManager(clientesLogicController);
             
             ctr.setOwnerStage(stage);
             ctr.setStage(new Stage());
@@ -145,6 +147,7 @@ public class HomeController implements Initializable {
     @FXML
     private void btnFacturasActionHandler(ActionEvent event) {
         try {
+            FacturasManager facturasLogicController=new FacturasManagerTestDataGenerator();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/facturas/modulo_facturas.fxml"));
             AnchorPane root = (AnchorPane)loader.load();
             
@@ -165,10 +168,6 @@ public class HomeController implements Initializable {
     private void handleMiClose(ActionEvent event) {
         logger.info("Fin de ejecución.");
         Platform.exit();
-    }
-
-    public void setClientesManager(ClientesManager businessLogicController) {
-        
     }
 
 }
