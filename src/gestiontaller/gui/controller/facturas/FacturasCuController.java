@@ -36,6 +36,8 @@ public class FacturasCuController implements Initializable {
     private Stage ownerStage;
     private FacturaBean factura;
     private FacturasManager facturasLogicController;
+    private FacturasController facturasController;
+    private int maxid = 0;
 
     @FXML
     private Label lblTitulo;
@@ -79,7 +81,7 @@ public class FacturasCuController implements Initializable {
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerStage);
-        //stage.setOnShowing(this::handleWindowShowing);
+        stage.setOnShowing(this::handleWindowShowing);
         stage.setMaxWidth(340);
         stage.setMinWidth(340);
         stage.setMaxHeight(420);
@@ -104,8 +106,10 @@ public class FacturasCuController implements Initializable {
      */
     public void setFactura(FacturaBean factura) {
         this.factura = factura;
-        populateForm();
-        
+    }
+
+    public void setFacturasController(FacturasController facturasController) {
+        this.facturasController = facturasController;
     }
 
     /**
@@ -114,13 +118,11 @@ public class FacturasCuController implements Initializable {
      * @param event
      */
     private void handleWindowShowing(WindowEvent event) {
-//        if(factura!=null){
-//            populateForm();
-//        }
+        populateForm();
     }
 
     private void populateForm() {
-        initComboBox();
+        initComboBoxes();
         if (factura != null) {
             logger.info("Abierta ventana modificar factura.");
             tfFecha.setText(factura.getFecha());
@@ -130,7 +132,7 @@ public class FacturasCuController implements Initializable {
             // TODO FORMAT DOUBLE DOS DECIMALES
             tfTotal.setText(factura.getTotal().toString());
             cbEstado.setValue(factura.getPagada());
-        }else{
+        } else {
             logger.info("Abierta ventana crear factura.");
         }
 
@@ -139,7 +141,7 @@ public class FacturasCuController implements Initializable {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    
+
     /**
      * Cierra stage actual y enfoca el stage home.
      */
@@ -148,28 +150,63 @@ public class FacturasCuController implements Initializable {
         stage.close();
         ownerStage.requestFocus();
     }
-    
+
     /**
      * Añade una nueva factura a la tabla y luego cierra el stage actual.
      */
     @FXML
     private void actionCrear() {
-        //TODO add factura
+
+        if (factura != null) {
+            factura.setFecha(tfFecha.getText());
+            factura.setFechavenc(tfFechaVenc.getText());
+            factura.setTotal(Double.parseDouble(tfTotal.getText()));
+            factura.setIdreparacion(cbReparacion.getValue());
+            factura.setIdcliente(cbCliente.getValue());
+            factura.setPagada(cbEstado.getValue());
+        } else {
+            factura = new FacturaBean(maxid + 1, tfFecha.getText(), tfFechaVenc.getText(), 10 + (Double) (Math.random() * 2000), cbEstado.getValue(), cbReparacion.getValue(), cbCliente.getValue());
+            facturasController.getTableView().getItems().add(factura);
+        }
+
+        
         stage.close();
         ownerStage.requestFocus();
+        facturasController.getTableView().refresh();
     }
-    
-    public void initComboBox(){
+
+    /**
+     *
+     */
+    public void initComboBoxes() {
         ObservableList<FacturaBean> obList = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
         cbReparacion.getItems().clear();
         cbCliente.getItems().clear();
-        
-        for(FacturaBean factura : obList){
+        cbEstado.getItems().add(Boolean.TRUE);
+
+        for (FacturaBean factura : obList) {
+            /* TODO Al implementar la base de datos se deberan cargar solo los
+             * idreparacion que no esten asociados a ninguna factura.
+             */
             cbReparacion.getItems().add(factura.getIdreparacion());
-            cbCliente.getItems().add(factura.getIdcliente());
+
+            /* TODO Carga los clientes registrados en la aplicación.
+             * Al implementar la base de datos debera buscar en la tabla clientes.
+             */
+            if (!cbCliente.getItems().contains(factura.getIdcliente())) {
+                cbCliente.getItems().add(factura.getIdcliente());
+            }
+
+            /* Aprovechamos este recorrido para determinar el ultimo id de factura,
+             * de este modo ya tenemos un id definido en caso de factura nueva.
+             * TODO Al implementar la base de datos analizar otra solución sincronizada.
+             */
+            if (factura.getId() > maxid) {
+                maxid = factura.getId();
+            }
         }
     }
-    
+
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
     }
