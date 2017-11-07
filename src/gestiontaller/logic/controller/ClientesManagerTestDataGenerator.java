@@ -11,6 +11,7 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
 
     public ClientesManagerTestDataGenerator(){
         clientes=new ArrayList();
+
         for(int i=0; i<20;i++){
             clientes.add(new ClienteBean(+i,"dni"+i,"nombre"+i,"apellidos"+i,"email"+i,600000000+i));
         }
@@ -18,6 +19,9 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
 
     @Override
     public Collection getAllClientes() {
+        for (int i=0; i<clientes.size();i++){
+            System.out.println("id: "+clientes.get(i).getId()+"   fecha: "+clientes.get(i).getDni());
+        }
         return clientes;
     }
 

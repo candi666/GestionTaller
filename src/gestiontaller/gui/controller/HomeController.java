@@ -152,7 +152,7 @@ public class HomeController implements Initializable {
             AnchorPane root = (AnchorPane)loader.load();
             
             FacturasController ctr = ((FacturasController)loader.getController());
-            
+            ctr.setFacturasManager(facturasLogicController);
             ctr.setOwnerStage(stage);
             ctr.setStage(new Stage());
             ctr.initStage(root); 
