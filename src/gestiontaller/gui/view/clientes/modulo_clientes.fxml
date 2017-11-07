@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -21,103 +21,185 @@
       <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="CLIENTES" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <TableView fx:id="tvClientes" layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
         <columns>
-          <TableColumn fx:id="id" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
-          <TableColumn fx:id="DNI" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="DNI" />
-            <TableColumn fx:id="nombre" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="NOMBRE" />
-            <TableColumn fx:id="apellidos" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="APELLIDOS" />
-            <TableColumn fx:id="email" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="EMAIL" />
-            <TableColumn fx:id="telefono" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TELEFONO" />
+          <TableColumn fx:id="tcId" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
+          <TableColumn fx:id="tcDni" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="DNI" />
+            <TableColumn fx:id="tcNombre" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="NOMBRE" />
+            <TableColumn fx:id="tcApellidos" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="APELLIDOS" />
+            <TableColumn fx:id="tcEmail" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="EMAIL" />
+            <TableColumn fx:id="tcTelefono" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TELEFONO" />
         </columns>
       </TableView>
       <HBox alignment="CENTER" layoutX="448.0" layoutY="635.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" spacing="20.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
          <children>
-            <ImageView fx:id="btnPrimero" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/doublearrow_left24.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="btnAnterior" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/arrow_left24.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="btnSiguiente" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/arrow_right24.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="btnUltimo" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/doublearrow_right24.png" />
-               </image>
-            </ImageView>
+            <Button fx:id="btnPrimero" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/doublearrow_left24.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnAnterior" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/arrow_left24.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnSiguiente" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/arrow_right24.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnUltimo" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/doublearrow_right24.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </HBox>
       <HBox alignment="BOTTOM_RIGHT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
          <children>
-            <ImageView fx:id="btnHistorial" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+            <Button fx:id="btnHistorial" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon" visible="false">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@../../../../resources/img/24/historial-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-               <image>
-                  <Image url="@../../../../resources/img/24/historial-icon.png" />
-               </image>
-               <HBox.margin>
-                  <Insets right="-10.0" />
-               </HBox.margin>
-            </ImageView>
-            <ImageView fx:id="btnModificar" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/edit-icon.png" />
-               </image>
+            </Button>
+            <Button fx:id="btnModificar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/edit-icon.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-            </ImageView>
-            <ImageView fx:id="btnEliminar" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/delete-icon.png" />
-               </image>
+            </Button>
+            <Button fx:id="btnEliminar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#actionEliminar" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/delete-icon.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-            </ImageView>
-            <ImageView fx:id="btnAnadir" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/add-icon.png" />
-               </image>
+            </Button>
+            <Button fx:id="btnAnadir" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/add-icon.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-            </ImageView>
+            </Button>
          </children>
       </HBox>
       <HBox alignment="CENTER" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="80.0">
          <children>
-            <ComboBox fx:id="cbFiltro" maxHeight="32.0" maxWidth="140.0" minHeight="32.0" minWidth="140.0" prefHeight="32.0" prefWidth="140.0" />
+            <ComboBox fx:id="cbFiltro" maxHeight="32.0" maxWidth="140.0" minHeight="32.0" minWidth="140.0" prefHeight="32.0" prefWidth="140.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></ComboBox>
             <TextField fx:id="tfBuscar" maxHeight="32.0" maxWidth="300.0" minHeight="32.0" minWidth="300.0" prefHeight="32.0" prefWidth="300.0" />
-            <ImageView fx:id="btnBuscar" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../resources/img/24/ic_search.png" />
-               </image>
-               <viewport>
-                  <Rectangle2D />
-               </viewport>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </ImageView>
+            <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/ic_search.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
             
          </children>
       </HBox>
-      <ImageView fx:id="btnSalir" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
-         <image>
-            <Image url="@../../../../resources/img/32/check-out.png" />
-         </image>
+      <Button fx:id="btnSalir" layoutX="24.0" layoutY="9.0" maxHeight="32.0" maxWidth="32.0" minHeight="23.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="btn-icon" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../resources/img/32/check-out.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </ImageView>
+      </Button>
    </children>
    <stylesheets>
       <URL value="@../../style/styles.css" />
