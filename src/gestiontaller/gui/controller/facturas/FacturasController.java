@@ -6,17 +6,17 @@
 package gestiontaller.gui.controller.facturas;
 
 import gestiontaller.App;
+import gestiontaller.logic.controller.FacturasManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.FacturasManager;
-import gestiontaller.logic.javaBean.ClienteBean;
 import gestiontaller.logic.javaBean.FacturaBean;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,8 +29,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,31 +48,31 @@ public class FacturasController implements Initializable {
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
-    private ImageView btnPrimero;
+    private Button btnPrimero;
     @FXML
-    private ImageView btnAnterior;
+    private Button btnAnterior;
     @FXML
-    private ImageView btnSiguiente;
+    private Button btnSiguiente;
     @FXML
-    private ImageView btnUltimo;
+    private Button btnUltimo;
     @FXML
-    private ImageView btnPagado;
+    private Button btnPagado;
     @FXML
-    private ImageView btnModificar;
+    private Button btnModificar;
     @FXML
-    private ImageView btnEliminar;
+    private Button btnEliminar;
     @FXML
-    private ImageView btnAnadir;
+    private Button btnAnadir;
     @FXML
     private ComboBox<String> cbFiltro;
     @FXML
     private TextField tfBuscar;
     @FXML
-    private ImageView btnBuscar;
+    private Button btnBuscar;
     @FXML
     private CheckBox chbPendientes;
     @FXML
-    private ImageView btnSalir;
+    private Button btnSalir;
     @FXML
     private TableView<FacturaBean> tvFacturas;
     @FXML
@@ -180,6 +178,8 @@ public class FacturasController implements Initializable {
         tcPagado.setCellValueFactory(new PropertyValueFactory<>("pagado"));
 
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+        
+        tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
         tvFacturas.setItems(facturasData);
     }
 
@@ -190,41 +190,52 @@ public class FacturasController implements Initializable {
      * Acción borrar factura
      */
     @FXML
-    private void actionBorrar(){
-        //TODO
+    private void actionEliminar(){
+        int selectedIndex = tvFacturas.getSelectionModel().getSelectedIndex();
+        tvFacturas.getItems().remove(selectedIndex);
     }
     /**
      * Acción modificar factura
      */
     @FXML
     private void actionModificar(){
-        //TODO
+        FacturaBean factura = tvFacturas.getSelectionModel().getSelectedItem();
+        if(factura!=null){
+            loadCrearMod(factura);
+        }
     }
     /**
      * Acción crear factura
      */
     @FXML
     private void actionCrear(){
-        //TODO
+        loadCrearMod(null);
     }
     /**
      * Cambiar estado de la factura
      */
     @FXML
     private void actionPagar() {
-        stage.close();
-        ownerStage.requestFocus();
+        FacturaBean factura = tvFacturas.getSelectionModel().getSelectedItem();
+        if(factura!=null){
+            if(factura.getPagada()){
+                factura.setPagada(false);
+            }else{
+                factura.setPagada(true);
+            }
+            tvFacturas.refresh();
+        }
     }
     /**
      * Buscar
      */
     @FXML
     private void actionBuscar() {
-        stage.close();
-        ownerStage.requestFocus();
+        // TODO Implementar busqueda en bases de datos.
+        // +++ De momento utilizaremos filter para pruebas.
     }
     /**
-     * Cierra stage actual y enfoca el stage home.
+     * Cierra stage actual y enfoca el owner stage
      */
     @FXML
     private void actionVolver() {
@@ -232,18 +243,49 @@ public class FacturasController implements Initializable {
         ownerStage.requestFocus();
     }
     
+    /**
+     * Carga ventana Crear/Modificar factura.
+     * Si pasamos null se abre una ventana para nueva factura.
+     * Si le pasamos la factura seleccionada se abre una venatana para modificar.
+     * @param factura factura seleccionada en la tabla. Para nueva factura utiizar null.
+     */
     private void loadCrearMod(FacturaBean factura) {
         try {
+            FacturasManager facturasLogicController=new FacturasManagerTestDataGenerator();
+            String titulo = "Nueva Factura";
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/facturas/nueva_factura.fxml"));
             AnchorPane root = (AnchorPane)loader.load();
-            
             FacturasCuController ctr = ((FacturasCuController)loader.getController());
-//            ctr.setFacturasManager(facturasLogicController);
+            ctr.setStage(new Stage());
+            ctr.setFacturasManager(facturasLogicController);
+            
+            
+            // En caso de opción Modificar
+            if(factura!=null){
+                titulo = "Modificar Factura";
+                ctr.setFactura(factura);
+            }
+            
             ctr.setOwnerStage(stage);
-//            ctr.setStage(new Stage());
-            ctr.initStage(root, "Modificar Factura"); 
+            ctr.initStage(root, titulo); 
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Error al cargar ventana nueva_factura.fxml.", ex);
         }
+    }    
+    
+    /**
+     * Listener para seleccion en la tabla. Escucha si se ha seleccionado algun elemento
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
+    private void handleFacturasTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue){
+        if(newValue!=null){
+            btnModificar.setDisable(false);
+            btnEliminar.setDisable(false);
+        }else{
+            btnModificar.setDisable(true);
+            btnEliminar.setDisable(true);
+        }  
     }
 }

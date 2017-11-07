@@ -32,9 +32,9 @@
       </TableView>
       <HBox alignment="CENTER" layoutX="448.0" layoutY="635.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" spacing="20.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
          <children>
-            <Button maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+            <Button fx:id="btnPrimero" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
                <graphic>
-                  <ImageView fx:id="btnPrimero" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../resources/img/24/doublearrow_left24.png" />
                      </image>
@@ -145,7 +145,7 @@
             </CheckBox>
          </children>
       </HBox>
-      <Button fx:id="btnSalir" layoutX="14.0" layoutY="14.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#actionGoBack" prefHeight="32.0" prefWidth="32.0" styleClass="btn-icon" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
+      <Button fx:id="btnSalir" layoutX="14.0" layoutY="14.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#actionVolver" prefHeight="32.0" prefWidth="32.0" styleClass="btn-icon" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
          <graphic>
       	  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
