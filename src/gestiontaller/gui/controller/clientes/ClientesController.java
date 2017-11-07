@@ -154,7 +154,7 @@ public class ClientesController implements Initializable {
         tcApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
         tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tcTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        tvClientes.getSelectionModel().selectedItemProperty().addListener(this::handleClientesTbaleSelectionChanged);
+        tvClientes.getSelectionModel().selectedItemProperty().addListener(this::handleClientesTableSelectionChanged);
         
         ObservableList<ClienteBean> clientesData = FXCollections.observableArrayList(businessLogicController.getAllClientes());
         
@@ -180,14 +180,15 @@ public class ClientesController implements Initializable {
         });
     }
     
-    private void handleClientesTbaleSelectionChanged(ObservableValue observable, Object oldValue, Object newValue){
+    private void handleClientesTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue){
         if(newValue!=null){
-            ClienteBean cliente=(ClienteBean)newValue;
-            
-            
             btnHistorial.setDisable(false);
             btnModificar.setDisable(false);
             btnEliminar.setDisable(false);
+        }else{
+            btnHistorial.setDisable(true);
+            btnModificar.setDisable(true);
+            btnEliminar.setDisable(true);
         }
         
     }

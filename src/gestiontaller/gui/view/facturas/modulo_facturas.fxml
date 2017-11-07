@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -15,26 +21,30 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.facturas.FacturasController">
+<AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.facturas.FacturasController">
    <children>
       <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="FACTURAS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <TableView fx:id="tvFacturas" layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
         <columns>
-          <TableColumn fx:id="tcId" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
-          <TableColumn fx:id="tcFecha" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="FECHA" />
-            <TableColumn fx:id="tcFechaVenc" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="FECHA VENC" />
-            <TableColumn fx:id="tcIdReparacion" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="ID REPARACIÓN" />
-            <TableColumn fx:id="tcIdCliente" maxWidth="500.0" minWidth="190.0" prefWidth="190.0" text="ID CLIENTE" />
-            <TableColumn fx:id="tcTotal" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TOTAL" />
-            <TableColumn fx:id="tcPagado" maxWidth="80.0" minWidth="80.0" text="PAGADO" />
+          <TableColumn fx:id="tcId" editable="false" maxWidth="80.0" minWidth="80.0" resizable="false" text="ID">
+               <styleClass>
+                  <String fx:value="first-col" />
+                  <String fx:value="align-left" />
+               </styleClass></TableColumn>
+          <TableColumn fx:id="tcFecha" editable="false" maxWidth="500.0" minWidth="160.0" prefWidth="160.0" resizable="false" styleClass="align-center" text="FECHA" />
+            <TableColumn fx:id="tcFechaVenc" editable="false" maxWidth="500.0" minWidth="160.0" prefWidth="160.0" resizable="false" styleClass="align-center" text="FECHA VENC" />
+            <TableColumn fx:id="tcIdReparacion" editable="false" maxWidth="500.0" minWidth="150.0" prefWidth="150.0" resizable="false" styleClass="align-right" text="ID REPARACIÓN" />
+            <TableColumn fx:id="tcIdCliente" editable="false" maxWidth="500.0" minWidth="150.0" prefWidth="150.0" resizable="false" styleClass="align-right" text="ID CLIENTE" />
+            <TableColumn fx:id="tcTotal" editable="false" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" styleClass="align-right" text="TOTAL" />
+            <TableColumn fx:id="tcPagada" editable="false" maxWidth="80.0" minWidth="80.0" resizable="false" styleClass="align-center" text="PAGADO" />
         </columns>
       </TableView>
       <HBox alignment="CENTER" layoutX="448.0" layoutY="635.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" spacing="20.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
          <children>
-            <Button maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+            <Button fx:id="btnPrimero" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
                <graphic>
-                  <ImageView fx:id="btnPrimero" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../resources/img/24/doublearrow_left24.png" />
                      </image>
@@ -145,7 +155,7 @@
             </CheckBox>
          </children>
       </HBox>
-      <Button fx:id="btnSalir" layoutX="14.0" layoutY="14.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#actionGoBack" prefHeight="32.0" prefWidth="32.0" styleClass="btn-icon" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
+      <Button fx:id="btnSalir" layoutX="14.0" layoutY="14.0" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#actionVolver" prefHeight="32.0" prefWidth="32.0" styleClass="btn-icon" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
          <graphic>
       	  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
