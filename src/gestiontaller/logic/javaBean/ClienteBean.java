@@ -4,56 +4,56 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class ClienteBean {
-    private final SimpleIntegerProperty id;
-    private final SimpleStringProperty dni;
-    private final SimpleStringProperty nombre;
-    private final SimpleStringProperty apellidos;
-    private final SimpleStringProperty email;
-    private final SimpleIntegerProperty telefono;
+    private final SimpleIntegerProperty tcId;
+    private final SimpleStringProperty tcDni;
+    private final SimpleStringProperty tcNombre;
+    private final SimpleStringProperty tcApellidos;
+    private final SimpleStringProperty tcEmail;
+    private final SimpleIntegerProperty tcTelefono;
     
     public ClienteBean(Integer id, String dni, String nombre, String apellidos, String email, Integer telefono){
-        this.id=new SimpleIntegerProperty(id);
-        this.dni=new SimpleStringProperty(dni);
-        this.nombre=new SimpleStringProperty(nombre);
-        this.apellidos=new SimpleStringProperty(apellidos);
-        this.email=new SimpleStringProperty(email);
-        this.telefono=new SimpleIntegerProperty(telefono);
+        this.tcId=new SimpleIntegerProperty(id);
+        this.tcDni=new SimpleStringProperty(dni);
+        this.tcNombre=new SimpleStringProperty(nombre);
+        this.tcApellidos=new SimpleStringProperty(apellidos);
+        this.tcEmail=new SimpleStringProperty(email);
+        this.tcTelefono=new SimpleIntegerProperty(telefono);
     }
 
     public Integer getId(){
-        return this.id.get();
+        return this.tcId.get();
     }
     public void setId(Integer id){
-        this.id.set(id);
+        this.tcId.set(id);
     }
     public String getDni(){
-        return this.dni.get();
+        return this.tcDni.get();
     }
     public void setDni(String dni){
-        this.dni.set(dni);
+        this.tcDni.set(dni);
     }
     public String getNombre(){
-        return this.nombre.get();
+        return this.tcNombre.get();
     }
     public void setNombre(String nombre){
-        this.nombre.set(nombre);
+        this.tcNombre.set(nombre);
     }
     public String getApellidos(){
-        return this.apellidos.get();
+        return this.tcApellidos.get();
     }
     public void setApellidos(String apellidos){
-        this.apellidos.set(apellidos);
+        this.tcApellidos.set(apellidos);
     }
     public String getEmail(){
-        return this.email.get();
+        return this.tcEmail.get();
     }
     public void setEmail(String email){
-        this.email.set(email);
+        this.tcEmail.set(email);
     }
     public Integer getTelefono(){
-        return this.telefono.get();
+        return this.tcTelefono.get();
     }
     public void setTelefono(Integer telefono){
-        this.telefono.set(telefono);
+        this.tcTelefono.set(telefono);
     }
 }
