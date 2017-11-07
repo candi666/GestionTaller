@@ -4,18 +4,26 @@ import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.javaBean.ClienteBean;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -35,41 +43,41 @@ public class ClientesController implements Initializable {
     @FXML
     private TableView<ClienteBean> tvClientes;
     @FXML
-    private TableColumn id;
+    private TableColumn tcId;
     @FXML
-    private TableColumn DNI;
+    private TableColumn tcDni;
     @FXML
-    private TableColumn nombre;
+    private TableColumn tcNombre;
     @FXML
-    private TableColumn apellidos;
+    private TableColumn tcApellidos;
     @FXML
-    private TableColumn email;
+    private TableColumn tcEmail;
     @FXML
-    private TableColumn telefono;
+    private TableColumn tcTelefono;
     @FXML
-    private ImageView btnPrimero;
+    private Button btnPrimero;
     @FXML
-    private ImageView btnAnterior;
+    private Button btnAnterior;
     @FXML
-    private ImageView btnSiguiente;
+    private Button btnSiguiente;
     @FXML
-    private ImageView btnUltimo;
+    private Button btnUltimo;
     @FXML
-    private ImageView btnHistorial;
+    private Button btnHistorial;
     @FXML
-    private ImageView btnModificar;
+    private Button btnModificar;
     @FXML
-    private ImageView btnEliminar;
+    private Button btnEliminar;
     @FXML
-    private ImageView btnAnadir;
+    private Button btnAnadir;
     @FXML
     private ComboBox<?> cbFiltro;
     @FXML
     private TextField tfBuscar;
     @FXML
-    private ImageView btnBuscar;
+    private Button btnBuscar;
     @FXML
-    private ImageView btnSalir;
+    private Button btnSalir;
     
 
     // </editor-fold>
@@ -78,7 +86,10 @@ public class ClientesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        btnHistorial.setDisable(true);
+        btnModificar.setDisable(true);
+        btnEliminar.setDisable(true);
+        
     }
 
     /**
@@ -128,19 +139,77 @@ public class ClientesController implements Initializable {
      * @param event
      */
     private void handleWindowShowing(WindowEvent event) {
-        id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        DNI.setCellValueFactory(new PropertyValueFactory<>("DNI"));
-        nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        apellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
-        email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        telefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        initTable();
+        initContextMenu();
+    }
+
+    public void setClientesManager(ClientesManager businessLogicController) {
+        this.businessLogicController=businessLogicController;
+    }
+    
+    public void initTable(){
+        tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcDni.setCellValueFactory(new PropertyValueFactory<>("dni"));
+        tcNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        tcApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
+        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tcTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        tvClientes.getSelectionModel().selectedItemProperty().addListener(this::handleClientesTbaleSelectionChanged);
         
         ObservableList<ClienteBean> clientesData = FXCollections.observableArrayList(businessLogicController.getAllClientes());
         
         tvClientes.setItems(clientesData);
     }
+    
+    public void initContextMenu(){
+        final ContextMenu cm = new ContextMenu();
+        MenuItem cmItem1 = new MenuItem("Eliminar");
+        cmItem1.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                actionEliminar();
+            }
+        });
 
-    public void setClientesManager(ClientesManager businessLogicController) {
-        this.businessLogicController=businessLogicController;
+        cm.getItems().add(cmItem1);
+        tvClientes.addEventHandler(MouseEvent.MOUSE_CLICKED,
+            new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent e) {
+                    if (e.getButton() == MouseButton.SECONDARY)  
+                        cm.show(tvClientes, e.getScreenX(), e.getScreenY());
+                }
+        });
+    }
+    
+    private void handleClientesTbaleSelectionChanged(ObservableValue observable, Object oldValue, Object newValue){
+        if(newValue!=null){
+            ClienteBean cliente=(ClienteBean)newValue;
+            
+            
+            btnHistorial.setDisable(false);
+            btnModificar.setDisable(false);
+            btnEliminar.setDisable(false);
+        }
+        
+    }
+    
+    @FXML
+    private void actionEliminar() {
+        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
+        tvClientes.getItems().remove(selectedIndex);
+    }
+    @FXML
+    private void actionModificar() {
+        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
+        tvClientes.getItems().remove(selectedIndex);
+    }
+    @FXML
+    private void actionAnadir() {
+        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
+        tvClientes.getItems().remove(selectedIndex);
+    }
+    @FXML
+    private void actionBuscar() {
+        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
+        tvClientes.getItems().remove(selectedIndex);
     }
 }
