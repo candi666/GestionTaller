@@ -71,3 +71,8 @@
 .top-menu-bar .menu-button > .arrow-button > .arrow {
     -fx-padding: 0;
 }
+
+.btn-icon{
+    -fx-border-color:transparent;
+    -fx-background-color:transparent;
+}

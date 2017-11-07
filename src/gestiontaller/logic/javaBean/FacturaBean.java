@@ -28,56 +28,56 @@ public class FacturaBean {
 
     /* **** GETTERS & SETTERS **** */
 
-    public SimpleIntegerProperty getId() {
-        return id;
+    public Integer getId() {
+        return id.get();
     }
 
     public void setId(Integer id) {
         this.id.set(id);
     }
 
-    public SimpleStringProperty getFecha() {
-        return fecha;
+    public String getFecha() {
+        return fecha.get();
     }
 
     public void setFecha(String fecha) {
         this.fecha.set(fecha);
     }
 
-    public SimpleStringProperty getFechavenc() {
-        return fechavenc;
+    public String getFechavenc() {
+        return fechavenc.get();
     }
 
     public void setFechavenc(String fechavenc) {
         this.fechavenc.set(fechavenc);
     }
 
-    public SimpleDoubleProperty getTotal() {
-        return total;
+    public Double getTotal() {
+        return total.get();
     }
 
     public void setTotal(Double total) {
         this.total.set(total);
     }
 
-    public SimpleBooleanProperty getPagada() {
-        return pagada;
+    public Boolean getPagada() {
+        return pagada.get();
     }
 
     public void setPagada(Boolean pagada) {
         this.pagada.set(pagada);
     }
 
-    public SimpleIntegerProperty getIdreparacion() {
-        return idreparacion;
+    public Integer getIdreparacion() {
+        return idreparacion.get();
     }
 
     public void setIdreparacion(Integer idreparacion) {
         this.idreparacion.set(idreparacion);
     }
 
-    public SimpleIntegerProperty getIdcliente() {
-        return idcliente;
+    public Integer getIdcliente() {
+        return idcliente.get();
     }
 
     public void setIdcliente(Integer idcliente) {

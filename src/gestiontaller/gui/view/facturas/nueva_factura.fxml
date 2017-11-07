@@ -12,12 +12,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectodin.AltaClienteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.facturas.FacturasCuController">
     <children>
       <Pane maxHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
    
-                 <Label alignment="CENTER" maxHeight="50.0" maxWidth="340.0" minHeight="50.0" minWidth="340.0" prefHeight="50.0" prefWidth="340.0" styleClass="mod-title" text="Nueva Factura">
+                 <Label fx:id="lblTitulo" alignment="CENTER" maxHeight="50.0" maxWidth="340.0" minHeight="50.0" minWidth="340.0" prefHeight="50.0" prefWidth="340.0" styleClass="mod-title" text="Nueva Factura">
                     <font>
                        <Font size="26.0" />
                     </font>
