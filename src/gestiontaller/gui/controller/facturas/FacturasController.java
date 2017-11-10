@@ -14,7 +14,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,8 +28,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -38,7 +37,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -104,6 +102,7 @@ public class FacturasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initialStatus();
+        InitRowDoubleClickEvent();
     }
 
     /* -----------------------------------------------------------------------*/
@@ -198,8 +197,8 @@ public class FacturasController implements Initializable {
     }
 
     /* -----------------------------------------------------------------------*/
- /*                            ACCIONES BOTONES                            */
- /* -----------------------------------------------------------------------*/
+    /*                            ACCIONES BOTONES                            */
+    /* -----------------------------------------------------------------------*/
     /**
      * Acción borrar factura
      */
@@ -262,6 +261,7 @@ public class FacturasController implements Initializable {
         ownerStage.requestFocus();
     }
 
+    
     /**
      * Carga ventana Crear/Modificar factura. Si pasamos null se abre una
      * ventana para nueva factura. Si le pasamos la factura seleccionada se abre
@@ -273,7 +273,6 @@ public class FacturasController implements Initializable {
     private void loadCrearMod(FacturaBean factura) {
         try {
             FacturasManager facturasLogicController = new FacturasManagerTestDataGenerator();
-            String titulo = "Nueva Factura";
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/facturas/nueva_factura.fxml"));
             AnchorPane root = (AnchorPane) loader.load();
             FacturasCuController ctr = ((FacturasCuController) loader.getController());
@@ -283,17 +282,20 @@ public class FacturasController implements Initializable {
             
             // En caso de opción Modificar
             if (factura != null) {
-                titulo = "Modificar Factura";
                 ctr.setFactura(factura);
             }
 
             ctr.setOwnerStage(stage);
-            ctr.initStage(root, titulo);
+            ctr.initStage(root);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Error al cargar ventana nueva_factura.fxml.", ex);
         }
     }
 
+    /* -----------------------------------------------------------------------*/
+    /*                           EVENTOS DE TABLA                             */
+    /* -----------------------------------------------------------------------*/
+    
     /**
      * Listener para seleccion en la tabla. Escucha si se ha seleccionado algun
      * elemento
@@ -312,26 +314,31 @@ public class FacturasController implements Initializable {
         }
     }
 
-    public void rowDoubleClickEvent() {
-        // Row double click event
-//        recentPrTable.setRowFactory(tv -> {
-//            TableRow<Proyecto> row = new TableRow<>();
-//            row.setOnMouseClicked(event -> {
-//                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-//                    try {
-//                        //Proyecto proy = row.getItem();
-//                        openProject();
-//                    } catch (InterruptedException ex) {
-//                        Logger.getLogger(StartController.class.getName()).log(Level.SEVERE, null, ex);
-//                    } catch (ExecutionException ex) {
-//                        Logger.getLogger(StartController.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//
-//                }
-//            });
-//            return row;
-//        });
+    /**
+     * Accion al hacer doble click sobre row de la tabla
+     */
+    public void InitRowDoubleClickEvent() {
+        tvFacturas.setRowFactory(tv -> {
+            TableRow<FacturaBean> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    try {
+                        
+                        loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem());
+                    } catch (Exception ex) {
+                        logger.info("Error al cargar ventana nuevo cliente");
+                    }
+
+                }
+            });
+            return row;
+        });
     }
+    
+  
+    /* -----------------------------------------------------------------------*/
+    /*                               MISC                                     */
+    /* -----------------------------------------------------------------------*/
     
     public TableView getTableView(){
         return this.tvFacturas;
