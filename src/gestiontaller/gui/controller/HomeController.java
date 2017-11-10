@@ -75,7 +75,7 @@ public class HomeController implements Initializable {
      * @param event 
      */
     private void handleWindowShowing(WindowEvent event){
-        // TODO estado inicial
+        
     }
 
     // *************** ON ACTION HANDLERS ******************* //
