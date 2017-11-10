@@ -71,12 +71,16 @@ public class FacturasCuController implements Initializable {
      *
      * @param root Elemento Parent del fxml
      */
-    public void initStage(Parent root, String titulo) {
+    public void initStage(Parent root) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
 
         stage.setTitle("Gestión de Taller");
-        lblTitulo.setText(titulo);
+        if(factura!=null){
+             lblTitulo.setText("Modificar factura");
+             btnCrear.setText("Modificar");
+        }
+        
         stage.setResizable(false);
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -155,7 +159,7 @@ public class FacturasCuController implements Initializable {
      * Añade una nueva factura a la tabla y luego cierra el stage actual.
      */
     @FXML
-    private void actionCrear() {
+    private void actionCrearMod() {
 
         if (factura != null) {
             factura.setFecha(tfFecha.getText());
@@ -189,12 +193,14 @@ public class FacturasCuController implements Initializable {
              * idreparacion que no esten asociados a ninguna factura.
              */
             cbReparacion.getItems().add(factura.getIdreparacion());
+            cbReparacion.getItems().sorted();
 
             /* TODO Carga los clientes registrados en la aplicación.
              * Al implementar la base de datos debera buscar en la tabla clientes.
              */
             if (!cbCliente.getItems().contains(factura.getIdcliente())) {
                 cbCliente.getItems().add(factura.getIdcliente());
+                cbCliente.getItems().sorted();
             }
 
             /* Aprovechamos este recorrido para determinar el ultimo id de factura,

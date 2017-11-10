@@ -48,9 +48,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      */
     @Override
     public Collection getAllFacturas() {
-        for(FacturaBean factura:facturas){
-            System.out.println(factura.getPagada());
-        }
+//        for(FacturaBean factura:facturas){
+//            System.out.println(factura.getPagada());
+//        }
         
         return facturas;
     }
