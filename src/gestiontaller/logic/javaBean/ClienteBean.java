@@ -9,15 +9,15 @@ public class ClienteBean {
     private final SimpleStringProperty tcNombre;
     private final SimpleStringProperty tcApellidos;
     private final SimpleStringProperty tcEmail;
-    private final SimpleIntegerProperty tcTelefono;
+    private final SimpleStringProperty tcTelefono;
     
-    public ClienteBean(Integer id, String dni, String nombre, String apellidos, String email, Integer telefono){
+    public ClienteBean(Integer id, String dni, String nombre, String apellidos, String email, String telefono){
         this.tcId=new SimpleIntegerProperty(id);
         this.tcDni=new SimpleStringProperty(dni);
         this.tcNombre=new SimpleStringProperty(nombre);
         this.tcApellidos=new SimpleStringProperty(apellidos);
         this.tcEmail=new SimpleStringProperty(email);
-        this.tcTelefono=new SimpleIntegerProperty(telefono);
+        this.tcTelefono=new SimpleStringProperty(telefono);
     }
 
     public Integer getId(){
@@ -50,10 +50,10 @@ public class ClienteBean {
     public void setEmail(String email){
         this.tcEmail.set(email);
     }
-    public Integer getTelefono(){
+    public String getTelefono(){
         return this.tcTelefono.get();
     }
-    public void setTelefono(Integer telefono){
+    public void setTelefono(String telefono){
         this.tcTelefono.set(telefono);
     }
 }

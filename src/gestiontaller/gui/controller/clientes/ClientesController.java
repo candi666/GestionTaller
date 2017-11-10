@@ -1,19 +1,29 @@
 package gestiontaller.gui.controller.clientes;
 
+import gestiontaller.App;
+import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.javaBean.ClienteBean;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -24,6 +34,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -34,7 +45,7 @@ import javafx.stage.WindowEvent;
  * @author Carlos
  */
 public class ClientesController implements Initializable {
-
+    private static final Logger logger = Logger.getLogger(ClientesController.class.getName());
     private Stage stage;
     private Stage ownerStage;
     private ClientesManager businessLogicController;
@@ -164,12 +175,14 @@ public class ClientesController implements Initializable {
     public void initContextMenu(){
         final ContextMenu cm = new ContextMenu();
         MenuItem cmItem1 = new MenuItem("Eliminar");
+        MenuItem cmItem2 = new MenuItem("Modificar");
+        
+        //ContextMenu Eliminar
         cmItem1.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 actionEliminar();
             }
         });
-
         cm.getItems().add(cmItem1);
         tvClientes.addEventHandler(MouseEvent.MOUSE_CLICKED,
             new EventHandler<MouseEvent>() {
@@ -178,6 +191,21 @@ public class ClientesController implements Initializable {
                         cm.show(tvClientes, e.getScreenX(), e.getScreenY());
                 }
         });
+        //ContextMenu Modificar
+        cmItem2.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                actionModificar();
+            }
+        });
+        cm.getItems().add(cmItem2);
+        tvClientes.addEventHandler(MouseEvent.MOUSE_CLICKED,
+            new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent e) {
+                    if (e.getButton() == MouseButton.SECONDARY)  
+                        cm.show(tvClientes, e.getScreenX(), e.getScreenY());
+                }
+        });
+        
     }
     
     private void handleClientesTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue){
@@ -195,22 +223,61 @@ public class ClientesController implements Initializable {
     
     @FXML
     private void actionEliminar() {
-        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
-        tvClientes.getItems().remove(selectedIndex);
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("¿Desea eliminar el cliente?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
+            tvClientes.getItems().remove(selectedIndex);
+        } 
+        
     }
     @FXML
     private void actionModificar() {
-        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
-        tvClientes.getItems().remove(selectedIndex);
+        ClienteBean cliente = tvClientes.getSelectionModel().getSelectedItem();
+        if (cliente != null) {
+            loadCrearMod(cliente);
+        }
     }
     @FXML
     private void actionAnadir() {
-        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
-        tvClientes.getItems().remove(selectedIndex);
+        loadCrearMod(null);
     }
     @FXML
     private void actionBuscar() {
         int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
         tvClientes.getItems().remove(selectedIndex);
+    }
+    @FXML
+    private void actionVolver() {
+        stage.close();
+        ownerStage.requestFocus();
+    }
+    
+    private void loadCrearMod(ClienteBean cliente) {
+        try {
+            ClientesManager clientesLogicController = new ClientesManagerTestDataGenerator();
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/clientes/nuevo_cliente.fxml"));
+            AnchorPane root = (AnchorPane) loader.load();
+            ClientesCuController ctr = ((ClientesCuController) loader.getController());
+            ctr.setStage(new Stage());
+            ctr.setClientesManager(clientesLogicController);
+            ctr.setClientesController(this);
+            
+            // En caso de opción Modificar
+            if (cliente != null) {
+                ctr.setCliente(cliente);
+            }
+
+            ctr.setOwnerStage(stage);
+            ctr.initStage(root);
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "Error al cargar ventana nuevo_cliente.fxml.", ex);
+        }
+    }
+    
+    public TableView getTableView(){
+        return this.tvClientes;
     }
 }
