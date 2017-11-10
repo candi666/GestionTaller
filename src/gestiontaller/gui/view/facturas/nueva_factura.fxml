@@ -34,7 +34,7 @@
             <ComboBox fx:id="cbEstado" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Estado" />
                  <HBox alignment="CENTER" prefHeight="24.0" prefWidth="258.0" spacing="50.0">
                     <children>
-                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrear" text="Crear Factura">
+                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" text="Crear Factura">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>

@@ -13,7 +13,7 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
         clientes=new ArrayList();
 
         for(int i=0; i<20;i++){
-            clientes.add(new ClienteBean(+i,"dni"+i,"nombre"+i,"apellidos"+i,"email"+i,600000000+i));
+            clientes.add(new ClienteBean(+i,"dni"+i,"nombre"+i,"apellidos"+i,"email"+i,"600000000"+i));
         }
     }
 
