@@ -8,16 +8,22 @@ package gestiontaller.gui.controller.facturas;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.javaBean.FacturaBean;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -38,13 +44,14 @@ public class FacturasCuController implements Initializable {
     private FacturasManager facturasLogicController;
     private FacturasController facturasController;
     private int maxid = 0;
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @FXML
     private Label lblTitulo;
     @FXML
-    private TextField tfFecha;
+    private DatePicker dpFecha;
     @FXML
-    private TextField tfFechaVenc;
+    private DatePicker dpFechaVenc;
     @FXML
     private ComboBox<Integer> cbReparacion;
     @FXML
@@ -76,11 +83,11 @@ public class FacturasCuController implements Initializable {
         stage.setScene(scene);
 
         stage.setTitle("Gestión de Taller");
-        if(factura!=null){
-             lblTitulo.setText("Modificar factura");
-             btnCrear.setText("Modificar");
+        if (factura != null) {
+            lblTitulo.setText("Modificar factura");
+            btnCrear.setText("Modificar");
         }
-        
+
         stage.setResizable(false);
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -122,21 +129,36 @@ public class FacturasCuController implements Initializable {
      * @param event
      */
     private void handleWindowShowing(WindowEvent event) {
+        SetActionEvents();
         populateForm();
     }
 
     private void populateForm() {
         initComboBoxes();
         if (factura != null) {
-            logger.info("Abierta ventana modificar factura.");
-            tfFecha.setText(factura.getFecha());
-            tfFechaVenc.setText(factura.getFechavenc());
+            // Prepara fechas
+            LocalDate fecha = LocalDate.parse(factura.getFecha(), dateFormatter);
+            LocalDate fechaVenc = LocalDate.parse(factura.getFechavenc(), dateFormatter);
+            
+            // Asignar valores de objeto seleccionado a los campos
+            dpFecha.setValue(fecha);
+            dpFechaVenc.setValue(fechaVenc);
             cbReparacion.setValue(factura.getIdreparacion());
             cbCliente.setValue(factura.getIdcliente());
+            cbEstado.setValue(factura.getPagada());
+            
             // TODO FORMAT DOUBLE DOS DECIMALES
             tfTotal.setText(factura.getTotal().toString());
-            cbEstado.setValue(factura.getPagada());
+            
+            /* Deshabilitar modificar fecha, solo se puede modificar la fecha
+            *  de vencimiento.
+            */
+            dpFecha.setDisable(true);
+            
+            logger.info("Abierta ventana modificar factura.");
         } else {
+            dpFecha.setValue(LocalDate.now());
+            dpFechaVenc.setValue(dpFecha.getValue().plusMonths(1));
             logger.info("Abierta ventana crear factura.");
         }
 
@@ -160,20 +182,26 @@ public class FacturasCuController implements Initializable {
      */
     @FXML
     private void actionCrearMod() {
-
+        // Preparar datos
+        String fecha = dpFecha.getValue().format(dateFormatter);
+        String fechavenc = dpFechaVenc.getValue().format(dateFormatter);
+        Double total = Double.parseDouble(tfTotal.getText());
+        
+        // Caso modificar
         if (factura != null) {
-            factura.setFecha(tfFecha.getText());
-            factura.setFechavenc(tfFechaVenc.getText());
-            factura.setTotal(Double.parseDouble(tfTotal.getText()));
+            factura.setFecha(fecha);
+            factura.setFechavenc(fechavenc);
+            factura.setTotal(total);
             factura.setIdreparacion(cbReparacion.getValue());
             factura.setIdcliente(cbCliente.getValue());
             factura.setPagada(cbEstado.getValue());
-        } else {
-            factura = new FacturaBean(maxid + 1, tfFecha.getText(), tfFechaVenc.getText(), 10 + (Double) (Math.random() * 2000), cbEstado.getValue(), cbReparacion.getValue(), cbCliente.getValue());
+        } else { // Caso Crear
+            factura = new FacturaBean(maxid + 1, fecha, 
+                    fechavenc, total, 
+                    cbEstado.getValue(), cbReparacion.getValue(), cbCliente.getValue());
             facturasController.getTableView().getItems().add(factura);
         }
 
-        
         stage.close();
         ownerStage.requestFocus();
         facturasController.getTableView().refresh();
@@ -187,20 +215,22 @@ public class FacturasCuController implements Initializable {
         cbReparacion.getItems().clear();
         cbCliente.getItems().clear();
         cbEstado.getItems().add(Boolean.TRUE);
+        cbEstado.getItems().add(Boolean.FALSE);
+
+        ArrayList<Integer> reparaciones = new ArrayList();
+        ArrayList<Integer> clientes = new ArrayList();
 
         for (FacturaBean factura : obList) {
             /* TODO Al implementar la base de datos se deberan cargar solo los
              * idreparacion que no esten asociados a ninguna factura.
              */
-            cbReparacion.getItems().add(factura.getIdreparacion());
-            cbReparacion.getItems().sorted();
+            reparaciones.add(factura.getIdreparacion());
 
             /* TODO Carga los clientes registrados en la aplicación.
              * Al implementar la base de datos debera buscar en la tabla clientes.
              */
             if (!cbCliente.getItems().contains(factura.getIdcliente())) {
-                cbCliente.getItems().add(factura.getIdcliente());
-                cbCliente.getItems().sorted();
+                clientes.add(factura.getIdcliente());
             }
 
             /* Aprovechamos este recorrido para determinar el ultimo id de factura,
@@ -211,9 +241,31 @@ public class FacturasCuController implements Initializable {
                 maxid = factura.getId();
             }
         }
+        reparaciones.sort(null);
+        cbReparacion.getItems().addAll(reparaciones);
+        clientes.sort(null);
+        cbCliente.getItems().addAll(clientes);
+
     }
 
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
     }
+
+    public void SetActionEvents() {
+        // Add some action (in Java 8 lambda syntax style).
+        dpFecha.setOnAction(event
+                -> {
+            LocalDate date = dpFecha.getValue();
+            System.out.println("Selected date: " + date);
+        }
+        );
+        dpFechaVenc.setOnAction(event
+                -> {
+            LocalDate date = dpFechaVenc.getValue();
+            System.out.println("Selected dateV: " + date);
+        }
+        );
+    }
+
 }

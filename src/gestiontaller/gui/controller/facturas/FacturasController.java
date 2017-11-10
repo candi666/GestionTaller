@@ -168,6 +168,7 @@ public class FacturasController implements Initializable {
      * Establece estado inicial para los elementos de la ventana.
      */
     private void initialStatus() {
+        
         btnEliminar.setDisable(true);
         btnModificar.setDisable(true);
         btnAnadir.setDisable(false);
@@ -288,6 +289,7 @@ public class FacturasController implements Initializable {
             ctr.setOwnerStage(stage);
             ctr.initStage(root);
         } catch (IOException ex) {
+            ex.printStackTrace();
             logger.log(Level.SEVERE, "Error al cargar ventana nueva_factura.fxml.", ex);
         }
     }
