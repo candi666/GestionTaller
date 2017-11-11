@@ -28,6 +28,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -50,6 +52,9 @@ public class FacturasController implements Initializable {
     private Stage ownerStage;
     private FacturasManager facturasLogicController;
     private ObservableList<FacturaBean> facturasData;
+    private static final int maxrows = 22;
+    private int pageindex;
+    private int totalpages;
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
@@ -60,6 +65,8 @@ public class FacturasController implements Initializable {
     private Button btnSiguiente;
     @FXML
     private Button btnUltimo;
+    @FXML
+    private Label lblPagina;
     @FXML
     private Button btnPagado;
     @FXML
@@ -103,6 +110,7 @@ public class FacturasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initialStatus();
         InitRowDoubleClickEvent();
+        InitButtonListeners();
     }
 
     /* -----------------------------------------------------------------------*/
@@ -149,8 +157,6 @@ public class FacturasController implements Initializable {
         this.ownerStage = ownerStage;
     }
 
-    
-    
     /**
      * Handle on window showing
      *
@@ -168,7 +174,9 @@ public class FacturasController implements Initializable {
      * Establece estado inicial para los elementos de la ventana.
      */
     private void initialStatus() {
-        
+        btnPrimero.setDisable(true);
+        btnAnterior.setDisable(true);
+        lblPagina.setText("0");
         btnEliminar.setDisable(true);
         btnModificar.setDisable(true);
         btnAnadir.setDisable(false);
@@ -178,6 +186,7 @@ public class FacturasController implements Initializable {
      * Formato y carga de datos a tabla.
      */
     private void initTable() {
+        pageindex = 1;
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         tcFechaVenc.setCellValueFactory(new PropertyValueFactory<>("fechavenc"));
@@ -192,21 +201,75 @@ public class FacturasController implements Initializable {
         tcPagada.setSortable(false);
         tcPagada.setCellValueFactory(new PropertyValueFactory<>("pagada"));
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+        totalpages = facturasData.size() / maxrows;
 
         tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
-        tvFacturas.setItems(facturasData);
+        //tvFacturas.setItems(facturasData);
+        tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(0, maxrows)));
+
+        lblPagina.setText(pageindex + " / " + totalpages);
+    }
+
+    @FXML
+    private void goToPage(int pageindex) {
+        this.pageindex = pageindex;
+        int fromIndex;
+        int toIndex;
+        totalpages = facturasData.size() / maxrows;
+
+        if (pageindex == 1) { // Si primera pagina
+            fromIndex = 0;
+            toIndex = maxrows;
+
+            btnPrimero.setDisable(true);
+            btnAnterior.setDisable(true);
+            btnSiguiente.setDisable(false);
+            btnUltimo.setDisable(false);
+        } else if (pageindex == totalpages) { // Si ultima pagina
+            fromIndex = pageindex * maxrows;
+            toIndex = facturasData.size();
+
+            btnPrimero.setDisable(false);
+            btnAnterior.setDisable(false);
+            btnSiguiente.setDisable(true);
+            btnUltimo.setDisable(true);
+        } else { // Resto de paginas
+            fromIndex = ((pageindex - 1) * maxrows);
+            toIndex = ((pageindex - 1) * maxrows) + maxrows;
+
+            btnSiguiente.setDisable(false);
+            btnUltimo.setDisable(false);
+            btnPrimero.setDisable(false);
+            btnAnterior.setDisable(false);
+        }
+
+        tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(fromIndex, toIndex)));
+        lblPagina.setText(pageindex + " / " + totalpages);
+
     }
 
     /* -----------------------------------------------------------------------*/
-    /*                            ACCIONES BOTONES                            */
-    /* -----------------------------------------------------------------------*/
+ /*                            ACCIONES BOTONES                            */
+ /* -----------------------------------------------------------------------*/
     /**
      * Acción borrar factura
      */
     @FXML
     private void actionEliminar() {
-        int selectedIndex = tvFacturas.getSelectionModel().getSelectedIndex();
-        tvFacturas.getItems().remove(selectedIndex);
+        facturasData.remove(tvFacturas.getSelectionModel().getSelectedItem());
+        tvFacturas.getItems().remove(tvFacturas.getSelectionModel().getSelectedItem());
+        totalpages = facturasData.size()/maxrows;
+
+        if (pageindex>1 && tvFacturas.getItems().size()<1) {
+            goToPage(pageindex-1);
+        }
+   
+        System.out.println("datasize: " + facturasData.size());
+        System.out.println("totalpages: " + totalpages);
+        lblPagina.setText(pageindex + " / " + totalpages);
+        
+        tvFacturas.refresh();
+
     }
 
     /**
@@ -262,7 +325,6 @@ public class FacturasController implements Initializable {
         ownerStage.requestFocus();
     }
 
-    
     /**
      * Carga ventana Crear/Modificar factura. Si pasamos null se abre una
      * ventana para nueva factura. Si le pasamos la factura seleccionada se abre
@@ -280,7 +342,7 @@ public class FacturasController implements Initializable {
             ctr.setStage(new Stage());
             ctr.setFacturasManager(facturasLogicController);
             ctr.setFacturasController(this);
-            
+
             // En caso de opción Modificar
             if (factura != null) {
                 ctr.setFactura(factura);
@@ -294,10 +356,17 @@ public class FacturasController implements Initializable {
         }
     }
 
+    private void InitButtonListeners() {
+        btnSiguiente.setOnAction(e -> goToPage(pageindex + 1));
+        btnAnterior.setOnAction(e -> goToPage(pageindex - 1));
+        btnPrimero.setOnAction(e -> goToPage(1));
+        btnUltimo.setOnAction(e -> goToPage(totalpages));
+
+    }
+
     /* -----------------------------------------------------------------------*/
-    /*                           EVENTOS DE TABLA                             */
-    /* -----------------------------------------------------------------------*/
-    
+ /*                           EVENTOS DE TABLA                             */
+ /* -----------------------------------------------------------------------*/
     /**
      * Listener para seleccion en la tabla. Escucha si se ha seleccionado algun
      * elemento
@@ -325,7 +394,7 @@ public class FacturasController implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     try {
-                        
+
                         loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem());
                     } catch (Exception ex) {
                         logger.info("Error al cargar ventana nuevo cliente");
@@ -336,13 +405,11 @@ public class FacturasController implements Initializable {
             return row;
         });
     }
-    
-  
+
     /* -----------------------------------------------------------------------*/
-    /*                               MISC                                     */
-    /* -----------------------------------------------------------------------*/
-    
-    public TableView getTableView(){
+ /*                               MISC                                     */
+ /* -----------------------------------------------------------------------*/
+    public TableView getTableView() {
         return this.tvFacturas;
     }
 }
