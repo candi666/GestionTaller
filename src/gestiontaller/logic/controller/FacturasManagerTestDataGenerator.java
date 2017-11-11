@@ -16,7 +16,7 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     private ArrayList<FacturaBean> facturas;
     private Random rn = new Random();
-    private int maxitems = 20;
+    private int maxitems = 140;
 
     /**
      * Genera una cantidad "maxitems" de objetos FacturaBean para pruebas.
@@ -28,7 +28,7 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         LocalDate fechaVenc;
         Double total;
 
-        for (int i = 0; i < maxitems; i++) {
+        for (int i = 1; i < maxitems; i++) {
             fecha = getRandomDate();
             fechaVenc = fecha.plusMonths(1);
 
@@ -48,9 +48,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      */
     @Override
     public Collection getAllFacturas() {
-//        for(FacturaBean factura:facturas){
-//            System.out.println(factura.getPagada());
-//        }
+        for(FacturaBean factura:facturas){
+            System.out.println(factura.getId());
+        }
         
         return facturas;
     }
