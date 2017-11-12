@@ -1,6 +1,6 @@
 package gestiontaller.logic.controller;
 import gestiontaller.logic.interfaces.ClientesManager;
-import gestiontaller.logic.javaBean.ClienteBean;
+import gestiontaller.logic.bean.ClienteBean;
 import java.util.ArrayList;
 import java.util.Collection;
 

@@ -1,7 +1,7 @@
 package gestiontaller.logic.controller;
 
 import gestiontaller.logic.interfaces.FacturasManager;
-import gestiontaller.logic.javaBean.FacturaBean;
+import gestiontaller.logic.bean.FacturaBean;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -22,8 +22,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      * Genera una cantidad "maxitems" de objetos FacturaBean para pruebas.
      *
      */
-    public FacturasManagerTestDataGenerator() {
+    public FacturasManagerTestDataGenerator(int maxitems) {
         facturas = new ArrayList();
+        this.maxitems = maxitems;
         LocalDate fecha;
         LocalDate fechaVenc;
         Double total;
@@ -48,9 +49,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      */
     @Override
     public Collection getAllFacturas() {
-        for(FacturaBean factura:facturas){
-            System.out.println(factura.getId());
-        }
+//        for(FacturaBean factura:facturas){
+//            System.out.println(factura.getId());
+//        }
         
         return facturas;
     }

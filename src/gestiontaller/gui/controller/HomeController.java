@@ -34,6 +34,10 @@ public class HomeController implements Initializable {
     private static final Logger logger = Logger.getLogger( HomeController.class.getName() );
     private Stage stage;
     
+    // Para pruebas
+    private static final int nfacturas = 140;
+    private static final int nclientes = 140;
+    
     
     
     
@@ -147,7 +151,7 @@ public class HomeController implements Initializable {
     @FXML
     private void btnFacturasActionHandler(ActionEvent event) {
         try {
-            FacturasManager facturasLogicController=new FacturasManagerTestDataGenerator();
+            FacturasManager facturasLogicController=new FacturasManagerTestDataGenerator(nfacturas);
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/facturas/modulo_facturas.fxml"));
             AnchorPane root = (AnchorPane)loader.load();
             

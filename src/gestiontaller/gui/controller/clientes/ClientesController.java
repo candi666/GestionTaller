@@ -3,7 +3,7 @@ package gestiontaller.gui.controller.clientes;
 import gestiontaller.App;
 import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.ClientesManager;
-import gestiontaller.logic.javaBean.ClienteBean;
+import gestiontaller.logic.bean.ClienteBean;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
