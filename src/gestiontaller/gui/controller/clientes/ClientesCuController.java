@@ -6,7 +6,7 @@
 package gestiontaller.gui.controller.clientes;
 
 import gestiontaller.logic.interfaces.ClientesManager;
-import gestiontaller.logic.javaBean.ClienteBean;
+import gestiontaller.logic.bean.ClienteBean;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;

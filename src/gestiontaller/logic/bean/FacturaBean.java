@@ -1,4 +1,4 @@
-package gestiontaller.logic.javaBean;
+package gestiontaller.logic.bean;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;

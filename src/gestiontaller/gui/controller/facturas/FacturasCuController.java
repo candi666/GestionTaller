@@ -6,7 +6,7 @@
 package gestiontaller.gui.controller.facturas;
 
 import gestiontaller.logic.interfaces.FacturasManager;
-import gestiontaller.logic.javaBean.FacturaBean;
+import gestiontaller.logic.bean.FacturaBean;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -199,12 +199,15 @@ public class FacturasCuController implements Initializable {
             factura = new FacturaBean(maxid + 1, fecha, 
                     fechavenc, total, 
                     cbEstado.getValue(), cbReparacion.getValue(), cbCliente.getValue());
-            facturasController.getTableView().getItems().add(factura);
+            
+            facturasController.actionCrearMod(factura);
+            //facturasController.getTableView().getItems().add(factura);
+            
         }
 
         stage.close();
         ownerStage.requestFocus();
-        facturasController.getTableView().refresh();
+        facturasController.getTvFacturas().refresh();
     }
 
     /**
