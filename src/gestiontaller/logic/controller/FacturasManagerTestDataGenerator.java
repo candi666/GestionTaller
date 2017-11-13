@@ -4,19 +4,20 @@ import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class FacturasManagerTestDataGenerator implements FacturasManager {
 
+    private static final Logger logger = Logger.getLogger(FacturasManagerTestDataGenerator.class.getName());
     private ArrayList<FacturaBean> facturas;
     private Random rn = new Random();
-    private int maxitems = 140;
+    private int maxitems;
+    private int maxid = 0;
 
     /**
      * Genera una cantidad "maxitems" de objetos FacturaBean para pruebas.
@@ -33,10 +34,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
             fecha = getRandomDate();
             fechaVenc = fecha.plusMonths(1);
 
-            
-            facturas.add(new FacturaBean(+i, fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+            createFactura(new FacturaBean(+i, fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                     fechaVenc.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                    round((10 + (double) (Math.random() * 2000)),2), rn.nextBoolean(),
+                    round((10 + (double) (Math.random() * 2000)), 2), rn.nextBoolean(),
                     0 + (int) (Math.random() * maxitems), 0 + (int) (Math.random() * maxitems)));
 
         }
@@ -52,16 +52,75 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 //        for(FacturaBean factura:facturas){
 //            System.out.println(factura.getId());
 //        }
-        
+
         return facturas;
     }
 
+    public FacturaBean getFacturaById(int id) {
+        FacturaBean factura = null;
+        for (FacturaBean fact : facturas) {
+            if (fact.getId() == id) {
+                factura = fact;
+            }
+        }
+        return factura;
+    }
+
+    public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate) {
+
+        // TODO
+        return null;
+    }
+
+    public Collection getFacturasByCliente(String cliente) {
+        // TODO
+        return null;
+    }
+
+    public boolean createFactura(FacturaBean factura) {
+        try {
+            factura.setId(getMaxId() + 1);
+            facturas.add(factura);
+            logger.info("Agregada nueva factura id: " + factura.getId());
+            return true;
+        } catch (Exception e) {
+            logger.info("Ha ocurrido un error al crear nueva factura.");
+            return false;
+        }
+    }
+
+    public boolean updateFactura(FacturaBean factura) {
+        boolean res = false;
+        try {
+            for (FacturaBean fact : facturas) {
+                if (fact.getId() == factura.getId()) {
+                    fact.setFecha(factura.getFecha());
+                    fact.setFechavenc(factura.getFechavenc());
+                    fact.setIdreparacion(factura.getIdreparacion());
+                    fact.setIdcliente(factura.getIdcliente());
+                    fact.setTotal(factura.getTotal());
+                    fact.setPagada(factura.getPagada());
+                    logger.info("Modificada factura id: " + factura.getId());
+                    res=true;
+                    break;
+                }
+            }
+
+            
+            return res;
+        } catch (Exception e) {
+            logger.info("Ha ocurrido un error al modificar factura, factura no encontrada.");
+            return res;
+        }
+    }
+
     /**
-     * Metodo auxiliar para obtener una fecha aleatoria entre 2010 y 
-     * la fecha actual.
+     * Metodo auxiliar para obtener una fecha aleatoria entre 2010 y la fecha
+     * actual.
+     *
      * @return fecha aleatoria.
      */
-    public LocalDate getRandomDate() {
+    private LocalDate getRandomDate() {
         int minDay = (int) LocalDate.of(2010, 1, 1).toEpochDay();
         int maxDay = (int) LocalDate.now().toEpochDay();
         long randomDay = minDay + rn.nextInt(maxDay - minDay);
@@ -73,6 +132,7 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Redondea un double a los decimales deseados
+     *
      * @param value double a redondear.
      * @param places decimales deseados.
      * @return double
@@ -87,4 +147,13 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         return new Double(bd.doubleValue());
     }
 
+    private int getMaxId() {
+        for (FacturaBean fact : facturas) {
+            if (fact.getId() > maxid) {
+                maxid = fact.getId();
+            }
+        }
+        return maxid;
+
+    }
 }

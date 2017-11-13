@@ -11,6 +11,8 @@ import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +22,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -55,6 +58,7 @@ public class FacturasController implements Initializable {
     private static final int maxrows = 22;
     private int pageindex;
     private int totalpages;
+    
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
@@ -108,23 +112,13 @@ public class FacturasController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initialStatus();
-        InitRowDoubleClickEvent();
-        InitButtonActions();
+//        InitRowDoubleClickEvent();
+//        handleActionEvents();
     }
 
     /* -----------------------------------------------------------------------*/
  /*                        METODOS DE INICIALIZACIÓN                       */
  /* -----------------------------------------------------------------------*/
-    /**
-     * Conecta Stage a controlador
-     *
-     * @param stage
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     /**
      * Inicializa la stage
      *
@@ -134,27 +128,18 @@ public class FacturasController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
 
-        stage.setTitle("Gestión de taller - Clientes");
+        stage.setTitle("Gestión de taller - Facturas");
         stage.setResizable(true);
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerStage);
         stage.setOnShowing(this::handleWindowShowing);
         stage.setMaxWidth(1024);
-        stage.setMinWidth(748);
-        stage.setMaxHeight(1024);
-        stage.setMinHeight(748);
+        stage.setMinWidth(1024);
+        stage.setMaxHeight(748);
+        stage.setMinHeight(700);
         stage.show();
 
-    }
-
-    /**
-     * Establece owner stage
-     *
-     * @param ownerStage
-     */
-    public void setOwnerStage(Stage ownerStage) {
-        this.ownerStage = ownerStage;
     }
 
     /**
@@ -163,20 +148,24 @@ public class FacturasController implements Initializable {
      * @param event
      */
     private void handleWindowShowing(WindowEvent event) {
+        handleActionEvents();
+        initActionPanel();
         initTable();
+        initPagination();
+
     }
 
-    public void setFacturasManager(FacturasManager facturasLogicController) {
-        this.facturasLogicController = facturasLogicController;
-    }
-
-    /**
-     * Establece estado inicial para los elementos de la ventana.
-     */
-    private void initialStatus() {
+    private void initPagination() {
+        pageindex = 1;
+        totalpages = (facturasData.size() - 1) / maxrows;
+        
         btnPrimero.setDisable(true);
         btnAnterior.setDisable(true);
-        lblPagina.setText("0");
+        
+        lblPagina.setText(pageindex + " / " + totalpages);
+    }
+
+    private void initActionPanel() {
         btnEliminar.setDisable(true);
         btnModificar.setDisable(true);
         btnPagado.setDisable(true);
@@ -187,7 +176,11 @@ public class FacturasController implements Initializable {
      * Formato y carga de datos a tabla.
      */
     private void initTable() {
-        pageindex = 1;
+        // Obtener Collection de Facturas
+        facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+
+        
+
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         tcFechaVenc.setCellValueFactory(new PropertyValueFactory<>("fechavenc"));
@@ -201,36 +194,56 @@ public class FacturasController implements Initializable {
          */
         tcPagada.setSortable(false);
         tcPagada.setCellValueFactory(new PropertyValueFactory<>("pagada"));
-        facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
-        totalpages = (facturasData.size() - 1) / maxrows;
-
+        
+        // Add Listeners
         tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
+        InitRowDoubleClickEvent();
+        
         //tvFacturas.setItems(facturasData);
         tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(0, maxrows)));
 
-        lblPagina.setText(pageindex + " / " + totalpages);
+        
     }
 
     /* -----------------------------------------------------------------------*/
- /*                            ACCIONES BOTONES                            */
+ /*                                ACCIONES                            */
  /* -----------------------------------------------------------------------*/
     /**
      * Inicializa acciones para botones que requieren parametros.
      */
-    private void InitButtonActions() {
+    private void handleActionEvents() {
         // CRUD
         btnAnadir.setOnAction(e -> loadCrearMod(null));
         btnModificar.setOnAction(e -> loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem()));
-        
+
         // NAV
         btnSiguiente.setOnAction(e -> goToPage(pageindex + 1));
         btnAnterior.setOnAction(e -> goToPage(pageindex - 1));
         btnPrimero.setOnAction(e -> goToPage(1));
         btnUltimo.setOnAction(e -> goToPage(totalpages));
-       
+
+        // FILTER 
+        chbPendientes.setOnAction((event) -> {
+            if (chbPendientes.isSelected()) {
+                FilteredList<FacturaBean> filteredData = new FilteredList<>(facturasData, p -> !p.getPagada());
+                //tvFacturas.getItems().removeAll();
+                tvFacturas.setItems(filteredData);
+                
+            } else {
+                //tvFacturas.getItems().removeAll();
+                tvFacturas.setItems(facturasData);
+            }
+
+        });
+        
+        // SEARCH
+        btnBuscar.setOnAction((event) -> {
+            // TODO
+
+        });
 
     }
-    
+
     /**
      * Acción borrar factura
      */
@@ -247,24 +260,25 @@ public class FacturasController implements Initializable {
             goToPage(pageindex - 1);
         }
 
-        //lblPagina.setText(pageindex + " / " + totalpages);
     }
 
     /**
-     * Acción borrar factura
+     * Acción Crear/Modificar factura
      */
     @FXML
     public void actionCrearMod(FacturaBean factura) {
         /* facturasData: lista con todas las facturas
         *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
          */
-        facturasData.add(factura);
-        tvFacturas.getItems().add(factura);
-        totalpages = facturasData.size() / maxrows;
-
-        goToPage(totalpages);
-
-        //lblPagina.setText(pageindex + " / " + totalpages);
+        if(factura.getId()==null){
+            facturasLogicController.createFactura(factura);
+            reloadTable();
+            goToPage(totalpages);
+        }else{
+            facturasLogicController.updateFactura(factura);
+        }
+        
+        totalpages = facturasData.size() / maxrows; 
     }
 
     /**
@@ -278,6 +292,7 @@ public class FacturasController implements Initializable {
                 factura.setPagada(false);
             } else {
                 factura.setPagada(true);
+                btnPagado.setDisable(true);
             }
             tvFacturas.refresh();
         }
@@ -331,66 +346,11 @@ public class FacturasController implements Initializable {
         }
     }
 
-    
-
-    /* -----------------------------------------------------------------------*/
- /*                           EVENTOS DE TABLA                             */
- /* -----------------------------------------------------------------------*/
     /**
-     * Listener para seleccion en la tabla. Escucha si se ha seleccionado algun
-     * elemento
+     * Metodo de navegación entre paginas de la tabla.
      *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * @param pageindex pagina objetivo.
      */
-    private void handleFacturasTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue) {
-        if (newValue != null) {
-            FacturaBean factura = (FacturaBean)newValue;
-            btnModificar.setDisable(false);
-            btnEliminar.setDisable(false);
-            
-            if(!factura.getPagada()){
-                btnPagado.setDisable(false);
-            }
-            
-            
-        } else {
-            btnModificar.setDisable(true);
-            btnEliminar.setDisable(true);
-            btnPagado.setDisable(true);
-        }
-    }
-
-    /**
-     * Accion al hacer doble click sobre row de la tabla
-     */
-    public void InitRowDoubleClickEvent() {
-        tvFacturas.setRowFactory(tv -> {
-            TableRow<FacturaBean> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    try {
-
-                        loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem());
-                    } catch (Exception ex) {
-                        logger.info("Error al cargar ventana nueva factura.");
-                    }
-
-                }
-            });
-            return row;
-        });
-    }
-
-    /* -----------------------------------------------------------------------*/
- /*                               MISC                                     */
- /* -----------------------------------------------------------------------*/
-
-    public TableView<FacturaBean> getTvFacturas() {
-        return tvFacturas;
-    }
-    
     private void goToPage(int pageindex) {
         this.pageindex = pageindex;
         int fromIndex;
@@ -426,5 +386,101 @@ public class FacturasController implements Initializable {
         tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(fromIndex, toIndex)));
         lblPagina.setText(pageindex + " / " + totalpages);
 
+    }
+
+    /* -----------------------------------------------------------------------*/
+ /*                           EVENTOS DE TABLA                             */
+ /* -----------------------------------------------------------------------*/
+    /**
+     * Listener para seleccion en la tabla. Escucha si se ha seleccionado algun
+     * elemento
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
+    private void handleFacturasTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue) {
+        if (newValue != null) {
+            FacturaBean factura = (FacturaBean) newValue;
+            btnModificar.setDisable(false);
+            btnEliminar.setDisable(false);
+
+            if (!factura.getPagada()) {
+                btnPagado.setDisable(false);
+            }
+
+        } else {
+            btnModificar.setDisable(true);
+            btnEliminar.setDisable(true);
+            btnPagado.setDisable(true);
+        }
+    }
+
+    /**
+     * Accion al hacer doble click sobre row de la tabla
+     */
+    public void InitRowDoubleClickEvent() {
+        tvFacturas.setRowFactory(tv -> {
+            TableRow<FacturaBean> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    try {
+
+                        loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem());
+                    } catch (Exception ex) {
+                        logger.info("Error al cargar ventana nueva factura.");
+                    }
+
+                }
+            });
+            return row;
+        });
+    }
+    
+    public void reloadTable(){
+        pageindex=1;
+        facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+        tvFacturas.setItems(facturasData);
+        
+        goToPage(pageindex);
+    }
+
+    /* -----------------------------------------------------------------------*/
+ /*                         GETTERS AND SETTERS                            */
+ /* -----------------------------------------------------------------------*/
+    /**
+     * Obtener tabla de facturas
+     *
+     * @return
+     */
+    public TableView<FacturaBean> getTvFacturas() {
+        return tvFacturas;
+    }
+
+    /**
+     * Conecta Stage a controlador
+     *
+     * @param stage
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    /**
+     * Establece owner stage
+     *
+     * @param ownerStage
+     */
+    public void setOwnerStage(Stage ownerStage) {
+        this.ownerStage = ownerStage;
+    }
+
+    /**
+     * Pasa objeto interfaz de facturas.
+     *
+     * @param facturasLogicController
+     */
+    public void setFacturasManager(FacturasManager facturasLogicController) {
+        this.facturasLogicController = facturasLogicController;
     }
 }

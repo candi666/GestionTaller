@@ -5,6 +5,8 @@
  */
 package gestiontaller.logic.interfaces;
 
+import gestiontaller.logic.bean.FacturaBean;
+import java.time.LocalDate;
 import java.util.Collection;
 
 /**
@@ -13,4 +15,10 @@ import java.util.Collection;
  */
 public interface FacturasManager {
     public Collection getAllFacturas();
+    public FacturaBean getFacturaById(int id);
+    public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate);
+    public Collection getFacturasByCliente(String cliente);
+    public boolean createFactura(FacturaBean factura);
+    public boolean updateFactura(FacturaBean factura);
+    
 }
