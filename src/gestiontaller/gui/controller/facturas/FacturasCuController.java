@@ -189,25 +189,30 @@ public class FacturasCuController implements Initializable {
         
         // Caso modificar
         if (factura != null) {
-            factura.setFecha(fecha);
+            //factura.setFecha(fecha);
             factura.setFechavenc(fechavenc);
             factura.setTotal(total);
             factura.setIdreparacion(cbReparacion.getValue());
             factura.setIdcliente(cbCliente.getValue());
             factura.setPagada(cbEstado.getValue());
-        } else { // Caso Crear
-            factura = new FacturaBean(maxid + 1, fecha, 
-                    fechavenc, total, 
-                    cbEstado.getValue(), cbReparacion.getValue(), cbCliente.getValue());
-            
             facturasController.actionCrearMod(factura);
-            //facturasController.getTableView().getItems().add(factura);
+        } else { // Caso Crear
             
+            FacturaBean newFactura = new FacturaBean();
+            System.out.println(fecha);
+            newFactura.setFecha(fecha);
+            newFactura.setFechavenc(fechavenc);
+            newFactura.setTotal(total);
+            newFactura.setIdreparacion(cbReparacion.getValue());
+            newFactura.setIdcliente(cbCliente.getValue());
+            newFactura.setPagada(cbEstado.getValue());
+            facturasController.actionCrearMod(newFactura);
         }
+        
+        
 
         stage.close();
         ownerStage.requestFocus();
-        facturasController.getTvFacturas().refresh();
     }
 
     /**
@@ -235,14 +240,6 @@ public class FacturasCuController implements Initializable {
             if (!cbCliente.getItems().contains(factura.getIdcliente())) {
                 clientes.add(factura.getIdcliente());
             }
-
-            /* Aprovechamos este recorrido para determinar el ultimo id de factura,
-             * de este modo ya tenemos un id definido en caso de factura nueva.
-             * TODO Al implementar la base de datos analizar otra solución sincronizada.
-             */
-            if (factura.getId() > maxid) {
-                maxid = factura.getId();
-            }
         }
         reparaciones.sort(null);
         cbReparacion.getItems().addAll(reparaciones);
@@ -263,6 +260,7 @@ public class FacturasCuController implements Initializable {
             System.out.println("Selected date: " + date);
         }
         );
+        
         dpFechaVenc.setOnAction(event
                 -> {
             LocalDate date = dpFechaVenc.getValue();

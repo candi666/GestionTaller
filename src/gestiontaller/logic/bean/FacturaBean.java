@@ -14,6 +14,16 @@ public class FacturaBean {
     private final SimpleIntegerProperty idreparacion;
     private final SimpleIntegerProperty idcliente;
     
+    public FacturaBean(){
+        this.id=null;
+        this.fecha=null;
+        this.fechavenc=null;
+        this.total=null;
+        this.pagada=null;
+        this.idreparacion=null;
+        this.idcliente=null;
+    }
+    
     public FacturaBean(Integer id, String fecha, String fechavenc, Double total,
             Boolean pagada, Integer idreparacion, Integer idcliente){
         this.id=new SimpleIntegerProperty(id);
@@ -22,9 +32,9 @@ public class FacturaBean {
         this.total=new SimpleDoubleProperty(total);
         this.pagada=new SimpleBooleanProperty(pagada);
         this.idreparacion=new SimpleIntegerProperty(idreparacion);
-        this.idcliente=new SimpleIntegerProperty(idcliente);
-        
+        this.idcliente=new SimpleIntegerProperty(idcliente); 
     }
+    
 
     /* **** GETTERS & SETTERS **** */
 
