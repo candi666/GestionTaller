@@ -34,6 +34,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -51,7 +52,8 @@ public class FacturasController implements Initializable {
     private Stage ownerStage;
     private FacturasManager facturasLogicController;
     private ObservableList<FacturaBean> facturasData;
-    private static final int maxrows = 22;
+    private ObservableList<FacturaBean> facturasDataPendientes;
+    private static final int maxrows = 18;
     private int pageindex;
     private int totalpages;
     
@@ -108,8 +110,7 @@ public class FacturasController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        InitRowDoubleClickEvent();
-//        handleActionEvents();
+
     }
 
     /* -----------------------------------------------------------------------*/
@@ -132,8 +133,8 @@ public class FacturasController implements Initializable {
         stage.setOnShowing(this::handleWindowShowing);
         stage.setMaxWidth(1024);
         stage.setMinWidth(1024);
-        stage.setMaxHeight(748);
-        stage.setMinHeight(700);
+        stage.setMaxHeight(680);
+        stage.setMinHeight(680);
         stage.show();
 
     }
@@ -195,9 +196,9 @@ public class FacturasController implements Initializable {
         tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
         InitRowDoubleClickEvent();
         
-        //tvFacturas.setItems(facturasData);
+        // Añadir datos iniciales a la tabla
         tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(0, maxrows)));
-
+        
         
     }
 
@@ -248,8 +249,13 @@ public class FacturasController implements Initializable {
         /* facturasData: lista con todas las facturas
         *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
          */
-        facturasData.remove(tvFacturas.getSelectionModel().getSelectedItem());
-        tvFacturas.getItems().remove(tvFacturas.getSelectionModel().getSelectedItem());
+        
+        // TODO DIALOG ELIMINAR
+        facturasLogicController.deleteFactura(tvFacturas.getSelectionModel().getSelectedItem());
+//        facturasData.remove(tvFacturas.getSelectionModel().getSelectedItem());
+//        tvFacturas.getItems().remove(tvFacturas.getSelectionModel().getSelectedItem());
+
+        reloadTable();
         totalpages = facturasData.size() / maxrows;
 
         if (pageindex > 1 && tvFacturas.getItems().size() < 1) {
@@ -266,7 +272,7 @@ public class FacturasController implements Initializable {
         /* facturasData: lista con todas las facturas
         *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
          */
-        if(factura.getId()==null){
+        if(factura.getId()==0){
             System.out.println("Test crear: "+factura.getFecha());
             if(facturasLogicController.createFactura(factura)){
                 reloadTable();
@@ -276,6 +282,8 @@ public class FacturasController implements Initializable {
         }else{
             facturasLogicController.updateFactura(factura);
             reloadTable();
+            goToPage(pageindex);
+            tvFacturas.refresh();
         }
         
         totalpages = facturasData.size() / maxrows; 
@@ -356,7 +364,7 @@ public class FacturasController implements Initializable {
         this.pageindex = pageindex;
         int fromIndex;
         int toIndex;
-        totalpages = (facturasData.size() - 1) / maxrows;
+        
 
         if (pageindex == 1) { // Si primera pagina
             fromIndex = 0;
@@ -439,11 +447,9 @@ public class FacturasController implements Initializable {
     }
     
     public void reloadTable(){
-        pageindex=1;
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
         tvFacturas.setItems(facturasData);
-        
-        goToPage(pageindex);
+        tvFacturas.refresh();
     }
 
     /* -----------------------------------------------------------------------*/

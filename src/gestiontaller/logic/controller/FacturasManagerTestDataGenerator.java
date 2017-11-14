@@ -80,8 +80,6 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     public boolean createFactura(FacturaBean factura) {
         try {
             factura.setId(getMaxId() + 1);
-            
-            
             facturas.add(factura);
             logger.info("Agregada nueva factura id: " + factura.getId() + factura.getFecha());
             return true;
@@ -113,6 +111,17 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         } catch (Exception e) {
             logger.info("Ha ocurrido un error al modificar factura, factura no encontrada.");
             return res;
+        }
+    }
+    
+    public boolean deleteFactura(FacturaBean factura){
+        try{
+            facturas.remove(factura);
+            logger.info("Factura id: "+factura.getId()+" eliminada.");
+            return true;
+        }catch(Exception e){
+            logger.info("Ha ocurrido un error al intentar eliminar factura id: "+factura.getId());
+            return false;
         }
     }
 

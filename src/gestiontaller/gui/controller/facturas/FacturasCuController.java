@@ -7,6 +7,7 @@ package gestiontaller.gui.controller.facturas;
 
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
+import gestiontaller.logic.util.FieldValidator;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +44,6 @@ public class FacturasCuController implements Initializable {
     private FacturaBean factura;
     private FacturasManager facturasLogicController;
     private FacturasController facturasController;
-    private int maxid = 0;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @FXML
@@ -140,23 +140,22 @@ public class FacturasCuController implements Initializable {
             // Prepara fechas
             LocalDate fecha = LocalDate.parse(factura.getFecha(), dateFormatter);
             LocalDate fechaVenc = LocalDate.parse(factura.getFechavenc(), dateFormatter);
-            
+
             // Asignar valores de objeto seleccionado a los campos
             dpFecha.setValue(fecha);
             dpFechaVenc.setValue(fechaVenc);
             cbReparacion.setValue(factura.getIdreparacion());
             cbCliente.setValue(factura.getIdcliente());
             cbEstado.setValue(factura.getPagada());
-            
+
             // TODO FORMAT DOUBLE DOS DECIMALES
             tfTotal.setText(factura.getTotal().toString());
-            
+
             /* Deshabilitar modificar fecha, solo se puede modificar la fecha
             *  de vencimiento.
-            */
+             */
             dpFecha.setDisable(true);
-            
-            
+
         } else {
             logger.info("Abierta ventana crear factura.");
             dpFecha.setValue(LocalDate.now());
@@ -187,30 +186,38 @@ public class FacturasCuController implements Initializable {
         String fecha = dpFecha.getValue().format(dateFormatter);
         String fechavenc = dpFechaVenc.getValue().format(dateFormatter);
         Double total = Double.parseDouble(tfTotal.getText());
-        
+
         // Caso modificar
         if (factura != null) {
-            //factura.setFecha(fecha);
-            factura.setFechavenc(fechavenc);
-            factura.setTotal(total);
-            factura.setIdreparacion(cbReparacion.getValue());
-            factura.setIdcliente(cbCliente.getValue());
-            factura.setPagada(cbEstado.getValue());
+            if (formValid()) {
+                //factura.setFecha(fecha);
+                factura.setFechavenc(fechavenc);
+                factura.setTotal(total);
+                factura.setIdreparacion(cbReparacion.getValue());
+                factura.setIdcliente(cbCliente.getValue());
+                factura.setPagada(cbEstado.getValue());
+                
+                facturasController.actionCrearMod(factura);
+                stage.close();
+                ownerStage.requestFocus();
+            }
+
         } else { // Caso Crear
-            
-            FacturaBean factura = new FacturaBean();
-            System.out.println(fecha);
-            factura.setFecha(fecha);
-            factura.setFechavenc(fechavenc);
-            factura.setTotal(total);
-            factura.setIdreparacion(cbReparacion.getValue());
-            factura.setIdcliente(cbCliente.getValue());
-            factura.setPagada(cbEstado.getValue());    
+
+            if (formValid()) {
+                FacturaBean newFactura = new FacturaBean(0, fecha, fechavenc, total,
+                        cbEstado.getValue(), cbReparacion.getValue(), cbCliente.getValue());
+
+                System.out.println(newFactura.getId() + " " + newFactura.getFecha() + " "
+                        + newFactura.getFechavenc() + " " + newFactura.getTotal() + " "
+                        + newFactura.getPagada() + " " + newFactura.getIdreparacion() + " " + newFactura.getIdcliente());
+
+                facturasController.actionCrearMod(newFactura);
+                stage.close();
+                ownerStage.requestFocus();
+            }
         }
-        
-        facturasController.actionCrearMod(factura);
-        stage.close();
-        ownerStage.requestFocus();
+
     }
 
     /**
@@ -258,7 +265,7 @@ public class FacturasCuController implements Initializable {
             System.out.println("Selected date: " + date);
         }
         );
-        
+
         // Show datepicker fecha vencimiento
         dpFechaVenc.setOnAction(event
                 -> {
@@ -266,6 +273,17 @@ public class FacturasCuController implements Initializable {
             System.out.println("Selected dateV: " + date);
         }
         );
+    }
+
+    public boolean formValid() {
+        boolean res = true;
+
+        if (!FieldValidator.isDni(tfTotal.getText())) {
+            // poner en rojo
+            //res = false;
+        }
+
+        return res;
     }
 
 }
