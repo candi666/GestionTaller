@@ -11,6 +11,7 @@ import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.interfaces.FacturasManager;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,9 @@ import javafx.stage.WindowEvent;
  */
 public class HomeController implements Initializable {
     private static final Logger logger = Logger.getLogger( HomeController.class.getName() );
+    public static ResourceBundle bundle;
+    public static Locale locale;
+    
     private Stage stage;
     
     // Para pruebas
@@ -43,7 +47,8 @@ public class HomeController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // TODO get actual local language
+        loadLang("es");
     }    
     
     /**
@@ -91,6 +96,7 @@ public class HomeController implements Initializable {
     private void btnPiezasActionHandler(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/piezas/modulo_piezas.fxml"));
+            loader.setResources(bundle);
             AnchorPane root = (AnchorPane)loader.load();
             
             PiezasController ctr = ((PiezasController)loader.getController());
@@ -112,6 +118,7 @@ public class HomeController implements Initializable {
         try {
             ClientesManager clientesLogicController=new ClientesManagerTestDataGenerator();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/clientes/modulo_clientes.fxml"));
+            loader.setResources(bundle);
             AnchorPane root = (AnchorPane)loader.load();
             
             ClientesController ctr = ((ClientesController)loader.getController());
@@ -133,6 +140,7 @@ public class HomeController implements Initializable {
     private void btnReparacionesActionHandler(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/reparaciones/modulo_reparaciones.fxml"));
+            loader.setResources(bundle);
             AnchorPane root = (AnchorPane)loader.load();
             
             ReparacionesController ctr = ((ReparacionesController)loader.getController());
@@ -151,8 +159,10 @@ public class HomeController implements Initializable {
     @FXML
     private void btnFacturasActionHandler(ActionEvent event) {
         try {
-            FacturasManager facturasLogicController=new FacturasManagerTestDataGenerator(nfacturas);
+            FacturasManager facturasLogicController=new FacturasManagerTestDataGenerator();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/facturas/modulo_facturas.fxml"));
+            loader.setResources(bundle);
+            
             AnchorPane root = (AnchorPane)loader.load();
             
             FacturasController ctr = ((FacturasController)loader.getController());
@@ -172,6 +182,11 @@ public class HomeController implements Initializable {
     private void handleMiClose(ActionEvent event) {
         logger.info("Fin de ejecución.");
         Platform.exit();
+    }
+    
+    public void loadLang(String lang){
+        locale=new Locale(lang);
+        bundle = ResourceBundle.getBundle("resources.properties.MessageStrings",locale);
     }
 
 }

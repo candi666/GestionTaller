@@ -12,6 +12,8 @@ package gestiontaller.config;
  */
 public class GTConstants {
     
+    public static final int MAX_MOCK_FACTURAS = 127;
+    public static final int MAX_ROWS_TABLE_FACTURAS = 18;
     
     
 }
