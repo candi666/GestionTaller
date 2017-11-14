@@ -80,8 +80,10 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     public boolean createFactura(FacturaBean factura) {
         try {
             factura.setId(getMaxId() + 1);
+            
+            
             facturas.add(factura);
-            logger.info("Agregada nueva factura id: " + factura.getId());
+            logger.info("Agregada nueva factura id: " + factura.getId() + factura.getFecha());
             return true;
         } catch (Exception e) {
             logger.info("Ha ocurrido un error al crear nueva factura.");

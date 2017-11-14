@@ -6,13 +6,10 @@
 package gestiontaller.gui.controller.facturas;
 
 import gestiontaller.App;
-import gestiontaller.logic.controller.FacturasManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +29,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -271,14 +267,19 @@ public class FacturasController implements Initializable {
         *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
          */
         if(factura.getId()==null){
-            facturasLogicController.createFactura(factura);
-            reloadTable();
-            goToPage(totalpages);
+            System.out.println("Test crear: "+factura.getFecha());
+            if(facturasLogicController.createFactura(factura)){
+                reloadTable();
+                goToPage(totalpages);
+            }
+            
         }else{
             facturasLogicController.updateFactura(factura);
+            reloadTable();
         }
         
         totalpages = facturasData.size() / maxrows; 
+        
     }
 
     /**
