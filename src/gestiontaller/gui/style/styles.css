@@ -107,3 +107,7 @@
 .table-view .scroll-bar:vertical .decrement-button {
     -fx-padding:0;
 }
+
+.tf-invalid{
+    -fx-border-color: #ff3333;
+}

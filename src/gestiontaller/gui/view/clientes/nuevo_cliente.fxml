@@ -32,7 +32,7 @@
                  <TextField fx:id="tfTelefono" promptText="Telefono" />
                  <HBox alignment="CENTER" prefHeight="24.0" prefWidth="258.0" spacing="50.0">
                     <children>
-                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" text="Dar de Alta">
+                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionValidacion" text="Dar de Alta">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>

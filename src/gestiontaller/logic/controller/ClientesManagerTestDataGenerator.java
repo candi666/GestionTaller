@@ -8,6 +8,7 @@ import java.util.Collection;
 public class ClientesManagerTestDataGenerator implements ClientesManager{
     
     private ArrayList<ClienteBean> clientes;
+    private int maxid = 0;
 
     public ClientesManagerTestDataGenerator(){
         clientes=new ArrayList();
@@ -23,6 +24,16 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
             System.out.println("id: "+clientes.get(i).getId()+"   fecha: "+clientes.get(i).getDni());
         }
         return clientes;
+    }
+    
+    private int getMaxId() {
+        for (ClienteBean fact : clientes) {
+            if (fact.getId() > maxid) {
+                maxid = fact.getId();
+            }
+        }
+        return maxid;
+
     }
 
 }
