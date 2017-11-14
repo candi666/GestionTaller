@@ -136,6 +136,7 @@ public class FacturasCuController implements Initializable {
     private void populateForm() {
         initComboBoxes();
         if (factura != null) {
+            logger.info("Abierta ventana modificar factura.");
             // Prepara fechas
             LocalDate fecha = LocalDate.parse(factura.getFecha(), dateFormatter);
             LocalDate fechaVenc = LocalDate.parse(factura.getFechavenc(), dateFormatter);
@@ -155,11 +156,11 @@ public class FacturasCuController implements Initializable {
             */
             dpFecha.setDisable(true);
             
-            logger.info("Abierta ventana modificar factura.");
+            
         } else {
+            logger.info("Abierta ventana crear factura.");
             dpFecha.setValue(LocalDate.now());
             dpFechaVenc.setValue(dpFecha.getValue().plusMonths(1));
-            logger.info("Abierta ventana crear factura.");
         }
 
     }
@@ -195,22 +196,19 @@ public class FacturasCuController implements Initializable {
             factura.setIdreparacion(cbReparacion.getValue());
             factura.setIdcliente(cbCliente.getValue());
             factura.setPagada(cbEstado.getValue());
-            facturasController.actionCrearMod(factura);
         } else { // Caso Crear
             
-            FacturaBean newFactura = new FacturaBean();
+            FacturaBean factura = new FacturaBean();
             System.out.println(fecha);
-            newFactura.setFecha(fecha);
-            newFactura.setFechavenc(fechavenc);
-            newFactura.setTotal(total);
-            newFactura.setIdreparacion(cbReparacion.getValue());
-            newFactura.setIdcliente(cbCliente.getValue());
-            newFactura.setPagada(cbEstado.getValue());
-            facturasController.actionCrearMod(newFactura);
+            factura.setFecha(fecha);
+            factura.setFechavenc(fechavenc);
+            factura.setTotal(total);
+            factura.setIdreparacion(cbReparacion.getValue());
+            factura.setIdcliente(cbCliente.getValue());
+            factura.setPagada(cbEstado.getValue());    
         }
         
-        
-
+        facturasController.actionCrearMod(factura);
         stage.close();
         ownerStage.requestFocus();
     }
@@ -253,7 +251,7 @@ public class FacturasCuController implements Initializable {
     }
 
     public void SetActionEvents() {
-        // Add some action (in Java 8 lambda syntax style).
+        // Show datepicker fecha
         dpFecha.setOnAction(event
                 -> {
             LocalDate date = dpFecha.getValue();
@@ -261,6 +259,7 @@ public class FacturasCuController implements Initializable {
         }
         );
         
+        // Show datepicker fecha vencimiento
         dpFechaVenc.setOnAction(event
                 -> {
             LocalDate date = dpFechaVenc.getValue();
