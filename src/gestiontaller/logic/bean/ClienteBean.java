@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class ClienteBean {
     private final SimpleIntegerProperty tcId;
-    private final SimpleStringProperty tcDni;
+    private final SimpleStringProperty tcDni; 
     private final SimpleStringProperty tcNombre;
     private final SimpleStringProperty tcApellidos;
     private final SimpleStringProperty tcEmail;

@@ -5,11 +5,16 @@
  */
 package gestiontaller.logic.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Clase util para validación de campos
  * @author Carlos
  */
 public final class FieldValidator {
+    private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     
     private FieldValidator(){
         
@@ -38,6 +43,14 @@ public final class FieldValidator {
         return true;
     }
     
+    public static boolean isEmail(String testvalue) {
+        // Compiles the given regular expression into a pattern.
+        Pattern pattern = Pattern.compile(PATTERN_EMAIL);
+ 
+        // Match the given input against this pattern
+        Matcher matcher = pattern.matcher(testvalue);
+        return matcher.matches();
+    }
     /**
      * Verifica que el length  de un string este entre dos valores.
      * Ejemplo: Password debe tener al menos 8 caracteres y no mas de 16.
