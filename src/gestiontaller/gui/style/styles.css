@@ -22,6 +22,10 @@
     -fx-border-color:#757575;
 }
 
+.table-view{
+    overflow : hidden;
+}
+
 .combo-box, .button{
     -fx-background-color:#BDBDBD;
 

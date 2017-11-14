@@ -20,5 +20,6 @@ public interface FacturasManager {
     public Collection getFacturasByCliente(String cliente);
     public boolean createFactura(FacturaBean factura);
     public boolean updateFactura(FacturaBean factura);
+    public boolean deleteFactura(FacturaBean factura);
     
 }
