@@ -128,7 +128,7 @@ public class FacturasController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
 
-        stage.setTitle("Gestión de taller - Facturas");
+        stage.setTitle(HomeController.bundle.getString("app.gui.facturas.stage.title"));
         stage.setResizable(true);
 
         stage.initModality(Modality.APPLICATION_MODAL);
