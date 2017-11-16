@@ -38,7 +38,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
@@ -48,7 +47,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -116,7 +114,7 @@ public class FacturasController implements Initializable {
 
     }
 
-    /* -----------------------------------------------------------------------*/
+ /* -----------------------------------------------------------------------*/
  /*                        METODOS DE INICIALIZACIÓN                       */
  /* -----------------------------------------------------------------------*/
     /**
@@ -156,9 +154,8 @@ public class FacturasController implements Initializable {
     }
 
     private void initPagination() {
-        
-        
-        pgFacturas.setPageCount((facturasData.size() / rowsPerPage) +1);
+
+        pgFacturas.setPageCount((facturasData.size() / rowsPerPage) + 1);
         pgFacturas.setPageFactory(this::createPage);
 
     }
@@ -168,6 +165,12 @@ public class FacturasController implements Initializable {
         btnModificar.setDisable(true);
         btnPagado.setDisable(true);
         btnAnadir.setDisable(false);
+        
+        cbFiltro.getItems().add(HomeController.bundle.getString("app.gui.facturas.cbfiltro.todas"));
+        cbFiltro.getItems().add(HomeController.bundle.getString("app.gui.facturas.cbfiltro.id"));
+        cbFiltro.getItems().add(HomeController.bundle.getString("app.gui.facturas.cbfiltro.cliente"));
+        cbFiltro.getItems().add(HomeController.bundle.getString("app.gui.facturas.cbfiltro.reparacion"));
+
     }
 
     /**
@@ -294,18 +297,18 @@ public class FacturasController implements Initializable {
             if (facturasLogicController.deleteFactura(tvFacturas.getSelectionModel().getSelectedItem())) {
                 reloadTable();
                 int pcount = pgFacturas.getPageCount();
-                int x = facturasData.size()+1;
-                int y = (pcount-1) * (rowsPerPage);
-                
+                int x = facturasData.size() + 1;
+                int y = (pcount - 1) * (rowsPerPage);
+
                 // Si es la ultima row de una pagina...
-                if ((facturasData.size()) < (pcount-1) * (rowsPerPage)) {
-                    pgFacturas.setPageCount(pcount-1);
-                    if(cpindex==(pcount-1)){
+                if ((facturasData.size()) < (pcount - 1) * (rowsPerPage)) {
+                    pgFacturas.setPageCount(pcount - 1);
+                    if (cpindex == (pcount - 1)) {
                         cpindex--;
                     }
                 }
             }
-            
+
             // Si no es la primera pagina 
             if (cpindex > 0) {
                 pgFacturas.setCurrentPageIndex(cpindex);
@@ -322,23 +325,23 @@ public class FacturasController implements Initializable {
         *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
          */
         int cpindex = pgFacturas.getCurrentPageIndex();
-        
+
         if (factura.getId() == 0) {
             if (facturasLogicController.createFactura(factura)) {
                 reloadTable();
-                int pcount=pgFacturas.getPageCount();
+                int pcount = pgFacturas.getPageCount();
                 int x = facturasData.size();
                 int y = (pcount) * (rowsPerPage);
-               
+
                 // Si esta llena la pagina actual...
-                if((facturasData.size()-1)>(pcount)*rowsPerPage){
-                    pgFacturas.setPageCount(pcount+1);
-                    pgFacturas.setCurrentPageIndex(pcount+1);   
-                }   
+                if ((facturasData.size() - 1) > (pcount) * rowsPerPage) {
+                    pgFacturas.setPageCount(pcount + 1);
+                    pgFacturas.setCurrentPageIndex(pcount + 1);
+                }
             }
 
         } else {
-            
+
             facturasLogicController.updateFactura(factura);
             reloadTable();
             tvFacturas.refresh();
