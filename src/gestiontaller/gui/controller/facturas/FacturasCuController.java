@@ -5,23 +5,25 @@
  */
 package gestiontaller.gui.controller.facturas;
 
+import gestiontaller.gui.controller.HomeController;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
+import gestiontaller.logic.util.FieldValidator;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -43,7 +45,6 @@ public class FacturasCuController implements Initializable {
     private FacturaBean factura;
     private FacturasManager facturasLogicController;
     private FacturasController facturasController;
-    private int maxid = 0;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @FXML
@@ -59,7 +60,7 @@ public class FacturasCuController implements Initializable {
     @FXML
     private TextField tfTotal;
     @FXML
-    private ComboBox<Boolean> cbEstado;
+    private CheckBox chbPagada;
     @FXML
     private Button btnCrear;
     @FXML
@@ -137,28 +138,33 @@ public class FacturasCuController implements Initializable {
         initComboBoxes();
         if (factura != null) {
             logger.info("Abierta ventana modificar factura.");
+            
+            // Set titulo de ventana y texto de boton crear/modificar.
+            lblTitulo.setText(HomeController.bundle.getString("app.gui.facturas.cu.title.update"));
+            btnCrear.setText(HomeController.bundle.getString("generic.crud.update"));
+            
             // Prepara fechas
             LocalDate fecha = LocalDate.parse(factura.getFecha(), dateFormatter);
             LocalDate fechaVenc = LocalDate.parse(factura.getFechavenc(), dateFormatter);
-            
+
             // Asignar valores de objeto seleccionado a los campos
             dpFecha.setValue(fecha);
             dpFechaVenc.setValue(fechaVenc);
             cbReparacion.setValue(factura.getIdreparacion());
             cbCliente.setValue(factura.getIdcliente());
-            cbEstado.setValue(factura.getPagada());
-            
+            chbPagada.setSelected(factura.getPagada());
+
             // TODO FORMAT DOUBLE DOS DECIMALES
             tfTotal.setText(factura.getTotal().toString());
-            
+
             /* Deshabilitar modificar fecha, solo se puede modificar la fecha
             *  de vencimiento.
-            */
+             */
             dpFecha.setDisable(true);
-            
-            
+
         } else {
             logger.info("Abierta ventana crear factura.");
+            lblTitulo.setText(HomeController.bundle.getString("app.gui.facturas.cu.title.add"));
             dpFecha.setValue(LocalDate.now());
             dpFechaVenc.setValue(dpFecha.getValue().plusMonths(1));
         }
@@ -187,30 +193,38 @@ public class FacturasCuController implements Initializable {
         String fecha = dpFecha.getValue().format(dateFormatter);
         String fechavenc = dpFechaVenc.getValue().format(dateFormatter);
         Double total = Double.parseDouble(tfTotal.getText());
-        
+
         // Caso modificar
         if (factura != null) {
-            //factura.setFecha(fecha);
-            factura.setFechavenc(fechavenc);
-            factura.setTotal(total);
-            factura.setIdreparacion(cbReparacion.getValue());
-            factura.setIdcliente(cbCliente.getValue());
-            factura.setPagada(cbEstado.getValue());
+            if (formValid()) {
+                //factura.setFecha(fecha);
+                factura.setFechavenc(fechavenc);
+                factura.setTotal(total);
+                factura.setIdreparacion(cbReparacion.getValue());
+                factura.setIdcliente(cbCliente.getValue());
+                factura.setPagada(chbPagada.isSelected());
+                
+                facturasController.actionCrearMod(factura);
+                stage.close();
+                ownerStage.requestFocus();
+            }
+
         } else { // Caso Crear
-            
-            FacturaBean factura = new FacturaBean();
-            System.out.println(fecha);
-            factura.setFecha(fecha);
-            factura.setFechavenc(fechavenc);
-            factura.setTotal(total);
-            factura.setIdreparacion(cbReparacion.getValue());
-            factura.setIdcliente(cbCliente.getValue());
-            factura.setPagada(cbEstado.getValue());    
+
+            if (formValid()) {
+                FacturaBean newFactura = new FacturaBean(0, fecha, fechavenc, total,
+                        chbPagada.isSelected(), cbReparacion.getValue(), cbCliente.getValue());
+
+//                System.out.println(newFactura.getId() + " " + newFactura.getFecha() + " "
+//                        + newFactura.getFechavenc() + " " + newFactura.getTotal() + " "
+//                        + newFactura.getPagada() + " " + newFactura.getIdreparacion() + " " + newFactura.getIdcliente());
+
+                facturasController.actionCrearMod(newFactura);
+                stage.close();
+                ownerStage.requestFocus();
+            }
         }
-        
-        facturasController.actionCrearMod(factura);
-        stage.close();
-        ownerStage.requestFocus();
+
     }
 
     /**
@@ -220,8 +234,6 @@ public class FacturasCuController implements Initializable {
         ObservableList<FacturaBean> obList = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
         cbReparacion.getItems().clear();
         cbCliente.getItems().clear();
-        cbEstado.getItems().add(Boolean.TRUE);
-        cbEstado.getItems().add(Boolean.FALSE);
 
         ArrayList<Integer> reparaciones = new ArrayList();
         ArrayList<Integer> clientes = new ArrayList();
@@ -255,17 +267,23 @@ public class FacturasCuController implements Initializable {
         dpFecha.setOnAction(event
                 -> {
             LocalDate date = dpFecha.getValue();
-            System.out.println("Selected date: " + date);
         }
         );
-        
+
         // Show datepicker fecha vencimiento
         dpFechaVenc.setOnAction(event
                 -> {
             LocalDate date = dpFechaVenc.getValue();
-            System.out.println("Selected dateV: " + date);
         }
         );
+    }
+
+    public boolean formValid() {
+        boolean res = true;
+
+        
+
+        return res;
     }
 
 }

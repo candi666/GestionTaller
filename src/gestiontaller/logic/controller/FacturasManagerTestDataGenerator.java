@@ -1,5 +1,6 @@
 package gestiontaller.logic.controller;
 
+import gestiontaller.config.GTConstants;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
 import java.math.BigDecimal;
@@ -16,16 +17,15 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     private static final Logger logger = Logger.getLogger(FacturasManagerTestDataGenerator.class.getName());
     private ArrayList<FacturaBean> facturas;
     private Random rn = new Random();
-    private int maxitems;
+    private int maxitems = GTConstants.MAX_MOCK_FACTURAS;
     private int maxid = 0;
 
     /**
      * Genera una cantidad "maxitems" de objetos FacturaBean para pruebas.
      *
      */
-    public FacturasManagerTestDataGenerator(int maxitems) {
+    public FacturasManagerTestDataGenerator() {
         facturas = new ArrayList();
-        this.maxitems = maxitems;
         LocalDate fecha;
         LocalDate fechaVenc;
         Double total;
@@ -80,13 +80,11 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     public boolean createFactura(FacturaBean factura) {
         try {
             factura.setId(getMaxId() + 1);
-            
-            
             facturas.add(factura);
-            logger.info("Agregada nueva factura id: " + factura.getId() + factura.getFecha());
+            logger.info("Creada factura id: " + factura.getId());
             return true;
         } catch (Exception e) {
-            logger.info("Ha ocurrido un error al crear nueva factura.");
+            logger.info("Ha ocurrido un error al crear factura.");
             return false;
         }
     }
@@ -111,8 +109,19 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
             
             return res;
         } catch (Exception e) {
-            logger.info("Ha ocurrido un error al modificar factura, factura no encontrada.");
+            logger.info("Ha ocurrido un error al modificar factura id: "+factura.getId());
             return res;
+        }
+    }
+    
+    public boolean deleteFactura(FacturaBean factura){
+        try{
+            facturas.remove(factura);
+            logger.info("Factura id: "+factura.getId()+" eliminada.");
+            return true;
+        }catch(Exception e){
+            logger.info("Ha ocurrido un error al intentar eliminar factura id: "+factura.getId());
+            return false;
         }
     }
 

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -13,29 +19,57 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="400.0" maxWidth="340.0" minHeight="400.0" minWidth="340.0" pickOnBounds="false" prefHeight="400.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.facturas.FacturasCuController">
+<AnchorPane maxHeight="400.0" maxWidth="340.0" minHeight="400.0" minWidth="340.0" pickOnBounds="false" prefHeight="400.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.facturas.FacturasCuController">
     <children>
       <Pane maxHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
    
-                 <Label fx:id="lblTitulo" alignment="CENTER" maxHeight="50.0" maxWidth="340.0" minHeight="50.0" minWidth="340.0" prefHeight="50.0" prefWidth="340.0" styleClass="mod-title" text="Nueva Factura">
+                 <Label fx:id="lblTitulo" alignment="CENTER" maxHeight="50.0" maxWidth="340.0" minHeight="50.0" minWidth="340.0" prefHeight="50.0" prefWidth="340.0" styleClass="mod-title" text="%app.gui.facturas.cu.title.add">
                     <font>
                        <Font size="26.0" />
                     </font>
                  </Label>
          </children>
       </Pane>
-        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="70.0">
+        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="2.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0">
            <children>
-            <DatePicker fx:id="dpFecha" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
-            <DatePicker fx:id="dpFechaVenc" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
-            <ComboBox fx:id="cbReparacion" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Reparación" />
-            <ComboBox fx:id="cbCliente" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Cliente" />
-                 <TextField fx:id="tfTotal" promptText="Total" />
-            <ComboBox fx:id="cbEstado" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Estado" />
-                 <HBox alignment="CENTER" prefHeight="24.0" prefWidth="258.0" spacing="50.0">
+            <Label text="%app.gui.facturas.cu.fecha" />
+            <DatePicker fx:id="dpFecha" maxWidth="260.0" minWidth="260.0" prefWidth="260.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></DatePicker>
+            <Label text="%app.gui.facturas.cu.fechavenc" />
+            <DatePicker fx:id="dpFechaVenc" maxWidth="260.0" minWidth="260.0" prefWidth="260.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></DatePicker>
+            <Label text="%app.gui.facturas.cu.reparacion" />
+            <ComboBox fx:id="cbReparacion" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Reparación">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></ComboBox>
+            <Label text="%app.gui.facturas.cu.cliente" />
+            <ComboBox fx:id="cbCliente" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Cliente">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></ComboBox>
+            <Label text="%app.gui.facturas.cu.total" />
+            <HBox alignment="CENTER_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                       <TextField fx:id="tfTotal" promptText="Total" />
+                  <CheckBox fx:id="chbPagada" mnemonicParsing="false" text="%app.gui.facturas.cu.pagada">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </CheckBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+                 <HBox alignment="CENTER_LEFT" prefHeight="24.0" prefWidth="258.0" spacing="20.0">
                     <children>
-                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" text="Crear Factura">
+                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" text="%generic.crud.add">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>
