@@ -336,8 +336,6 @@ public class FacturasController implements Initializable {
             if (facturasLogicController.createFactura(factura)) {
                 reloadTable();
                 int pcount = pgFacturas.getPageCount();
-                int x = facturasData.size();
-                int y = (pcount) * (rowsPerPage);
 
                 // Si esta llena la pagina actual...
                 if ((facturasData.size() - 1) > (pcount) * rowsPerPage) {
