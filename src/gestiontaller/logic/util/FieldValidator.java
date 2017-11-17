@@ -119,6 +119,12 @@ public final class FieldValidator {
         return miLetra;
     }
 
+    /**
+     * Verifica si un string puede ser parseado a int.
+     * + Buscar una solución mejor, que no tenga excepciones.
+     * @param s
+     * @return 
+     */
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
@@ -127,7 +133,6 @@ public final class FieldValidator {
         } catch (NullPointerException e) {
             return false;
         }
-        // only got here if we didn't return false
         return true;
 
     }
