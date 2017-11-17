@@ -1,6 +1,8 @@
 package gestiontaller.gui.controller.clientes;
 
 import gestiontaller.App;
+import gestiontaller.gui.controller.HomeController;
+import static gestiontaller.gui.controller.HomeController.bundle;
 import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.bean.ClienteBean;
@@ -259,6 +261,7 @@ public class ClientesController implements Initializable {
         try {
             ClientesManager clientesLogicController = new ClientesManagerTestDataGenerator();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/clientes/nuevo_cliente.fxml"));
+            loader.setResources(HomeController.bundle);
             AnchorPane root = (AnchorPane) loader.load();
             ClientesCuController ctr = ((ClientesCuController) loader.getController());
             ctr.setStage(new Stage());
