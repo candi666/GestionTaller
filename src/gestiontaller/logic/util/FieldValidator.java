@@ -5,6 +5,11 @@
  */
 package gestiontaller.logic.util;
 
+import gestiontaller.config.GTConstants;
+import gestiontaller.gui.controller.facturas.FacturasCuController;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,13 +19,27 @@ import java.util.regex.Pattern;
  * @author Carlos
  */
 public final class FieldValidator {
+    private static final Logger logger = Logger.getLogger(FieldValidator.class.getName());
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(GTConstants.DATE_FORMAT_SPAIN);
     
     private FieldValidator(){
 
     }
 
+    public static boolean isDate(LocalDate date){
+        try{
+            String datestring = date.format(formatter);
+            System.out.println();
+            return true;
+        }catch(Exception ex){
+            logger.info("Error al convertir string a fecha.");
+            return false;
+        }
+    }
+    
     /**
      * Varifica si un string es un dni.
      *
@@ -64,7 +83,6 @@ public final class FieldValidator {
      */
     public static boolean lengthBetween(String testvalue, int minLength, int maxLength) {
         // TODO
-        // -> Se puede forzar al campo a que solo acepte numeros ->
         return true;
     }
 

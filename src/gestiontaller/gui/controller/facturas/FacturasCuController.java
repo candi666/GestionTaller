@@ -20,6 +20,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,6 +30,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -65,6 +69,16 @@ public class FacturasCuController implements Initializable {
     private Button btnCrear;
     @FXML
     private Button btnVolver;
+    @FXML
+    private ImageView hintFecha;
+    @FXML
+    private ImageView hintFechaVenc;
+    @FXML
+    private ImageView hintReparacion;
+    @FXML
+    private ImageView hintCliente;
+    @FXML
+    private ImageView hintTotal;
 
     /**
      * Initializes the controller class.
@@ -132,17 +146,19 @@ public class FacturasCuController implements Initializable {
     private void handleWindowShowing(WindowEvent event) {
         SetActionEvents();
         populateForm();
+        initTooltips();
+
     }
 
     private void populateForm() {
         initComboBoxes();
         if (factura != null) {
             logger.info("Abierta ventana modificar factura.");
-            
+
             // Set titulo de ventana y texto de boton crear/modificar.
             lblTitulo.setText(HomeController.bundle.getString("app.gui.facturas.cu.title.update"));
             btnCrear.setText(HomeController.bundle.getString("generic.crud.update"));
-            
+
             // Prepara fechas
             LocalDate fecha = LocalDate.parse(factura.getFecha(), dateFormatter);
             LocalDate fechaVenc = LocalDate.parse(factura.getFechavenc(), dateFormatter);
@@ -189,42 +205,32 @@ public class FacturasCuController implements Initializable {
      */
     @FXML
     private void actionCrearMod() {
-        // Preparar datos
-        String fecha = dpFecha.getValue().format(dateFormatter);
-        String fechavenc = dpFechaVenc.getValue().format(dateFormatter);
-        Double total = Double.parseDouble(tfTotal.getText());
+        if (formValid()) {
+            // Preparar datos
+            String fecha = dpFecha.getValue().format(dateFormatter);
+            String fechavenc = dpFechaVenc.getValue().format(dateFormatter);
+            Double total = Double.parseDouble(tfTotal.getText());
 
-        // Caso modificar
-        if (factura != null) {
-            if (formValid()) {
+            // Caso modificar
+            if (factura != null) {
                 //factura.setFecha(fecha);
                 factura.setFechavenc(fechavenc);
                 factura.setTotal(total);
                 factura.setIdreparacion(cbReparacion.getValue());
                 factura.setIdcliente(cbCliente.getValue());
                 factura.setPagada(chbPagada.isSelected());
-                
+
                 facturasController.actionCrearMod(factura);
-                stage.close();
-                ownerStage.requestFocus();
-            }
 
-        } else { // Caso Crear
-
-            if (formValid()) {
+            } else { // Caso Crear
                 FacturaBean newFactura = new FacturaBean(0, fecha, fechavenc, total,
                         chbPagada.isSelected(), cbReparacion.getValue(), cbCliente.getValue());
-
-//                System.out.println(newFactura.getId() + " " + newFactura.getFecha() + " "
-//                        + newFactura.getFechavenc() + " " + newFactura.getTotal() + " "
-//                        + newFactura.getPagada() + " " + newFactura.getIdreparacion() + " " + newFactura.getIdcliente());
-
                 facturasController.actionCrearMod(newFactura);
-                stage.close();
-                ownerStage.requestFocus();
             }
-        }
 
+            stage.close();
+            ownerStage.requestFocus();
+        }
     }
 
     /**
@@ -258,6 +264,42 @@ public class FacturasCuController implements Initializable {
 
     }
 
+    public void initTooltips() {
+        // Tooltip fecha
+        Tooltip tipFecha = new Tooltip("Este campo es obligatorio, debe tener un formato de fecha dd/MM/aaaa. Ej: 01/01/2017");
+        tipFecha.setAnchorX(hintFecha.getX()-150);
+        tipFecha.setAnchorY(hintFecha.getY()-30);
+        tipFecha.setAutoFix(true);
+        tipFecha.setWrapText(true);
+        tipFecha.setMaxSize(200, 60);
+        Tooltip.install(hintFecha, tipFecha);
+        
+        // Tooltip fecha de vencimiento
+        tipFecha.setAnchorX(hintFechaVenc.getX()-150);
+        tipFecha.setAnchorY(hintFechaVenc.getY()-30);
+        Tooltip.install(hintFechaVenc, tipFecha);
+        
+        // Tooltip cb reparaciones
+        Tooltip tooltip = new Tooltip("Este campo es obligatorio");
+        tooltip.setMaxSize(200, 30);
+        tooltip.setAnchorX(hintReparacion.getX()-150);
+        tooltip.setAnchorY(hintReparacion.getY()-30);
+        Tooltip.install(hintReparacion, tooltip);
+        
+        // Tooltip cb clientes
+        tooltip.setAnchorX(hintCliente.getX()-150);
+        tooltip.setAnchorY(hintCliente.getY()-30);
+        Tooltip.install(hintCliente, tooltip);
+        
+        // Tooltip total
+        Tooltip tipTotal = new Tooltip("Este campo es obligatorio y debe ser un número.");
+        tipTotal.setAnchorX(hintTotal.getX()-150);
+        tipTotal.setAnchorY(hintTotal.getY()-30);
+        Tooltip.install(hintTotal, tooltip);
+        
+
+    }
+
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
     }
@@ -279,11 +321,59 @@ public class FacturasCuController implements Initializable {
     }
 
     public boolean formValid() {
-        boolean res = true;
+        boolean valid = true;
 
-        
+        // Validación fecha
+        if (dpFecha.getValue() == null || !FieldValidator.isDate(dpFecha.getValue())) {
+            dpFecha.getStyleClass().add("tf-invalid");
+            hintFecha.setVisible(true);
+            valid = false;
+        }
 
-        return res;
+        // Validación fecha de vencimiento
+        if (dpFechaVenc.getValue() == null || !FieldValidator.isDate(dpFechaVenc.getValue())) {
+            dpFechaVenc.getStyleClass().add("tf-invalid");
+            hintFechaVenc.setVisible(true);
+            valid = false;
+        }
+
+        // Validación cb reparación
+        if (cbReparacion.getValue() == null) {
+            cbReparacion.getStyleClass().add("tf-invalid");
+            hintReparacion.setVisible(true);
+            valid = false;
+        }
+
+        // Validación cb cliente
+        if (cbCliente.getValue() == null) {
+            cbCliente.getStyleClass().add("tf-invalid");
+            hintCliente.setVisible(true);
+            valid = false;
+        }
+
+        // Validación Total
+        if (!tfTotal.getText().isEmpty()) {
+            try {
+                Double isDouble = Double.parseDouble(tfTotal.getText());
+                if (isDouble < 0) {
+                    tfTotal.getStyleClass().add("tf-invalid");
+                    hintTotal.setVisible(true);
+                    valid = false;
+                }
+            } catch (NumberFormatException e) {
+                tfTotal.getStyleClass().add("tf-invalid");
+                hintTotal.setVisible(true);
+                valid = false;
+                // TODO string literal
+                logger.info("Error al parsear String a Double");
+            }
+        } else {
+            tfTotal.getStyleClass().add("tf-invalid");
+            hintTotal.setVisible(true);
+            valid = false;
+        }
+
+        return valid;
     }
 
 }

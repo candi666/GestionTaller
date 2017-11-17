@@ -86,6 +86,8 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      */
     public FacturaBean getFacturaByReparacion(String id) {
         FacturaBean factura = null;
+    
+        
         if (FieldValidator.isInteger(id)) {
             for (FacturaBean fact : facturas) {
                 if (fact.getIdreparacion() == Integer.valueOf(id)) {
@@ -105,11 +107,17 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      */
     public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate) {
         String fDate = fromDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        String tDate = toDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         System.out.println(fDate);
 
         // Busqueda Java8 Lambda Aggregation (Revisar funcionamiento)
-//        List<FacturaBean> filteredList = facturas.stream().filter(f -> dateIn(f.getFecha(),fromDate,toDate))
+//        List<FacturaBean> filteredxList = facturas.stream().filter(f -> dateIn(f.getFecha(),fromDate,toDate))
 //                         .collect(Collectors.toList());
+        
+//        List<FacturaBean> filteredList = facturas.stream()
+//                .filter(f -> LocalDate.parse(f.getFecha(),
+//                        DateTimeFormatter.ofPattern("dd-MM-yyyy")).compareTo(fromDate)>=0)
+//                .collect(Collectors.toList());
 
         // Busqueda recorriendo ArrayList
         ArrayList<FacturaBean> filteredList = new ArrayList();
@@ -255,10 +263,11 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     }
 
     private boolean dateIn(String fechaComp, LocalDate fromDate, LocalDate toDate) {
-        LocalDate fecha = LocalDate.parse(fechaComp, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate fecha;
         Boolean res = false;
 
         try {
+            fecha=LocalDate.parse(fechaComp, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             if (fecha.equals(fromDate) || fecha.equals(toDate) || (fecha.isAfter(fromDate) && fecha.isBefore(fecha))) {
                 res = true;
                 //logger.info("Fecha encontrada: "+fecha.toString());

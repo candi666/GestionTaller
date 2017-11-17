@@ -141,10 +141,10 @@ public class FacturasController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerStage);
         stage.setOnShowing(this::handleWindowShowing);
-        stage.setMaxWidth(1024);
+        //stage.setMaxWidth(1024);
         stage.setMinWidth(1024);
-        stage.setMaxHeight(680);
-        stage.setMinHeight(680);
+        //stage.setMaxHeight(748);
+        stage.setMinHeight(748);
         stage.show();
 
     }
