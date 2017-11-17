@@ -3,6 +3,7 @@ package gestiontaller.logic.controller;
 import gestiontaller.config.GTConstants;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
+import gestiontaller.logic.util.FieldValidator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -47,7 +48,6 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      *
      * @return
      */
-    @Override
     public Collection getAllFacturas() {
 //        for(FacturaBean factura:facturas){
 //            System.out.println(factura.getId());
@@ -56,27 +56,69 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         return facturas;
     }
 
-    public FacturaBean getFacturaById(int id) {
+    /**
+     * Obtener factura por id
+     * @param id id de factura a buscar.
+     * @return FacturaBean resultado
+     */
+    public FacturaBean getFacturaById(String id) {
         FacturaBean factura = null;
-        for (FacturaBean fact : facturas) {
-            if (fact.getId() == id) {
-                factura = fact;
+        if (FieldValidator.isInteger(id)) {
+            for (FacturaBean fact : facturas) {
+                if (fact.getId() == Integer.valueOf(id)) {
+                    factura = fact;
+                }
+            }
+        }
+        return factura;
+    }
+    
+    /**
+     * Obtener factura por id reparación
+     * @param id id de reparación a buscar.
+     * @return FacturaBean resultado
+     */
+    public FacturaBean getFacturaByReparacion(String id) {
+        FacturaBean factura = null;
+        if (FieldValidator.isInteger(id)) {
+            for (FacturaBean fact : facturas) {
+                if (fact.getIdreparacion() == Integer.valueOf(id)) {
+                    factura = fact;
+                }
             }
         }
         return factura;
     }
 
+    /**
+     * Obtiene facturas en un rango de fechas
+     * @param fromDate
+     * @param toDate
+     * @return 
+     */
     public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate) {
 
         // TODO
         return null;
     }
 
-    public Collection getFacturasByCliente(String cliente) {
+    /**
+     * Obtiene facturas para un cliente en un rango de fechas
+     * @param cliente
+     * @param fromDate
+     * @param toDate
+     * @return 
+     */
+    public Collection getFacturasByCliente(String cliente, LocalDate fromDate, LocalDate toDate) {
         // TODO
         return null;
     }
 
+    /**
+     * Crear factura
+     * @param factura
+     * @return 
+     */
     public boolean createFactura(FacturaBean factura) {
         try {
             factura.setId(getMaxId() + 1);
@@ -89,6 +131,11 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         }
     }
 
+    /**
+     * Modificar factura
+     * @param factura
+     * @return 
+     */
     public boolean updateFactura(FacturaBean factura) {
         boolean res = false;
         try {
@@ -101,30 +148,36 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
                     fact.setTotal(factura.getTotal());
                     fact.setPagada(factura.getPagada());
                     logger.info("Modificada factura id: " + factura.getId());
-                    res=true;
+                    res = true;
                     break;
                 }
             }
 
-            
             return res;
         } catch (Exception e) {
-            logger.info("Ha ocurrido un error al modificar factura id: "+factura.getId());
+            logger.info("Ha ocurrido un error al modificar factura id: " + factura.getId());
             return res;
         }
     }
-    
-    public boolean deleteFactura(FacturaBean factura){
-        try{
+
+    /**
+     * Eliminar factura
+     * @param factura
+     * @return 
+     */
+    public boolean deleteFactura(FacturaBean factura) {
+        try {
             facturas.remove(factura);
-            logger.info("Factura id: "+factura.getId()+" eliminada.");
+            logger.info("Factura id: " + factura.getId() + " eliminada.");
             return true;
-        }catch(Exception e){
-            logger.info("Ha ocurrido un error al intentar eliminar factura id: "+factura.getId());
+        } catch (Exception e) {
+            logger.info("Ha ocurrido un error al intentar eliminar factura id: " + factura.getId());
             return false;
         }
     }
 
+    /////////////// AUX ///////////////////
+    
     /**
      * Metodo auxiliar para obtener una fecha aleatoria entre 2010 y la fecha
      * actual.
@@ -158,6 +211,10 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         return new Double(bd.doubleValue());
     }
 
+    /**
+     * Obtiene el maximo id con el fin de simular AUTOINCREMENT
+     * @return 
+     */
     private int getMaxId() {
         for (FacturaBean fact : facturas) {
             if (fact.getId() > maxid) {
@@ -167,4 +224,5 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         return maxid;
 
     }
+
 }

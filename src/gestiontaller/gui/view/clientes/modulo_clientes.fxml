@@ -18,7 +18,7 @@
 <AnchorPane minHeight="748.0" minWidth="1024.0" prefHeight="748.0" prefWidth="1024.0" styleClass="anchor-pane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.clientes.ClientesController">
    <children>
       <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="CLIENTES" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="%app.gui.clientes.title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <TableView fx:id="tvClientes" layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
         <columns>
           <TableColumn fx:id="tcId" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />

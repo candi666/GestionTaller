@@ -1,6 +1,7 @@
 package gestiontaller.gui.controller.clientes;
 
 import gestiontaller.App;
+import gestiontaller.gui.controller.HomeController;
 import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.bean.ClienteBean;
@@ -152,6 +153,8 @@ public class ClientesController implements Initializable {
     private void handleWindowShowing(WindowEvent event) {
         initTable();
         initContextMenu();
+        //tcId.setText(HomeController.bundle.getString("app.gui.clientes.title"));
+        
     }
 
     public void setClientesManager(ClientesManager businessLogicController) {
