@@ -7,44 +7,60 @@ package gestiontaller.logic.util;
 
 /**
  * Clase util para validación de campos
+ *
  * @author Carlos
  */
 public final class FieldValidator {
-    
-    private FieldValidator(){
-        
+
+    private FieldValidator() {
+
     }
-    
+
     /**
      * Varifica si un string es un dni.
+     *
      * @param testvalue string a probar.
      * @return True -> Es dni.
      */
-    public static boolean isDni(String testvalue){
+    public static boolean isDni(String testvalue) {
         // TODO validacion dni
         return true;
     }
-    
+
     /**
-     * Verifica que el length  de un string este entre dos valores.
-     * Ejemplo: Password debe tener al menos 8 caracteres y no mas de 16.
+     * Verifica que el length de un string este entre dos valores. Ejemplo:
+     * Password debe tener al menos 8 caracteres y no mas de 16.
      * FieldValidator.lengthBetween(testvalue,8,16);
+     *
      * @param minLength length minimo del string.
      * @param maxLength length max del string.
-     * @return 
+     * @return
      */
-    public static boolean lengthBetween(String testvalue, int minLength, int maxLength){
+    public static boolean lengthBetween(String testvalue, int minLength, int maxLength) {
         // TODO
         // -> Se puede forzar al campo a que solo acepte numeros ->
         return true;
     }
-    
+
     /**
      * Verifica si un string es un numero.
-     * @return 
+     *
+     * @return
      */
-    public static boolean isNumber(){
+    public static boolean isNumber() {
         // TODO
+        return true;
+    }
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
         return true;
     }
 }
