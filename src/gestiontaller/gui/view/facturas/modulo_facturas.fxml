@@ -108,11 +108,11 @@
       </HBox>
 	  <HBox alignment="CENTER_LEFT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="660.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="75.0">
          <children>
-            <ComboBox fx:id="cbCriteria" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
-            <TextField fx:id="tfBuscar" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Quiero buscar..." />
-            <DatePicker fx:id="dpFromDate" promptText="Desde" />
-            <DatePicker fx:id="dpToDate" promptText="Hasta" />
-            <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#actionBuscar" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+            <ComboBox fx:id="cbCriteria" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
+            <TextField fx:id="tfBuscar" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="%app.gui.facturas.filters.search.prompt" />
+            <DatePicker fx:id="dpFromDate" editable="false" promptText="%app.gui.facturas.filters.fromdate.prompt" />
+            <DatePicker fx:id="dpToDate" editable="false" promptText="Hasta" />
+            <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>

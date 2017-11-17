@@ -12,6 +12,8 @@ import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -25,6 +27,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +41,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Pagination;
@@ -48,7 +52,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -79,7 +82,7 @@ public class FacturasController implements Initializable {
     @FXML
     private Button btnAnadir;
     @FXML
-    private ComboBox<String> cbFiltro;
+    private ComboBox<String> cbCriteria;
     @FXML
     private TextField tfBuscar;
     @FXML
@@ -106,6 +109,10 @@ public class FacturasController implements Initializable {
     private TableColumn<FacturaBean, SimpleBooleanProperty> tcPagada;
     @FXML
     private Pagination pgFacturas;
+    @FXML
+    private DatePicker dpFromDate;
+    @FXML
+    private DatePicker dpToDate;
 
     // </editor-fold>
     /**
@@ -128,7 +135,7 @@ public class FacturasController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
 
-        stage.setTitle("Gestión de taller - Facturas");
+        stage.setTitle(HomeController.bundle.getString("app.gui.facturas.stage.title"));
         stage.setResizable(true);
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -156,9 +163,8 @@ public class FacturasController implements Initializable {
     }
 
     private void initPagination() {
-        
-        
-        pgFacturas.setPageCount((facturasData.size() / rowsPerPage) +1);
+
+        pgFacturas.setPageCount((facturasData.size() / rowsPerPage) + 1);
         pgFacturas.setPageFactory(this::createPage);
 
     }
@@ -168,6 +174,16 @@ public class FacturasController implements Initializable {
         btnModificar.setDisable(true);
         btnPagado.setDisable(true);
         btnAnadir.setDisable(false);
+
+        // Inicializa combobox criteria
+        cbCriteria.getItems().add(0, HomeController.bundle.getString("app.gui.facturas.cbfiltro.todas"));
+        cbCriteria.getItems().add(1, HomeController.bundle.getString("app.gui.facturas.cbfiltro.id"));
+        cbCriteria.getItems().add(2, HomeController.bundle.getString("app.gui.facturas.cbfiltro.cliente"));
+        cbCriteria.getItems().add(3, HomeController.bundle.getString("app.gui.facturas.cbfiltro.reparacion"));
+        cbCriteria.setValue(HomeController.bundle.getString("app.gui.facturas.cbfiltro.todas"));
+        cbCriteria.setOnAction(this::handleCbCriteriaValueChange);
+        tfBuscar.setDisable(true);
+
     }
 
     /**
@@ -176,6 +192,8 @@ public class FacturasController implements Initializable {
     private void initTable() {
         // Obtener Collection de Facturas
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+
+        tvFacturas.setPlaceholder(new Label(HomeController.bundle.getString("app.gui.facturas.tableview.noresult")));
 
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
@@ -251,11 +269,6 @@ public class FacturasController implements Initializable {
         btnAnadir.setOnAction(e -> loadCrearMod(null));
         btnModificar.setOnAction(e -> loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem()));
 
-        // NAV
-//        btnSiguiente.setOnAction(e -> goToPage(pageindex + 1));
-//        btnAnterior.setOnAction(e -> goToPage(pageindex - 1));
-//        btnPrimero.setOnAction(e -> goToPage(1));
-//        btnUltimo.setOnAction(e -> goToPage(totalpages));
         // FILTER 
         chbPendientes.setOnAction((event) -> {
             if (chbPendientes.isSelected()) {
@@ -270,10 +283,7 @@ public class FacturasController implements Initializable {
         });
 
         // SEARCH
-        btnBuscar.setOnAction((event) -> {
-            // TODO
-
-        });
+        btnBuscar.setOnAction(e -> actionBuscar());
 
     }
 
@@ -294,18 +304,18 @@ public class FacturasController implements Initializable {
             if (facturasLogicController.deleteFactura(tvFacturas.getSelectionModel().getSelectedItem())) {
                 reloadTable();
                 int pcount = pgFacturas.getPageCount();
-                int x = facturasData.size()+1;
-                int y = (pcount-1) * (rowsPerPage);
-                
+                int x = facturasData.size() + 1;
+                int y = (pcount - 1) * (rowsPerPage);
+
                 // Si es la ultima row de una pagina...
-                if ((facturasData.size()) < (pcount-1) * (rowsPerPage)) {
-                    pgFacturas.setPageCount(pcount-1);
-                    if(cpindex==(pcount-1)){
+                if ((facturasData.size()) < (pcount - 1) * (rowsPerPage)) {
+                    pgFacturas.setPageCount(pcount - 1);
+                    if (cpindex == (pcount - 1)) {
                         cpindex--;
                     }
                 }
             }
-            
+
             // Si no es la primera pagina 
             if (cpindex > 0) {
                 pgFacturas.setCurrentPageIndex(cpindex);
@@ -316,29 +326,26 @@ public class FacturasController implements Initializable {
     /**
      * Acción Crear/Modificar factura
      */
-    @FXML
     public void actionCrearMod(FacturaBean factura) {
         /* facturasData: lista con todas las facturas
         *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
          */
         int cpindex = pgFacturas.getCurrentPageIndex();
-        
+
         if (factura.getId() == 0) {
             if (facturasLogicController.createFactura(factura)) {
                 reloadTable();
-                int pcount=pgFacturas.getPageCount();
-                int x = facturasData.size();
-                int y = (pcount) * (rowsPerPage);
-               
+                int pcount = pgFacturas.getPageCount();
+
                 // Si esta llena la pagina actual...
-                if((facturasData.size()-1)>(pcount)*rowsPerPage){
-                    pgFacturas.setPageCount(pcount+1);
-                    pgFacturas.setCurrentPageIndex(pcount+1);   
-                }   
+                if ((facturasData.size() - 1) > (pcount) * rowsPerPage) {
+                    pgFacturas.setPageCount(pcount + 1);
+                    pgFacturas.setCurrentPageIndex(pcount + 1);
+                }
             }
 
         } else {
-            
+
             facturasLogicController.updateFactura(factura);
             reloadTable();
             tvFacturas.refresh();
@@ -367,10 +374,55 @@ public class FacturasController implements Initializable {
     /**
      * Buscar
      */
-    @FXML
     private void actionBuscar() {
         // TODO Implementar busqueda en bases de datos.
-        // +++ De momento utilizaremos filter para pruebas.
+
+        String criteria = tfBuscar.getText().trim();
+        LocalDate fromDate = null;
+        LocalDate toDate = null;
+
+        boolean res = false;
+
+        if (cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_ALL) {
+            facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+        } else if (!criteria.isEmpty()) {
+            switch (cbCriteria.getSelectionModel().getSelectedIndex()) {
+                case GTConstants.CRITERIA_INDEX_ID: {
+                    FacturaBean factura = facturasLogicController.getFacturaById(tfBuscar.getText().trim());
+                    if (factura != null) {
+                        facturasData.setAll(factura);
+                        res = true;
+                    }
+                    break;
+                }
+                case GTConstants.CRITERIA_INDEX_CLIENTE:
+                    ObservableList<FacturaBean> searchResults = FXCollections.observableArrayList(facturasLogicController.getFacturasByCliente(criteria, fromDate, toDate));
+                    if (!searchResults.isEmpty()) {
+                        facturasData.setAll(searchResults);
+                        res = true;
+                    }
+                    break;
+                case GTConstants.CRITERIA_INDEX_REPARACION: {
+                    FacturaBean factura = facturasLogicController.getFacturaByReparacion(tfBuscar.getText().trim());
+                    if (factura != null) {
+                        facturasData.setAll(factura);
+                        res = true;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        if (res) {
+            tvFacturas.setItems(facturasData);
+        } else {
+            facturasData.clear();
+            tvFacturas.getItems().clear();
+        }
+        initPagination();
+        tvFacturas.refresh();
+
     }
 
     /**
@@ -414,7 +466,7 @@ public class FacturasController implements Initializable {
     }
 
     /* -----------------------------------------------------------------------*/
- /*                           EVENTOS DE TABLA                             */
+ /*                                  EVENTOS                                */
  /* -----------------------------------------------------------------------*/
     /**
      * Listener para seleccion en la tabla. Escucha si se ha seleccionado algun
@@ -464,6 +516,9 @@ public class FacturasController implements Initializable {
         });
     }
 
+    /**
+     * Obtiene datos del modelo y los carga en la tabla.
+     */
     public void reloadTable() {
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
         tvFacturas.setItems(facturasData);
@@ -472,6 +527,12 @@ public class FacturasController implements Initializable {
         tvFacturas.refresh();
     }
 
+    /**
+     * Modelo de creación de pagina para paginación.
+     *
+     * @param pageIndex
+     * @return
+     */
     private Node createPage(int pageIndex) {
 
         int fromIndex = pageIndex * rowsPerPage;
@@ -479,6 +540,29 @@ public class FacturasController implements Initializable {
         tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(fromIndex, toIndex)));
 
         return new BorderPane(tvFacturas);
+    }
+
+    private void handleCbCriteriaValueChange(Event e) {
+
+        if (cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_ID
+                || cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_REPARACION) {
+            dpFromDate.setValue(null);
+            dpFromDate.setDisable(true);
+            dpToDate.setValue(null);
+            dpToDate.setDisable(true);
+            tfBuscar.setDisable(false);
+        } else {
+            dpFromDate.setDisable(false);
+            dpToDate.setDisable(false);
+            if (cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_ALL) {
+                tfBuscar.clear();
+                tfBuscar.setDisable(true);
+            } else {
+                tfBuscar.setDisable(false);
+            }
+        }
+
+        reloadTable();
     }
 
     /* -----------------------------------------------------------------------*/
