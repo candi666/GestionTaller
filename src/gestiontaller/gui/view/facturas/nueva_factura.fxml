@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
@@ -34,29 +35,73 @@
         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="2.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="60.0">
            <children>
             <Label text="%app.gui.facturas.cu.fecha" />
-            <DatePicker fx:id="dpFecha" maxWidth="260.0" minWidth="260.0" prefWidth="260.0">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin></DatePicker>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <DatePicker fx:id="dpFecha" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
+                  <ImageView fx:id="hintFecha" fitHeight="16.0" fitWidth="16.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../../resources/img/16/info.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
             <Label text="%app.gui.facturas.cu.fechavenc" />
-            <DatePicker fx:id="dpFechaVenc" maxWidth="260.0" minWidth="260.0" prefWidth="260.0">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin></DatePicker>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <DatePicker fx:id="dpFechaVenc" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
+                  <ImageView fx:id="hintFechaVenc" fitHeight="16.0" fitWidth="16.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../../resources/img/16/info.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
             <Label text="%app.gui.facturas.cu.reparacion" />
-            <ComboBox fx:id="cbReparacion" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Reparación">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin></ComboBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <ComboBox fx:id="cbReparacion" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
+                  <ImageView fx:id="hintReparacion" fitHeight="16.0" fitWidth="16.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../../resources/img/16/info.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
             <Label text="%app.gui.facturas.cu.cliente" />
-            <ComboBox fx:id="cbCliente" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" promptText="Seleccionar Cliente">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin></ComboBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <ComboBox fx:id="cbCliente" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
+                  <ImageView fx:id="hintCliente" fitHeight="16.0" fitWidth="16.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../../resources/img/16/info.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
             <Label text="%app.gui.facturas.cu.total" />
             <HBox alignment="CENTER_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="200.0">
                <children>
                        <TextField fx:id="tfTotal" promptText="Total" />
+                  <ImageView fx:id="hintTotal" fitHeight="16.0" fitWidth="16.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../../resources/img/16/info.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
                   <CheckBox fx:id="chbPagada" mnemonicParsing="false" text="%app.gui.facturas.cu.pagada">
                      <HBox.margin>
                         <Insets left="20.0" />

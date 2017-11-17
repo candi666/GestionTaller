@@ -22,4 +22,8 @@ public class GTConstants {
     public static final int CRITERIA_INDEX_CLIENTE = 2;
     public static final int CRITERIA_INDEX_REPARACION = 3;
     
+    // PATTERNS
+    
+    public static final String DATE_FORMAT_SPAIN = "dd-MM-yyyy";
+    
 }

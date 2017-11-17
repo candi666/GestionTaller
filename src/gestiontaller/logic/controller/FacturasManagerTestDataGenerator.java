@@ -86,6 +86,8 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      */
     public FacturaBean getFacturaByReparacion(String id) {
         FacturaBean factura = null;
+    
+        
         if (FieldValidator.isInteger(id)) {
             for (FacturaBean fact : facturas) {
                 if (fact.getIdreparacion() == Integer.valueOf(id)) {
