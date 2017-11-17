@@ -14,8 +14,8 @@ public class GTConstants {
     
     public static final int MAX_MOCK_FACTURAS = 127;
     public static final int MAX_ROWS_TABLE_FACTURAS = 18;
-    public static final int MAX_MOCK_CLIENTES = 127;
-    public static final int MAX_ROWS_TABLE_CLIENTES = 20;
+    public static final int MAX_MOCK_CLIENTES = 60;
+    public static final int MAX_ROWS_TABLE_CLIENTES = 22;
     
     public static final int CRITERIA_INDEX_ALL = 0;
     public static final int CRITERIA_INDEX_ID = 1;

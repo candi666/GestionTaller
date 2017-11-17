@@ -174,13 +174,6 @@ public class ClientesCuController implements Initializable {
 
     //Validacion
     @FXML
-    private void actionValidacion() {
-        if (validar()) {
-            actionCrearMod();
-        }
-    }
-
-    @FXML
     public boolean validar() {
         boolean res = true;
 //        
