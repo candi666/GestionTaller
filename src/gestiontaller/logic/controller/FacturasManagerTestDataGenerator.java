@@ -1,6 +1,7 @@
 package gestiontaller.logic.controller;
 
 import gestiontaller.config.GTConstants;
+import gestiontaller.gui.controller.HomeController;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
 import gestiontaller.logic.util.FieldValidator;
@@ -10,8 +11,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class FacturasManagerTestDataGenerator implements FacturasManager {
 
@@ -58,6 +62,7 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Obtener factura por id
+     *
      * @param id id de factura a buscar.
      * @return FacturaBean resultado
      */
@@ -72,9 +77,10 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         }
         return factura;
     }
-    
+
     /**
      * Obtener factura por id reparación
+     *
      * @param id id de reparación a buscar.
      * @return FacturaBean resultado
      */
@@ -92,22 +98,42 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Obtiene facturas en un rango de fechas
+     *
      * @param fromDate
      * @param toDate
-     * @return 
+     * @return
      */
     public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate) {
+        String fDate = fromDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        System.out.println(fDate);
+
+        // Busqueda Java8 Lambda Aggregation (Revisar funcionamiento)
+//        List<FacturaBean> filteredList = facturas.stream().filter(f -> dateIn(f.getFecha(),fromDate,toDate))
+//                         .collect(Collectors.toList());
+
+        // Busqueda recorriendo ArrayList
+        ArrayList<FacturaBean> filteredList = new ArrayList();
+        for (FacturaBean factura : facturas) {
+            if(dateIn(factura.getFecha(),fromDate,toDate)){
+                filteredList.add(factura);
+            }
+        }
+        
+
+        System.out.println(filteredList.size());
+
 
         // TODO
-        return null;
+        return filteredList;
     }
 
     /**
      * Obtiene facturas para un cliente en un rango de fechas
+     *
      * @param cliente
      * @param fromDate
      * @param toDate
-     * @return 
+     * @return
      */
     public Collection getFacturasByCliente(String cliente, LocalDate fromDate, LocalDate toDate) {
         // TODO
@@ -116,8 +142,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Crear factura
+     *
      * @param factura
-     * @return 
+     * @return
      */
     public boolean createFactura(FacturaBean factura) {
         try {
@@ -133,8 +160,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Modificar factura
+     *
      * @param factura
-     * @return 
+     * @return
      */
     public boolean updateFactura(FacturaBean factura) {
         boolean res = false;
@@ -162,8 +190,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Eliminar factura
+     *
      * @param factura
-     * @return 
+     * @return
      */
     public boolean deleteFactura(FacturaBean factura) {
         try {
@@ -177,7 +206,6 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     }
 
     /////////////// AUX ///////////////////
-    
     /**
      * Metodo auxiliar para obtener una fecha aleatoria entre 2010 y la fecha
      * actual.
@@ -213,7 +241,8 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Obtiene el maximo id con el fin de simular AUTOINCREMENT
-     * @return 
+     *
+     * @return
      */
     private int getMaxId() {
         for (FacturaBean fact : facturas) {
@@ -223,6 +252,24 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         }
         return maxid;
 
+    }
+
+    private boolean dateIn(String fechaComp, LocalDate fromDate, LocalDate toDate) {
+        LocalDate fecha = LocalDate.parse(fechaComp, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        Boolean res = false;
+
+        try {
+            if (fecha.equals(fromDate) || fecha.equals(toDate) || (fecha.isAfter(fromDate) && fecha.isBefore(fecha))) {
+                res = true;
+                //logger.info("Fecha encontrada: "+fecha.toString());
+            }else{
+                //logger.info("Fecha fuera de rango: "+fecha.toString());
+            }
+        } catch (Exception ex) {
+            logger.info(HomeController.bundle.getString("app.error.indate"));
+        }
+
+        return res;
     }
 
 }

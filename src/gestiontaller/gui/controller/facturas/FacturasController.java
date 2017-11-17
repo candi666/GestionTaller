@@ -380,13 +380,23 @@ public class FacturasController implements Initializable {
         // TODO Implementar busqueda en bases de datos.
 
         String criteria = tfBuscar.getText().trim();
-        LocalDate fromDate = null;
-        LocalDate toDate = null;
+        LocalDate fromDate = dpFromDate.getValue();
+        LocalDate toDate = dpToDate.getValue();
 
         boolean res = false;
 
         if (cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_ALL) {
-            facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+            if (fromDate == null && toDate == null) {
+                facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+                res = true;
+            } else {
+                ObservableList<FacturaBean> searchResults = FXCollections.observableArrayList(facturasLogicController.getFacturasByDate(fromDate, toDate));
+                if (!searchResults.isEmpty()) {
+                    facturasData.setAll(searchResults);
+                    res = true;
+                }
+            }
+
         } else if (!criteria.isEmpty()) {
             switch (cbCriteria.getSelectionModel().getSelectedIndex()) {
                 case GTConstants.CRITERIA_INDEX_ID: {
