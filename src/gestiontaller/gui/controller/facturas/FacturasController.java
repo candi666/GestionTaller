@@ -70,7 +70,7 @@ public class FacturasController implements Initializable {
     private Stage ownerStage;
     private FacturasManager facturasLogicController;
     private ObservableList<FacturaBean> facturasData;
-    private static final int rowsPerPage = GTConstants.MAX_ROWS_TABLE_FACTURAS;
+    private int rowsPerPage = GTConstants.MAX_ROWS_TABLE_FACTURAS;
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
@@ -191,12 +191,29 @@ public class FacturasController implements Initializable {
     private void initTable() {
         // Add binds
         tableColumnResizeBinds();
-        
+
+        // Add Listeners
+        tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
+        tvFacturas.heightProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.doubleValue()!=0) {
+                Double rpp = (Double) newValue / GTConstants.DEFAULT_ROW_HEIGHT;
+                rowsPerPage = rpp.intValue();
+                initPagination();
+                tvFacturas.refresh();
+            }else{
+                
+            }
+
+        });
+        InitRowDoubleClickEvent();
+
         // Obtener Collection de Facturas
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
 
+        // Placeholder en caso de no tener datos
         tvFacturas.setPlaceholder(new Label(HomeController.bundle.getString("app.gui.facturas.tableview.noresult")));
 
+        // TableCellFactory
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         tcFechaVenc.setCellValueFactory(new PropertyValueFactory<>("fechavenc"));
@@ -206,16 +223,10 @@ public class FacturasController implements Initializable {
 
         /* Definición de columna Pagado.
          * Definir un comportamiento cuando sea true y otro para false.
-         * De momento SI o NO, por implementar cambio de color o iconos.
+         * De momento true o false, por implementar cambio de color o iconos.
          */
         tcPagada.setSortable(false);
         tcPagada.setCellValueFactory(new PropertyValueFactory<>("pagada"));
-        
-        
-
-        // Add Listeners
-        tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
-        InitRowDoubleClickEvent();
 
         // Añadir datos iniciales a la tabla
         tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(0, rowsPerPage)));
@@ -261,10 +272,10 @@ public class FacturasController implements Initializable {
         });
 
     }
-    
-    public void tableColumnResizeBinds(){
-        
-        tvFacturas.setColumnResizePolicy ( TableView.CONSTRAINED_RESIZE_POLICY );
+
+    public void tableColumnResizeBinds() {
+
+        tvFacturas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tcId.setResizable(false);
         tcFecha.setResizable(false);
         tcFechaVenc.setResizable(false);
@@ -272,7 +283,7 @@ public class FacturasController implements Initializable {
         tcIdCliente.setResizable(false);
         tcTotal.setResizable(false);
         tcPagada.setResizable(false);
-        
+
         tcId.setMaxWidth(10000);
         tcFecha.setMaxWidth(20000);
         tcFechaVenc.setMaxWidth(20000);
@@ -280,7 +291,7 @@ public class FacturasController implements Initializable {
         tcIdCliente.setMaxWidth(10000);
         tcTotal.setMaxWidth(40000);
         tcPagada.setMaxWidth(10000);
-        
+
         tcId.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.1));
         tcFecha.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.2));
         tcFechaVenc.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.2));

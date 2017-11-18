@@ -12,8 +12,8 @@ package gestiontaller.config;
  */
 public class GTConstants {
     
-    public static final int MAX_MOCK_FACTURAS = 127;
-    public static final int MAX_ROWS_TABLE_FACTURAS = 18;
+    public static final int MAX_MOCK_FACTURAS = 100;
+    public static final int MAX_ROWS_TABLE_FACTURAS = 22;
     public static final int MAX_MOCK_CLIENTES = 127;
     public static final int MAX_ROWS_TABLE_CLIENTES = 20;
     
@@ -25,5 +25,12 @@ public class GTConstants {
     // PATTERNS
     
     public static final String DATE_FORMAT_SPAIN = "dd-MM-yyyy";
+    
+    // DIMENSIONS
+    /**
+     * Default row height de javafx establecido en su archivo css.
+     * TODO obtener row height dinamicamente desde el nodo tableview.
+     */
+    public static final int DEFAULT_ROW_HEIGHT = 24;
     
 }
