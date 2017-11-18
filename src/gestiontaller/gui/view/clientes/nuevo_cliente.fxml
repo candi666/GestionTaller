@@ -77,7 +77,7 @@
             </Label>
                  <HBox alignment="CENTER" prefHeight="47.0" prefWidth="260.0" spacing="50.0">
                     <children>
-                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionValidacion" text="%generic.crud.add">
+                       <Button fx:id="btnCrear" mnemonicParsing="false" text="%generic.crud.add">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>
