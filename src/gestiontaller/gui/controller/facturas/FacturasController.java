@@ -120,7 +120,6 @@ public class FacturasController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
     }
 
     /* -----------------------------------------------------------------------*/
@@ -190,6 +189,9 @@ public class FacturasController implements Initializable {
      * Formato y carga de datos a tabla.
      */
     private void initTable() {
+        // Add binds
+        tableColumnResizeBinds();
+        
         // Obtener Collection de Facturas
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
 
@@ -208,6 +210,8 @@ public class FacturasController implements Initializable {
          */
         tcPagada.setSortable(false);
         tcPagada.setCellValueFactory(new PropertyValueFactory<>("pagada"));
+        
+        
 
         // Add Listeners
         tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
@@ -256,6 +260,34 @@ public class FacturasController implements Initializable {
             }
         });
 
+    }
+    
+    public void tableColumnResizeBinds(){
+        
+        tvFacturas.setColumnResizePolicy ( TableView.CONSTRAINED_RESIZE_POLICY );
+        tcId.setResizable(false);
+        tcFecha.setResizable(false);
+        tcFechaVenc.setResizable(false);
+        tcIdReparacion.setResizable(false);
+        tcIdCliente.setResizable(false);
+        tcTotal.setResizable(false);
+        tcPagada.setResizable(false);
+        
+        tcId.setMaxWidth(10000);
+        tcFecha.setMaxWidth(20000);
+        tcFechaVenc.setMaxWidth(20000);
+        tcIdReparacion.setMaxWidth(10000);
+        tcIdCliente.setMaxWidth(10000);
+        tcTotal.setMaxWidth(40000);
+        tcPagada.setMaxWidth(10000);
+        
+        tcId.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.1));
+        tcFecha.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.2));
+        tcFechaVenc.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.2));
+        tcIdReparacion.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.1));
+        tcIdCliente.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.1));
+        tcTotal.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.2));
+        tcPagada.prefWidthProperty().bind(tvFacturas.widthProperty().subtract(20).multiply(0.1));
     }
 
     /* -----------------------------------------------------------------------*/
