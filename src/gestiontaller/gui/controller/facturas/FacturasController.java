@@ -567,17 +567,16 @@ public class FacturasController implements Initializable {
      */
     public void handleTvFacturasHeightChanged() {
         tvFacturas.heightProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(oldValue.doubleValue());
-            System.out.println(newValue.doubleValue());
-
 
             if (newValue.doubleValue() > 0 && oldValue.doubleValue() != 0) {
-                System.out.println("Cambio height");
+
                 // Calcular index del item seleccionado actualmente
                 int currentItemIndex = 0;
-//                if (tvFacturas.getSelectionModel().getSelectedItem() != null) {
-//                    currentItemIndex = (pgFacturas.getCurrentPageIndex() * rowsPerPage) + tvFacturas.getSelectionModel().getSelectedIndex();
-//                }
+                FacturaBean selectedFactura = tvFacturas.getSelectionModel().getSelectedItem();
+                
+                if (selectedFactura != null) {
+                    currentItemIndex = (pgFacturas.getCurrentPageIndex() * rowsPerPage) + tvFacturas.getSelectionModel().getSelectedIndex();
+                }
 
                 // Obtener cuantas rows entran en la table segun su heightProperty.
                 Double rpp = (newValue.doubleValue() - GTConstants.DEFAULT_ROW_HEIGHT) / GTConstants.DEFAULT_ROW_HEIGHT;
@@ -585,34 +584,29 @@ public class FacturasController implements Initializable {
 
                 // Reiniciar paginación con el nuevo valor asignado a rowsPerPage
                 pgFacturas.setPageCount((facturasData.size() / rowsPerPage)+1);
-                //initPagination();
                 
                 // Si es el caso, ir a la página donde se encuentra el ultimo item seleccionado en la tabla.
-//                if (currentItemIndex > rowsPerPage) {
-//                    int pageIndex = (int) (currentItemIndex / rowsPerPage);
-//                    pgFacturas.setCurrentPageIndex(pageIndex);
-//                } else {
-//                    pgFacturas.setCurrentPageIndex(0);
-//                }
-                pgFacturas.setCurrentPageIndex(-1);
+                if (currentItemIndex > rowsPerPage) {
+                    int pageIndex = (int) (currentItemIndex / rowsPerPage);
+                    pgFacturas.setCurrentPageIndex(pageIndex);
+                    tvFacturas.getSelectionModel().select(selectedFactura);
+                } else {
+                    pgFacturas.setCurrentPageIndex(-1);
+                }
+                //pgFacturas.setCurrentPageIndex(-1);
                 tvFacturas.refresh();
-//                tvFacturas.setDisable(true);
-//                rootPane.requestFocus();
-//                tvFacturas.setDisable(false);
-               
-                /*  Fix temporal para problema de actualización de tabla en 
-                *   primera página al hacer resize.
+           
+                /**  Fix temporal para problema de actualización de tabla en 
+                *   primera página al hacer resize. 
+                *   ** No actualiza hasta que se haga focus, y si esta seleccionada ya
+                *   hasta que se haga focus en otro nodo.
                 *   TODO Buscar mejor solución. Investigar posible bug de javafx en este tema.    
                 */
-                if(newValue.doubleValue()>oldValue.doubleValue()){
-                    tvFacturas.requestFocus();
-                }else{
+                if(tvFacturas.isFocused()){
                     cbCriteria.requestFocus();
-                }
-                
-                
-                
-                
+                }else{
+                    tvFacturas.requestFocus();
+                }     
             }
         });
     }
