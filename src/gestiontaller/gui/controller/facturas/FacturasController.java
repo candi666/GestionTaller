@@ -5,6 +5,7 @@ import gestiontaller.config.GTConstants;
 import gestiontaller.gui.controller.HomeController;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
+import gestiontaller.logic.util.FieldValidator;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -55,7 +56,7 @@ import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
- *
+ * Controlador para ventana de gestión de facturas.
  * @author Carlos
  */
 public class FacturasController implements Initializable {
@@ -65,7 +66,7 @@ public class FacturasController implements Initializable {
     private Stage ownerStage;
     private FacturasManager facturasLogicController;
     private ObservableList<FacturaBean> facturasData;
-    private static final int rowsPerPage = GTConstants.MAX_ROWS_TABLE_FACTURAS;
+    private int rowsPerPage = GTConstants.MAX_ROWS_TABLE_FACTURAS;
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
@@ -108,6 +109,8 @@ public class FacturasController implements Initializable {
     private DatePicker dpFromDate;
     @FXML
     private DatePicker dpToDate;
+    @FXML
+    private AnchorPane rootPane;
 
     // </editor-fold>
     /**
@@ -154,15 +157,21 @@ public class FacturasController implements Initializable {
         initTable();
         initPagination();
         initContextMenu();
+        handleTvFacturasHeightChanged();
     }
 
+    /**
+     * Actualiza el numero de paginas
+     */
     private void initPagination() {
 
-        pgFacturas.setPageCount((facturasData.size() / rowsPerPage) + 1);
+        pgFacturas.setPageCount((facturasData.size() / rowsPerPage)+1);
         pgFacturas.setPageFactory(this::createPage);
-
     }
 
+    /**
+     * Inicializa estado inicial del panel superior
+     */
     private void initActionPanel() {
         btnEliminar.setDisable(true);
         btnModificar.setDisable(true);
@@ -186,12 +195,19 @@ public class FacturasController implements Initializable {
     private void initTable() {
         // Add binds
         tableColumnResizeBinds();
-        
+
+        // Add Listeners
+        tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
+
+        InitRowDoubleClickEvent();
+
         // Obtener Collection de Facturas
         facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
 
+        // Placeholder en caso de no tener datos
         tvFacturas.setPlaceholder(new Label(HomeController.bundle.getString("app.gui.facturas.tableview.noresult")));
 
+        // TableCellFactory
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         tcFechaVenc.setCellValueFactory(new PropertyValueFactory<>("fechavenc"));
@@ -201,22 +217,18 @@ public class FacturasController implements Initializable {
 
         /* Definición de columna Pagado.
          * Definir un comportamiento cuando sea true y otro para false.
-         * De momento SI o NO, por implementar cambio de color o iconos.
+         * De momento true o false, por implementar cambio de color o iconos.
          */
         tcPagada.setSortable(false);
         tcPagada.setCellValueFactory(new PropertyValueFactory<>("pagada"));
-        
-        
-
-        // Add Listeners
-        tvFacturas.getSelectionModel().selectedItemProperty().addListener(this::handleFacturasTableSelectionChanged);
-        InitRowDoubleClickEvent();
 
         // Añadir datos iniciales a la tabla
         tvFacturas.setItems(FXCollections.observableArrayList(facturasData.subList(0, rowsPerPage)));
-
     }
 
+    /**
+     * Inicializa menu contextual
+     */
     public void initContextMenu() {
         final ContextMenu cm = new ContextMenu();
         MenuItem cmItem1 = new MenuItem("Eliminar");
@@ -256,10 +268,13 @@ public class FacturasController implements Initializable {
         });
 
     }
-    
-    public void tableColumnResizeBinds(){
-        
-        tvFacturas.setColumnResizePolicy ( TableView.CONSTRAINED_RESIZE_POLICY );
+
+    /**
+     * Binds para cambiar el tamaño de las columnas cuando cambie el tamaño de la tabla. 
+     */
+    public void tableColumnResizeBinds() {
+
+        tvFacturas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tcId.setResizable(false);
         tcFecha.setResizable(false);
         tcFechaVenc.setResizable(false);
@@ -267,7 +282,7 @@ public class FacturasController implements Initializable {
         tcIdCliente.setResizable(false);
         tcTotal.setResizable(false);
         tcPagada.setResizable(false);
-        
+
         tcId.setMaxWidth(10000);
         tcFecha.setMaxWidth(20000);
         tcFechaVenc.setMaxWidth(20000);
@@ -275,7 +290,7 @@ public class FacturasController implements Initializable {
         tcIdCliente.setMaxWidth(10000);
         tcTotal.setMaxWidth(40000);
         tcPagada.setMaxWidth(10000);
-        
+
         tcId.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.1));
         tcFecha.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.2));
         tcFechaVenc.prefWidthProperty().bind(tvFacturas.widthProperty().multiply(0.2));
@@ -365,11 +380,14 @@ public class FacturasController implements Initializable {
                 int pcount = pgFacturas.getPageCount();
 
                 // Si esta llena la pagina actual...
-                if ((facturasData.size() - 1) > (pcount) * rowsPerPage) {
+                if ((facturasData.size() - 2) > (pcount) * rowsPerPage) {
                     pgFacturas.setPageCount(pcount + 1);
-                    pgFacturas.setCurrentPageIndex(pcount + 1);
+                    
                 }
+                
+                pgFacturas.setCurrentPageIndex(pcount + 1);
             }
+            
 
         } else {
 
@@ -405,6 +423,7 @@ public class FacturasController implements Initializable {
         // TODO Implementar busqueda en bases de datos.
 
         String criteria = tfBuscar.getText().trim();
+        int searchId;
         LocalDate fromDate = dpFromDate.getValue();
         LocalDate toDate = dpToDate.getValue();
 
@@ -425,7 +444,11 @@ public class FacturasController implements Initializable {
         } else if (!criteria.isEmpty()) {
             switch (cbCriteria.getSelectionModel().getSelectedIndex()) {
                 case GTConstants.CRITERIA_INDEX_ID: {
-                    FacturaBean factura = facturasLogicController.getFacturaById(tfBuscar.getText().trim());
+                    if(FieldValidator.isInteger(criteria)){
+                        // TODOOOOOO
+                    }
+                    
+                    FacturaBean factura = facturasLogicController.getFacturaById(criteria);
                     if (factura != null) {
                         facturasData.setAll(factura);
                         res = true;
@@ -501,7 +524,8 @@ public class FacturasController implements Initializable {
             logger.log(Level.SEVERE, "Error al cargar ventana nueva_factura.fxml.", ex);
         }
     }
-
+    
+    
     /* -----------------------------------------------------------------------*/
  /*                                  EVENTOS                                */
  /* -----------------------------------------------------------------------*/
@@ -530,6 +554,56 @@ public class FacturasController implements Initializable {
             btnEliminar.setDisable(true);
             btnPagado.setDisable(true);
         }
+    }
+
+    /**
+     * Cuando cambia el alto de la tabla se recalcula el nro de filas posibles
+     * y se actualiza la paginación acorde al nro de items por página.
+     */
+    public void handleTvFacturasHeightChanged() {
+        tvFacturas.heightProperty().addListener((observable, oldValue, newValue) -> {
+
+            if (newValue.doubleValue() > 0 && oldValue.doubleValue() != 0) {
+
+                // Calcular index del item seleccionado actualmente
+                int currentItemIndex = 0;
+                FacturaBean selectedFactura = tvFacturas.getSelectionModel().getSelectedItem();
+                
+                if (selectedFactura != null) {
+                    currentItemIndex = (pgFacturas.getCurrentPageIndex() * rowsPerPage) + tvFacturas.getSelectionModel().getSelectedIndex();
+                }
+
+                // Obtener cuantas rows entran en la table segun su heightProperty.
+                Double rpp = (newValue.doubleValue() - GTConstants.DEFAULT_ROW_HEIGHT) / GTConstants.DEFAULT_ROW_HEIGHT;
+                rowsPerPage = rpp.intValue();
+
+                // Reiniciar paginación con el nuevo valor asignado a rowsPerPage
+                pgFacturas.setPageCount((facturasData.size() / rowsPerPage)+1);
+                
+                // Si es el caso, ir a la página donde se encuentra el ultimo item seleccionado en la tabla.
+                if (currentItemIndex > rowsPerPage) {
+                    int pageIndex = (int) (currentItemIndex / rowsPerPage);
+                    pgFacturas.setCurrentPageIndex(pageIndex);
+                    tvFacturas.getSelectionModel().select(selectedFactura);
+                } else {
+                    pgFacturas.setCurrentPageIndex(-1);
+                }
+                //pgFacturas.setCurrentPageIndex(-1);
+                tvFacturas.refresh();
+           
+                /**  Fix temporal para problema de actualización de tabla en 
+                *   primera página al hacer resize. 
+                *   ** No actualiza hasta que se haga focus, y si esta seleccionada ya
+                *   hasta que se haga focus en otro nodo.
+                *   TODO Buscar mejor solución. Investigar posible bug de javafx en este tema.    
+                */
+                if(tvFacturas.isFocused()){
+                    cbCriteria.requestFocus();
+                }else{
+                    tvFacturas.requestFocus();
+                }     
+            }
+        });
     }
 
     /**
@@ -579,6 +653,10 @@ public class FacturasController implements Initializable {
         return new BorderPane(tvFacturas);
     }
 
+    /**
+     * Controla acciones cuando cambia el criterio de busqueda.
+     * @param e 
+     */
     private void handleCbCriteriaValueChange(Event e) {
 
         if (cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_ID
@@ -601,6 +679,8 @@ public class FacturasController implements Initializable {
 
         reloadTable();
     }
+
+    
 
     /* -----------------------------------------------------------------------*/
  /*                         GETTERS AND SETTERS                            */
@@ -640,4 +720,6 @@ public class FacturasController implements Initializable {
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
     }
+    
+    
 }

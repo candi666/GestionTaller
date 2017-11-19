@@ -129,6 +129,10 @@ public class FacturasCuController implements Initializable {
         this.factura = factura;
     }
 
+    /**
+     * Establece instancia del controlador de facturas
+     * @param facturasController 
+     */
     public void setFacturasController(FacturasController facturasController) {
         this.facturasController = facturasController;
     }
@@ -145,6 +149,9 @@ public class FacturasCuController implements Initializable {
 
     }
 
+    /**
+     * Carga datos en el formulario
+     */
     private void populateForm() {
         initComboBoxes();
         if (factura != null) {
@@ -181,7 +188,11 @@ public class FacturasCuController implements Initializable {
         }
 
     }
-
+    
+    /**
+     * Establece stage
+     * @param stage 
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -229,7 +240,7 @@ public class FacturasCuController implements Initializable {
     }
 
     /**
-     *
+     * Carga datos en comboboxes reparacion y cliente.
      */
     public void initComboBoxes() {
         ObservableList<FacturaBean> obList = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
@@ -258,7 +269,10 @@ public class FacturasCuController implements Initializable {
         cbCliente.getItems().addAll(clientes);
 
     }
-
+    
+    /**
+     * Crea tooltips con sugerencias para la validación del formulario.
+     */
     public void initTooltips() {
         // Tooltip fecha
         Tooltip tipFecha = new Tooltip("Este campo es obligatorio, debe tener un formato de fecha dd/MM/aaaa. Ej: 01/01/2017");
@@ -295,10 +309,17 @@ public class FacturasCuController implements Initializable {
 
     }
 
+    /**
+     * Establece instancia del controlador de lógica.
+     * @param facturasLogicController 
+     */
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
     }
 
+    /**
+     * Establece acciones onAction
+     */
     public void SetActionEvents() {
         // Show datepicker fecha
         dpFecha.setOnAction(event
@@ -315,6 +336,11 @@ public class FacturasCuController implements Initializable {
         );
     }
 
+    /**
+     * Verifica cada campo dle formulario, si alguno no es válido, entonces
+     * el formulario no es válido.
+     * @return validéz del formulario.
+     */
     public boolean formValid() {
         boolean valid = true;
 

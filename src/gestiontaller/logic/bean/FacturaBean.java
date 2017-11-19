@@ -15,7 +15,7 @@ public class FacturaBean {
     private final SimpleIntegerProperty idcliente;
     
     /**
-     * 
+     * Constructor
      * @param id id=0 reservado para modificaciones.
      * @param fecha
      * @param fechavenc
@@ -35,6 +35,15 @@ public class FacturaBean {
         this.idcliente=new SimpleIntegerProperty(idcliente); 
     }
     
+    /**
+     * Constructor sin id.
+     * @param fecha
+     * @param fechavenc
+     * @param total
+     * @param pagada
+     * @param idreparacion
+     * @param idcliente 
+     */
     public FacturaBean(String fecha, String fechavenc, Double total,
             Boolean pagada, Integer idreparacion, Integer idcliente){
         this.id=null;

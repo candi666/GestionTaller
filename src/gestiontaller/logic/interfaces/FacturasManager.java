@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 /**
- *
+ * Interfaz para gestión de facturas.
  * @author Carlos
  */
 public interface FacturasManager {
