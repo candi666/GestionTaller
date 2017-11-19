@@ -24,6 +24,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -50,9 +53,14 @@ public class HomeController implements Initializable {
     private Button btnReparaciones;
     @FXML
     private Button btnPiezas;
-    
-    
-    
+    @FXML
+    private Menu mArchivo;
+    @FXML
+    private Menu mPreferencias;
+    @FXML
+    private Menu mAyuda;
+    @FXML
+    private MenuItem mISalir;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,7 +101,7 @@ public class HomeController implements Initializable {
      * @param event 
      */
     private void handleWindowShowing(WindowEvent event){
-        
+        mISalir.setAccelerator(KeyCombination.keyCombination("shortcut+Q")); 
     }
 
     // *************** ON ACTION HANDLERS ******************* //

@@ -2,6 +2,7 @@ package gestiontaller.logic.controller;
 import gestiontaller.config.GTConstants;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.bean.ClienteBean;
+import gestiontaller.logic.util.FieldValidator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -96,4 +97,21 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
         }
     }
 
+    @Override
+    public ClienteBean getClienteByDni(String tcDni) {
+        ClienteBean cliente = null;
+        if (FieldValidator.isDni(tcDni)) {
+            for (ClienteBean cli : clientes) {
+                if (cli.getDni() == tcDni) {
+                    cliente = cli;
+                }
+            }
+        }
+        return cliente;
+    }
+
+    @Override
+    public ClienteBean getClienteByNombre(String tcNombre) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
