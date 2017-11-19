@@ -17,6 +17,10 @@ import java.util.Random;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * Clase para generar datos para pruebas.
+ * @author Carlos
+ */
 public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     private static final Logger logger = Logger.getLogger(FacturasManagerTestDataGenerator.class.getName());
@@ -68,6 +72,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      */
     public FacturaBean getFacturaById(String id) {
         FacturaBean factura = null;
+        
+        //factura = facturas.stream().filter(f -> f.getId() == id);
+        
         if (FieldValidator.isInteger(id)) {
             for (FacturaBean fact : facturas) {
                 if (fact.getId() == Integer.valueOf(id)) {
@@ -261,7 +268,14 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         return maxid;
 
     }
-
+    
+    /**
+     * Verifica si una fecha esta dentro de un rango de fechas.
+     * @param fechaComp
+     * @param fromDate
+     * @param toDate
+     * @return 
+     */
     private boolean dateIn(String fechaComp, LocalDate fromDate, LocalDate toDate) {
         LocalDate fecha;
         Boolean res = false;

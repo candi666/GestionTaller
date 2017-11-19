@@ -57,7 +57,7 @@ public class ClientesController implements Initializable {
     private Stage ownerStage;
     private ClientesManager clientesLogicController;
     private ObservableList<ClienteBean> clientesData;
-    private static final int rowsPerPage = GTConstants.MAX_ROWS_TABLE_FACTURAS;
+    private static final int rowsPerPage = GTConstants.MAX_ROWS_TABLE_CLIENTES;
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
@@ -130,9 +130,9 @@ public class ClientesController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerStage);
         stage.setOnShowing(this::handleWindowShowing);
-        stage.setMaxWidth(1024);
-        stage.setMinWidth(748);
-        stage.setMaxHeight(1024);
+//        stage.setMaxWidth(1024);
+        stage.setMinWidth(1024);
+//        stage.setMaxHeight(1024);
         stage.setMinHeight(748);
         stage.show();
 

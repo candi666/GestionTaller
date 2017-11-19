@@ -19,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -64,6 +66,16 @@ public class ClientesCuController implements Initializable {
     private Label emError;
     @FXML
     private Label tlError;
+    @FXML
+    private ImageView hintDNI;
+    @FXML
+    private ImageView hintNombre;
+    @FXML
+    private ImageView hintApellido;
+    @FXML
+    private ImageView hintEmail;
+    @FXML
+    private ImageView hintTelefono;
 
     /**
      * Initializes the controller class.
@@ -116,6 +128,7 @@ public class ClientesCuController implements Initializable {
 
     private void handleWindowShowing(WindowEvent event) {
         populateForm();
+        initTooltips();
     }
 
     private void populateForm() {
@@ -164,42 +177,66 @@ public class ClientesCuController implements Initializable {
         }
     }
 
+    public void initTooltips() {
+        // Tooltip DNI
+        Tooltip tipToolDNI = new Tooltip("Error");
+        tipToolDNI.setAnchorX(hintDNI.getX()-150);
+        tipToolDNI.setAnchorY(hintDNI.getY()-30);
+        Tooltip.install(hintDNI, tipToolDNI);
+        // Tooltip DNI
+        Tooltip tipToolNombre = new Tooltip("Error");
+        tipToolNombre.setAnchorX(hintNombre.getX()-150);
+        tipToolNombre.setAnchorY(hintNombre.getY()-30);
+        Tooltip.install(hintNombre, tipToolNombre);
+        // Tooltip DNI
+        Tooltip tipToolApellido = new Tooltip("Error");
+        tipToolApellido.setAnchorX(hintApellido.getX()-150);
+        tipToolApellido.setAnchorY(hintApellido.getY()-30);
+        Tooltip.install(hintApellido, tipToolApellido);
+        // Tooltip DNI
+        Tooltip tipToolEmail = new Tooltip("Error");
+        tipToolEmail.setAnchorX(hintEmail.getX()-150);
+        tipToolEmail.setAnchorY(hintEmail.getY()-30);
+        Tooltip.install(hintEmail, tipToolEmail);
+        // Tooltip DNI
+        Tooltip tipToolTelefono = new Tooltip("Error");
+        tipToolTelefono.setAnchorX(hintTelefono.getX()-150);
+        tipToolTelefono.setAnchorY(hintTelefono.getY()-30);
+        Tooltip.install(hintTelefono, tipToolTelefono);
+    }
+    
     public void setClientesManager(ClientesManager clientesLogicController) {
         this.clientesLogicController = clientesLogicController;
     }
 
     //Validacion
     @FXML
-    private void actionValidacion() {
-        if (validar()) {
-            actionCrearMod();
-        }
-    }
-
-    @FXML
     public boolean validar() {
         boolean res = true;
 //        
         if (!FieldValidator.isDni(tfDNI.getText())) {
             tfDNI.getStyleClass().add("tf-invalid");
-            dniError.setText("Error");
+            hintDNI.setVisible(true);
             res = false;
         }
         if (!FieldValidator.isEmail(tfEmail.getText())) {
             tfEmail.getStyleClass().add("tf-invalid");
-            emError.setText("Error");
+            hintEmail.setVisible(true);
             res = false;
         }
         if (!tfTelefono.getText().matches("[0-9]+")) {
             tfTelefono.getStyleClass().add("tf-invalid");
-            tlError.setText("Error");
+            hintTelefono.setVisible(true);
             res = false;
         }
-        if ((!tfNombre.getText().matches("[a-zA-Z_]+") || !tfApellido.getText().matches("[a-zA-Z_]+")) || (tfNombre.getText() == "" || tfApellido.getText() == "")) {
+        if (!tfNombre.getText().matches("[a-zA-Z_]+") || tfNombre.getText() == "" ) {
             tfNombre.getStyleClass().add("tf-invalid");
+            hintNombre.setVisible(true);
+            res = false;
+        }
+        if (!tfApellido.getText().matches("[a-zA-Z_]+") || tfApellido.getText() == "") {
             tfApellido.getStyleClass().add("tf-invalid");
-            nbError.setText("Error");
-            apError.setText("Error");
+            hintApellido.setVisible(true);
             res = false;
         }
 //        

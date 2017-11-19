@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -41,6 +42,14 @@ public class HomeController implements Initializable {
     // Para pruebas
     private static final int nfacturas = 140;
     private static final int nclientes = 140;
+    @FXML
+    private Button btnCliente;
+    @FXML
+    private Button btnFacturas;
+    @FXML
+    private Button btnReparaciones;
+    @FXML
+    private Button btnPiezas;
     
     
     
