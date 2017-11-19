@@ -4,7 +4,6 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TableColumn?>
@@ -97,10 +96,6 @@
       </HBox>
       <HBox alignment="CENTER" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="80.0">
          <children>
-            <ComboBox fx:id="cbFiltro" maxHeight="32.0" maxWidth="140.0" minHeight="32.0" minWidth="140.0" prefHeight="32.0" prefWidth="140.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></ComboBox>
             <TextField fx:id="tfBuscar" maxHeight="32.0" maxWidth="300.0" minHeight="32.0" minWidth="300.0" prefHeight="32.0" prefWidth="300.0" />
             <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
                <graphic>

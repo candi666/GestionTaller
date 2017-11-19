@@ -9,10 +9,13 @@ import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.bean.ClienteBean;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,6 +40,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -65,7 +69,7 @@ public class ClientesController implements Initializable {
     @FXML
     private TableColumn tcId;
     @FXML
-    private TableColumn tcDni;
+    private TableColumn<ClienteBean, SimpleStringProperty> tcDni;
     @FXML
     private TableColumn tcNombre;
     @FXML
@@ -82,8 +86,6 @@ public class ClientesController implements Initializable {
     private Button btnEliminar;
     @FXML
     private Button btnAnadir;
-    @FXML
-    private ComboBox<?> cbFiltro;
     @FXML
     private TextField tfBuscar;
     @FXML
@@ -253,6 +255,7 @@ public class ClientesController implements Initializable {
         // CRUD
         btnAnadir.setOnAction(e -> loadCrearMod(null));
         btnModificar.setOnAction(e -> loadCrearMod(tvClientes.getSelectionModel().getSelectedItem()));
+        btnBuscar.setOnAction(e -> actionBuscar());
     }
     
     /**
@@ -316,10 +319,38 @@ public class ClientesController implements Initializable {
         
     }
     
-    @FXML
     private void actionBuscar() {
-        int selectedIndex = tvClientes.getSelectionModel().getSelectedIndex();
-        tvClientes.getItems().remove(selectedIndex);
+        String criteria = tfBuscar.getText().trim();
+        boolean res = false;
+        
+//        if (!criteria.isEmpty()) {
+//            tvClientes.getItems().stream()
+//            .filter(item -> Objects.equals(item.getDni(), criteria))
+//            .findAny()
+//            .ifPresent((ClienteBean item) -> {
+//                tvClientes.getSelectionModel().select(item);
+//                tvClientes.scrollTo(item);
+//            });
+//            res = true;
+//        }
+        ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClienteByDni(criteria));
+        
+        if (!criteria.isEmpty()) {
+            clientesData.setAll(searchResults);
+            res = true;
+        }
+        
+        if (res) {
+            tvClientes.setItems(clientesData);
+            logger.log(Level.SEVERE, "entra.");
+        } else {
+            clientesData.clear();
+            tvClientes.getItems().clear();
+            logger.log(Level.SEVERE, ".........");
+        }
+        initPagination();
+        tvClientes.refresh();
+
     }
     @FXML
     private void actionVolver() {

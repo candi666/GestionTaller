@@ -11,17 +11,17 @@
    <children>
       <MenuBar layoutY="2.0" styleClass="top-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Archivo">
+          <Menu fx:id="mArchivo" mnemonicParsing="false" text="Archivo">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleMiClose" text="Salir" />
+              <MenuItem fx:id="mISalir" mnemonicParsing="false" onAction="#handleMiClose" text="Salir" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Preferencias">
+            <Menu fx:id="mPreferencias" mnemonicParsing="false" text="Preferencias">
                <items>
                   <MenuItem mnemonicParsing="false" text="Action 1" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Ayuda">
+            <Menu fx:id="mAyuda" mnemonicParsing="false" text="Ayuda">
                <items>
                   <MenuItem mnemonicParsing="false" text="Action 1" />
                </items>

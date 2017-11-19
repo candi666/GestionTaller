@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiontaller.gui.controller.clientes;
 
 import gestiontaller.gui.controller.HomeController;
@@ -56,16 +51,6 @@ public class ClientesCuController implements Initializable {
     private Button btnVolver;
     @FXML
     private Label lblTitulo;
-    @FXML
-    private Label dniError;
-    @FXML
-    private Label nbError;
-    @FXML
-    private Label apError;
-    @FXML
-    private Label emError;
-    @FXML
-    private Label tlError;
     @FXML
     private ImageView hintDNI;
     @FXML
@@ -130,7 +115,8 @@ public class ClientesCuController implements Initializable {
         populateForm();
         initTooltips();
     }
-
+    
+    //Rellena Textfields con datos al modificar
     private void populateForm() {
         if (cliente != null) {
             logger.info("Abierta ventana modificar cliente.");
@@ -168,7 +154,6 @@ public class ClientesCuController implements Initializable {
                 
                 clientesController.actionCrearMod(cliente);
             } else { // Caso crear
-
                 ClienteBean newCliente = new ClienteBean(0, tfDNI.getText(), tfNombre.getText(), tfApellido.getText(), tfEmail.getText(), tfTelefono.getText());
                 clientesController.actionCrearMod(newCliente);
             }
@@ -179,27 +164,27 @@ public class ClientesCuController implements Initializable {
 
     public void initTooltips() {
         // Tooltip DNI
-        Tooltip tipToolDNI = new Tooltip("Error");
+        Tooltip tipToolDNI = new Tooltip("Este campo es obligatorio. Ej: 11111111H");
         tipToolDNI.setAnchorX(hintDNI.getX()-150);
         tipToolDNI.setAnchorY(hintDNI.getY()-30);
         Tooltip.install(hintDNI, tipToolDNI);
-        // Tooltip DNI
-        Tooltip tipToolNombre = new Tooltip("Error");
+        // Tooltip Nombre
+        Tooltip tipToolNombre = new Tooltip("Este campo es obligatorio. Solo letras.");
         tipToolNombre.setAnchorX(hintNombre.getX()-150);
         tipToolNombre.setAnchorY(hintNombre.getY()-30);
         Tooltip.install(hintNombre, tipToolNombre);
-        // Tooltip DNI
-        Tooltip tipToolApellido = new Tooltip("Error");
+        // Tooltip Apellido
+        Tooltip tipToolApellido = new Tooltip("Este campo es obligatorio. Solo letras.");
         tipToolApellido.setAnchorX(hintApellido.getX()-150);
         tipToolApellido.setAnchorY(hintApellido.getY()-30);
         Tooltip.install(hintApellido, tipToolApellido);
-        // Tooltip DNI
-        Tooltip tipToolEmail = new Tooltip("Error");
+        // Tooltip Email
+        Tooltip tipToolEmail = new Tooltip("Este campo es obligatorio. Ej: zzz@zzz.zzz");
         tipToolEmail.setAnchorX(hintEmail.getX()-150);
         tipToolEmail.setAnchorY(hintEmail.getY()-30);
         Tooltip.install(hintEmail, tipToolEmail);
-        // Tooltip DNI
-        Tooltip tipToolTelefono = new Tooltip("Error");
+        // Tooltip Telefono
+        Tooltip tipToolTelefono = new Tooltip("Este campo es obligatorio. Solo números.");
         tipToolTelefono.setAnchorX(hintTelefono.getX()-150);
         tipToolTelefono.setAnchorY(hintTelefono.getY()-30);
         Tooltip.install(hintTelefono, tipToolTelefono);
@@ -213,34 +198,38 @@ public class ClientesCuController implements Initializable {
     @FXML
     public boolean validar() {
         boolean res = true;
-//        
+        
+        //Validación DNI
         if (!FieldValidator.isDni(tfDNI.getText())) {
             tfDNI.getStyleClass().add("tf-invalid");
             hintDNI.setVisible(true);
             res = false;
         }
-        if (!FieldValidator.isEmail(tfEmail.getText())) {
-            tfEmail.getStyleClass().add("tf-invalid");
-            hintEmail.setVisible(true);
-            res = false;
-        }
-        if (!tfTelefono.getText().matches("[0-9]+")) {
-            tfTelefono.getStyleClass().add("tf-invalid");
-            hintTelefono.setVisible(true);
-            res = false;
-        }
+        //Validación Nombre
         if (!tfNombre.getText().matches("[a-zA-Z_]+") || tfNombre.getText() == "" ) {
             tfNombre.getStyleClass().add("tf-invalid");
             hintNombre.setVisible(true);
             res = false;
         }
+        //Validación Apellido
         if (!tfApellido.getText().matches("[a-zA-Z_]+") || tfApellido.getText() == "") {
             tfApellido.getStyleClass().add("tf-invalid");
             hintApellido.setVisible(true);
             res = false;
         }
-//        
+        //Validación Email
+        if (!FieldValidator.isEmail(tfEmail.getText())) {
+            tfEmail.getStyleClass().add("tf-invalid");
+            hintEmail.setVisible(true);
+            res = false;
+        }
+        //Validación Telefono
+        if (!tfTelefono.getText().matches("[0-9]+")) {
+            tfTelefono.getStyleClass().add("tf-invalid");
+            hintTelefono.setVisible(true);
+            res = false;
+        }
+        
         return res;
     }
-
 }
