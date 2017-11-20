@@ -26,8 +26,8 @@
          <children>
             <ComboBox fx:id="cbCriteria" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
             <TextField fx:id="tfBuscar" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="%app.gui.facturas.filters.search.prompt" />
-            <DatePicker fx:id="dpFromDate" editable="false" promptText="%app.gui.facturas.filters.fromdate.prompt" />
-            <DatePicker fx:id="dpToDate" editable="false" promptText="Hasta" />
+            <DatePicker fx:id="dpFromDate" promptText="%app.gui.facturas.filters.fromdate.prompt" />
+            <DatePicker fx:id="dpToDate" promptText="Hasta" />
             <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">

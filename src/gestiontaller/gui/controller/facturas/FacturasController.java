@@ -45,7 +45,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -134,6 +138,7 @@ public class FacturasController implements Initializable {
 
         stage.setTitle(HomeController.bundle.getString("app.gui.facturas.stage.title"));
         stage.setResizable(true);
+        stage.getIcons().add(new Image(GTConstants.PATH_LOGO));
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerStage);
@@ -153,11 +158,13 @@ public class FacturasController implements Initializable {
      */
     private void handleWindowShowing(WindowEvent event) {
         handleActionEvents();
+        handleKeysOnTable();
         initActionPanel();
         initTable();
         initPagination();
         initContextMenu();
         handleTvFacturasHeightChanged();
+        initTooltips();
     }
 
     /**
@@ -186,7 +193,45 @@ public class FacturasController implements Initializable {
         cbCriteria.setValue(HomeController.bundle.getString("app.gui.facturas.cbfiltro.todas"));
         cbCriteria.setOnAction(this::handleCbCriteriaValueChange);
         tfBuscar.setDisable(true);
-
+    }
+    
+    private void initTooltips(){
+        // Tooltip fecha
+        Tooltip tipFecha = new Tooltip("Ej: 01/01/2017 ó 01-01-2017");
+        tipFecha.setAutoFix(true);
+        tipFecha.setWrapText(true);
+        tipFecha.setMaxSize(200, 60);
+        Tooltip.install(dpFromDate, tipFecha);
+        Tooltip.install(dpToDate, tipFecha);
+        
+        // Tooltip crear
+        Tooltip tipAdd = new Tooltip("Crear");
+        tipFecha.setAutoFix(true);
+        tipFecha.setWrapText(true);
+        tipFecha.setMaxSize(200, 60);
+        Tooltip.install(btnAnadir, tipAdd);
+        
+        // Tooltip modificar
+        Tooltip tipUpdate = new Tooltip("Modificar");
+        tipFecha.setAutoFix(true);
+        tipFecha.setWrapText(true);
+        tipFecha.setMaxSize(200, 60);
+        Tooltip.install(btnModificar, tipUpdate);
+        
+        // Tooltip eliminar
+        Tooltip tipDelete = new Tooltip("Eliminar");
+        tipFecha.setAutoFix(true);
+        tipFecha.setWrapText(true);
+        tipFecha.setMaxSize(200, 60);
+        Tooltip.install(btnEliminar, tipDelete);
+        
+        // Tooltip pagar
+        Tooltip tipPay = new Tooltip("Pagar");
+        tipFecha.setAutoFix(true);
+        tipFecha.setWrapText(true);
+        tipFecha.setMaxSize(200, 60);
+        Tooltip.install(btnPagado, tipPay);
+        
     }
 
     /**
@@ -434,10 +479,7 @@ public class FacturasController implements Initializable {
         }
         if (toDate == null) {
             toDate = LocalDate.now();
-
         }
-        System.out.println("from: " + fromDate);
-        System.out.println("to: " + toDate);
 
         boolean res = false;
 
@@ -547,6 +589,35 @@ public class FacturasController implements Initializable {
             ex.printStackTrace();
             logger.log(Level.SEVERE, "Error al cargar ventana nueva_factura.fxml.", ex);
         }
+    }
+
+    /**
+     * Acciones con teclado cuando tableview is focused
+     * 1. ENTER -> modificar.
+     * 2. DELETE -> eliminar.
+     */
+    private void handleKeysOnTable() {
+        tvFacturas.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case ENTER:
+                        if (tvFacturas.getSelectionModel().getSelectedItem() != null) {
+                            loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem());
+                        }
+                        break;
+                    
+                    case DELETE:
+                        if (tvFacturas.getSelectionModel().getSelectedItem() != null) {
+                            actionEliminar();
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     /* -----------------------------------------------------------------------*/

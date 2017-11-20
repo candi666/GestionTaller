@@ -109,8 +109,6 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         List<FacturaBean> filteredList = new ArrayList();
 
         try {
-            System.out.println("from: " + fromDate);
-            System.out.println("to: " + toDate);
             filteredList = facturas.stream()
                     .filter(f -> LocalDate.parse(f.getFecha(),
                     DateTimeFormatter.ofPattern(GTConstants.DATE_FORMAT_SPAIN)).compareTo(fromDate) >= 0)

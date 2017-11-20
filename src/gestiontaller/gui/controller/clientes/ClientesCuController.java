@@ -1,5 +1,6 @@
 package gestiontaller.gui.controller.clientes;
 
+import gestiontaller.config.GTConstants;
 import gestiontaller.gui.controller.HomeController;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.bean.ClienteBean;
@@ -7,6 +8,7 @@ import gestiontaller.logic.util.FieldValidator;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -15,7 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -61,6 +66,8 @@ public class ClientesCuController implements Initializable {
     private ImageView hintEmail;
     @FXML
     private ImageView hintTelefono;
+    @FXML
+    private AnchorPane rootPane;
 
     /**
      * Initializes the controller class.
@@ -80,7 +87,8 @@ public class ClientesCuController implements Initializable {
             lblTitulo.setText(HomeController.bundle.getString("app.gui.clientes.cu.title.update"));
             btnCrear.setText(HomeController.bundle.getString("generic.crud.update"));
         }
-
+        
+        stage.getIcons().add(new Image(GTConstants.PATH_LOGO));
         stage.setResizable(false);
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -114,6 +122,22 @@ public class ClientesCuController implements Initializable {
     private void handleWindowShowing(WindowEvent event) {
         populateForm();
         initTooltips();
+        
+        rootPane.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case ESCAPE:
+                        actionVolver();
+                        break;
+                    case ENTER:
+                        actionCrearMod();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
     
     //Rellena Textfields con datos al modificar
@@ -195,7 +219,6 @@ public class ClientesCuController implements Initializable {
     }
 
     //Validacion
-    @FXML
     public boolean validar() {
         boolean res = true;
         
