@@ -100,8 +100,8 @@ public class ClientesController implements Initializable {
     // </editor-fold>
     /**
      * Initializes the controller class.
-     * @param url
-     * @param rb
+     * @param url ..
+     * @param rb ..
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -114,7 +114,7 @@ public class ClientesController implements Initializable {
     /**
      * Conecta Stage a controlador
      *
-     * @param stage
+     * @param stage 
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -147,7 +147,7 @@ public class ClientesController implements Initializable {
     /**
      * Establece owner stage
      *
-     * @param ownerStage
+     * @param ownerStage 
      */
     public void setOwnerStage(Stage ownerStage) {
         this.ownerStage = ownerStage;
@@ -182,7 +182,7 @@ public class ClientesController implements Initializable {
 
     /**
      *
-     * @param clientesLogicController
+     * @param clientesLogicController ..
      */
     public void setClientesManager(ClientesManager clientesLogicController) {
         this.clientesLogicController = clientesLogicController;

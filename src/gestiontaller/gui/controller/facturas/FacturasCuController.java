@@ -122,7 +122,7 @@ public class FacturasCuController implements Initializable {
     /**
      * Establece owner stage
      *
-     * @param ownerStage
+     * @param ownerStage parent stage
      */
     public void setOwnerStage(Stage ownerStage) {
         this.ownerStage = ownerStage;
@@ -131,7 +131,7 @@ public class FacturasCuController implements Initializable {
     /**
      * Establece factura a modificar.
      *
-     * @param factura
+     * @param factura factura
      */
     public void setFactura(FacturaBean factura) {
         this.factura = factura;
@@ -140,7 +140,7 @@ public class FacturasCuController implements Initializable {
     /**
      * Establece instancia del controlador de facturas
      *
-     * @param facturasController
+     * @param facturasController controlador de gui facturas
      */
     public void setFacturasController(FacturasController facturasController) {
         this.facturasController = facturasController;
@@ -201,7 +201,7 @@ public class FacturasCuController implements Initializable {
     /**
      * Establece stage
      *
-     * @param stage
+     * @param stage stage
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -321,7 +321,7 @@ public class FacturasCuController implements Initializable {
     /**
      * Establece instancia del controlador de lógica.
      *
-     * @param facturasLogicController
+     * @param facturasLogicController controlador de lógica facturas
      */
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;

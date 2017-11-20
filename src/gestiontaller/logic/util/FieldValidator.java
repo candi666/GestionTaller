@@ -33,8 +33,8 @@ public final class FieldValidator {
     /**
      * Verifica si un string puede ser convertido a fecha.
      *
-     * @param date
-     * @return
+     * @param date fecha a comprobar.
+     * @return fecha valida o no.
      */
     public static boolean isDate(LocalDate date) {
         try {
@@ -51,7 +51,7 @@ public final class FieldValidator {
      * Varifica si un string es un dni.
      *
      * @param testvalue string a probar.
-     * @return True -> Es dni.
+     * @return Es dni o  no.
      */
     public static boolean isDni(String testvalue) {
         String letraMayuscula = ""; 
@@ -68,8 +68,8 @@ public final class FieldValidator {
 
     /**
      * Verifica si un string cumple con las condiciones para ser un email.
-     * @param testvalue
-     * @return 
+     * @param testvalue string a probar
+     * @return Es email o no.
      */
     public static boolean isEmail(String testvalue) {
         Pattern pattern = Pattern.compile(PATTERN_EMAIL);
@@ -83,29 +83,21 @@ public final class FieldValidator {
      * Password debe tener al menos 8 caracteres y no mas de 16.
      * FieldValidator.lengthBetween(testvalue,8,16);
      *
+     * @param testvalue string a comprobar
      * @param minLength length minimo del string.
      * @param maxLength length max del string.
-     * @return
+     * @return valido o no.
      */
     public static boolean lengthBetween(String testvalue, int minLength, int maxLength) {
         // TODO
         return true;
     }
 
-    /**
-     * Verifica si un string es un numero.
-     *
-     * @return
-     */
-    public static boolean isNumber() {
-        // TODO
-        return true;
-    }
 
     /**
      * 
-     * @param testvalue
-     * @return 
+     * @param testvalue string a probar
+     * @return ..
      */
     private static boolean soloNumeros(String testvalue) {
 
@@ -151,8 +143,8 @@ public final class FieldValidator {
      * Verifica si un string puede ser parseado a int. + Buscar una solución
      * mejor, que no tenga excepciones.
      *
-     * @param s
-     * @return
+     * @param s string a validar
+     * @return Es un numero entero o no.
      */
     public static boolean isInteger(String s) {
         try {

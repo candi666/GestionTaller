@@ -17,12 +17,12 @@ public class FacturaBean {
     /**
      * Constructor
      * @param id id=0 reservado para modificaciones.
-     * @param fecha
-     * @param fechavenc
-     * @param total
-     * @param pagada
-     * @param idreparacion
-     * @param idcliente 
+     * @param fecha fecha
+     * @param fechavenc fecha de vencimiento
+     * @param total total
+     * @param pagada pagada
+     * @param idreparacion id de reparación asociada
+     * @param idcliente id de cliente asociado
      */
     public FacturaBean(Integer id, String fecha, String fechavenc, Double total,
             Boolean pagada, Integer idreparacion, Integer idcliente){
@@ -37,12 +37,12 @@ public class FacturaBean {
     
     /**
      * Constructor sin id.
-     * @param fecha
-     * @param fechavenc
-     * @param total
-     * @param pagada
-     * @param idreparacion
-     * @param idcliente 
+     * @param fecha fecha
+     * @param fechavenc fecha de vencimiento
+     * @param total total
+     * @param pagada pagada
+     * @param idreparacion id de reparación asociada
+     * @param idcliente id de cliente asociado
      */
     public FacturaBean(String fecha, String fechavenc, Double total,
             Boolean pagada, Integer idreparacion, Integer idcliente){
