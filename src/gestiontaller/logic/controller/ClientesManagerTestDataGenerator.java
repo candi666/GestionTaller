@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ *
+ * @author Ionut
+ */
 public class ClientesManagerTestDataGenerator implements ClientesManager{
 
     private static final Logger logger = Logger.getLogger(ClientesManagerTestDataGenerator.class.getName());
@@ -16,6 +20,9 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     private int maxitems = GTConstants.MAX_MOCK_CLIENTES;
     private int maxid = 0;
 
+    /**
+     *
+     */
     public ClientesManagerTestDataGenerator(){
         clientes=new ArrayList();
 
@@ -24,6 +31,10 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Collection getAllClientes() {
 //        for (int i=0; i<clientes.size();i++){
@@ -33,8 +44,8 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     }
     
     /**
-     * Crear factura
-     * @param factura
+     * Crear cliente
+     * @param cliente
      * @return 
      */
     public boolean createCliente(ClienteBean cliente) {
@@ -50,8 +61,8 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     }
     
     /**
-     * Modificar factura
-     * @param factura
+     * Modificar Cliente
+     * @param cliente
      * @return 
      */
     public boolean updateCliente(ClienteBean cliente) {
@@ -87,6 +98,11 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
 
     }
 
+    /**
+     *
+     * @param cliente
+     * @return
+     */
     @Override
     public boolean deleteCliente(ClienteBean cliente) {
        try {
@@ -99,6 +115,11 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
         }
     }
 
+    /**
+     *
+     * @param criteria
+     * @return
+     */
     @Override
     public Collection getClientesByCriteria(String criteria) {
         List<ClienteBean> filteredClientes = new ArrayList();
@@ -112,6 +133,11 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
         return filteredClientes;
     }
 
+    /**
+     *
+     * @param tcNombre
+     * @return
+     */
     @Override
     public ClienteBean getClienteByNombre(String tcNombre) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

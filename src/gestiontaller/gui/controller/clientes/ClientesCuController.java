@@ -28,7 +28,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author 2dam
+ * @author Ionut
  */
 public class ClientesCuController implements Initializable {
 
@@ -39,7 +39,8 @@ public class ClientesCuController implements Initializable {
     private ClientesManager clientesLogicController;
     private ClientesController clientesController;
     private int maxid = 0;
-
+    
+    //<editor-fold defaultstate="collapsed" desc="@FXML NODES">    
     @FXML
     private TextField tfDNI;
     @FXML
@@ -68,6 +69,7 @@ public class ClientesCuController implements Initializable {
     private ImageView hintTelefono;
     @FXML
     private AnchorPane rootPane;
+    // </editor-fold>
 
     /**
      * Initializes the controller class.
@@ -140,7 +142,6 @@ public class ClientesCuController implements Initializable {
         });
     }
     
-    //Rellena Textfields con datos al modificar
     private void populateForm() {
         if (cliente != null) {
             logger.info("Abierta ventana modificar cliente.");

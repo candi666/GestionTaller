@@ -54,7 +54,7 @@ import javafx.stage.WindowEvent;
 /**
  * FXML Controller class
  *
- * @author Carlos
+ * @author Ionut
  */
 public class ClientesController implements Initializable {
 
@@ -100,6 +100,8 @@ public class ClientesController implements Initializable {
     // </editor-fold>
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -178,10 +180,17 @@ public class ClientesController implements Initializable {
 
     }
 
-    public void setClientesManager(ClientesManager businessLogicController) {
-        this.clientesLogicController = businessLogicController;
+    /**
+     *
+     * @param clientesLogicController
+     */
+    public void setClientesManager(ClientesManager clientesLogicController) {
+        this.clientesLogicController = clientesLogicController;
     }
 
+    /**
+     *
+     */
     public void initTable() {
         tableColumnResizeBinds();
         
@@ -198,6 +207,9 @@ public class ClientesController implements Initializable {
         tvClientes.setItems(clientesData);
     }
 
+    /**
+     *
+     */
     public void initContextMenu() {
         final ContextMenu cm = new ContextMenu();
         MenuItem cmItem1 = new MenuItem("Eliminar");
@@ -334,11 +346,9 @@ public class ClientesController implements Initializable {
 
     /**
      * Acción Crear/Modificar Cliente
+     * @param cliente
      */
     public void actionCrearMod(ClienteBean cliente) {
-        /* facturasData: lista con todas las facturas
-        *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
-         */
         int cpindex = pgClientes.getCurrentPageIndex();
 
         if (cliente.getId() == 0) {
@@ -346,7 +356,6 @@ public class ClientesController implements Initializable {
                 reloadTable();
                 int pcount = pgClientes.getPageCount();
 
-                // Si esta llena la pagina actual...
                 if ((clientesData.size() - 1) > (pcount) * rowsPerPage) {
                     pgClientes.setPageCount(pcount + 1);
                     pgClientes.setCurrentPageIndex(pcount + 1);
@@ -466,6 +475,10 @@ public class ClientesController implements Initializable {
         return new BorderPane(tvClientes);
     }
 
+    /**
+     *
+     * @return
+     */
     public TableView getTableView() {
         return this.tvClientes;
     }
