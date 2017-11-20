@@ -33,4 +33,6 @@ public class GTConstants {
      */
     public static final int DEFAULT_ROW_HEIGHT = 24;
     
+    public static final String PATH_LOGO = "/resources/img/source/logo2.png";
+    
 }

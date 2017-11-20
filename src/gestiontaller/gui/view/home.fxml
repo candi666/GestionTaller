@@ -16,31 +16,40 @@
               <MenuItem fx:id="mISalir" mnemonicParsing="false" onAction="#handleMiClose" text="Salir" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Modulos">
+              <items>
+                  <MenuItem fx:id="mniClientes" mnemonicParsing="false" onAction="#loadClientes" text="Clientes" />
+                  <MenuItem fx:id="mniFacturas" mnemonicParsing="false" onAction="#loadFacturas" text="Facturas" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Reparaciones" />
+                <MenuItem disable="true" mnemonicParsing="false" text="Piezas" />
+              </items>
+            </Menu>
             <Menu fx:id="mPreferencias" mnemonicParsing="false" text="Preferencias">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Temas" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Idioma" />
                </items>
             </Menu>
             <Menu fx:id="mAyuda" mnemonicParsing="false" text="Ayuda">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Manual" />
                </items>
             </Menu>
         </menus>
       </MenuBar>
-      <Button fx:id="btnCliente" layoutX="123.0" layoutY="106.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" onAction="#btnClientesActionHandler" styleClass="btn-mod" text="Clientes" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="80.0">
+      <Button fx:id="btnClientes" layoutX="123.0" layoutY="106.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" styleClass="btn-mod" text="Clientes" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="80.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="btnFacturas" layoutX="265.0" layoutY="80.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" onAction="#btnFacturasActionHandler" styleClass="btn-mod" text="Facturas" AnchorPane.rightAnchor="100.0">
+      <Button fx:id="btnFacturas" layoutX="265.0" layoutY="80.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" styleClass="btn-mod" text="Facturas" AnchorPane.rightAnchor="100.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="btnReparaciones" layoutX="99.0" layoutY="215.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" onAction="#btnReparacionesActionHandler" styleClass="btn-mod" text="Reparaciones">
+      <Button fx:id="btnReparaciones" disable="true" layoutX="99.0" layoutY="215.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" styleClass="btn-mod" text="Reparaciones">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="btnPiezas" layoutX="265.0" layoutY="215.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" onAction="#btnPiezasActionHandler" styleClass="btn-mod" text="Piezas" AnchorPane.rightAnchor="100.0">
+      <Button fx:id="btnPiezas" disable="true" layoutX="265.0" layoutY="215.0" minHeight="100.0" minWidth="140.0" mnemonicParsing="false" styleClass="btn-mod" text="Piezas" AnchorPane.rightAnchor="100.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>

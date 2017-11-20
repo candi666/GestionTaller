@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="400.0" maxWidth="340.0" minHeight="400.0" minWidth="340.0" pickOnBounds="false" prefHeight="400.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.facturas.FacturasCuController">
+<AnchorPane fx:id="rootPane" maxHeight="400.0" maxWidth="340.0" minHeight="400.0" minWidth="340.0" pickOnBounds="false" prefHeight="400.0" prefWidth="340.0" styleClass="anchor-pane" stylesheets="@../../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.facturas.FacturasCuController">
     <children>
       <Pane maxHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>

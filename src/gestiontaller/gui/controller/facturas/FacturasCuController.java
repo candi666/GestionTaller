@@ -1,5 +1,6 @@
 package gestiontaller.gui.controller.facturas;
 
+import gestiontaller.config.GTConstants;
 import gestiontaller.gui.controller.HomeController;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
@@ -13,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
@@ -26,7 +28,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -74,6 +79,8 @@ public class FacturasCuController implements Initializable {
     private ImageView hintCliente;
     @FXML
     private ImageView hintTotal;
+    @FXML
+    private AnchorPane rootPane;
 
     /**
      * Initializes the controller class.
@@ -97,7 +104,8 @@ public class FacturasCuController implements Initializable {
             lblTitulo.setText("Modificar factura");
             btnCrear.setText("Modificar");
         }
-
+        
+        stage.getIcons().add(new Image(GTConstants.PATH_LOGO));
         stage.setResizable(false);
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -131,7 +139,8 @@ public class FacturasCuController implements Initializable {
 
     /**
      * Establece instancia del controlador de facturas
-     * @param facturasController 
+     *
+     * @param facturasController
      */
     public void setFacturasController(FacturasController facturasController) {
         this.facturasController = facturasController;
@@ -188,10 +197,11 @@ public class FacturasCuController implements Initializable {
         }
 
     }
-    
+
     /**
      * Establece stage
-     * @param stage 
+     *
+     * @param stage
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -269,49 +279,49 @@ public class FacturasCuController implements Initializable {
         cbCliente.getItems().addAll(clientes);
 
     }
-    
+
     /**
      * Crea tooltips con sugerencias para la validación del formulario.
      */
     public void initTooltips() {
         // Tooltip fecha
         Tooltip tipFecha = new Tooltip("Este campo es obligatorio, debe tener un formato de fecha dd/MM/aaaa. Ej: 01/01/2017");
-        tipFecha.setAnchorX(hintFecha.getX()-150);
-        tipFecha.setAnchorY(hintFecha.getY()-30);
+        tipFecha.setAnchorX(hintFecha.getX() - 150);
+        tipFecha.setAnchorY(hintFecha.getY() - 30);
         tipFecha.setAutoFix(true);
         tipFecha.setWrapText(true);
         tipFecha.setMaxSize(200, 60);
         Tooltip.install(hintFecha, tipFecha);
-        
+
         // Tooltip fecha de vencimiento
-        tipFecha.setAnchorX(hintFechaVenc.getX()-150);
-        tipFecha.setAnchorY(hintFechaVenc.getY()-30);
+        tipFecha.setAnchorX(hintFechaVenc.getX() - 150);
+        tipFecha.setAnchorY(hintFechaVenc.getY() - 30);
         Tooltip.install(hintFechaVenc, tipFecha);
-        
+
         // Tooltip cb reparaciones
         Tooltip tooltip = new Tooltip("Este campo es obligatorio");
         tooltip.setMaxSize(200, 30);
-        tooltip.setAnchorX(hintReparacion.getX()-150);
-        tooltip.setAnchorY(hintReparacion.getY()-30);
+        tooltip.setAnchorX(hintReparacion.getX() - 150);
+        tooltip.setAnchorY(hintReparacion.getY() - 30);
         Tooltip.install(hintReparacion, tooltip);
-        
+
         // Tooltip cb clientes
-        tooltip.setAnchorX(hintCliente.getX()-150);
-        tooltip.setAnchorY(hintCliente.getY()-30);
+        tooltip.setAnchorX(hintCliente.getX() - 150);
+        tooltip.setAnchorY(hintCliente.getY() - 30);
         Tooltip.install(hintCliente, tooltip);
-        
+
         // Tooltip total
         Tooltip tipTotal = new Tooltip("Este campo es obligatorio y debe ser un número.");
-        tipTotal.setAnchorX(hintTotal.getX()-150);
-        tipTotal.setAnchorY(hintTotal.getY()-30);
+        tipTotal.setAnchorX(hintTotal.getX() - 150);
+        tipTotal.setAnchorY(hintTotal.getY() - 30);
         Tooltip.install(hintTotal, tooltip);
-        
 
     }
 
     /**
      * Establece instancia del controlador de lógica.
-     * @param facturasLogicController 
+     *
+     * @param facturasLogicController
      */
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
@@ -334,11 +344,29 @@ public class FacturasCuController implements Initializable {
             LocalDate date = dpFechaVenc.getValue();
         }
         );
+
+        rootPane.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case ESCAPE:
+                        actionVolver();
+                        break;
+                    case ENTER:
+                        actionCrearMod();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
     }
 
     /**
-     * Verifica cada campo dle formulario, si alguno no es válido, entonces
-     * el formulario no es válido.
+     * Verifica cada campo dle formulario, si alguno no es válido, entonces el
+     * formulario no es válido.
+     *
      * @return validéz del formulario.
      */
     public boolean formValid() {

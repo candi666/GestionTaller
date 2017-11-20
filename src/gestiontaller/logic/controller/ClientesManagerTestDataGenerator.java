@@ -5,7 +5,9 @@ import gestiontaller.logic.bean.ClienteBean;
 import gestiontaller.logic.util.FieldValidator;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ClientesManagerTestDataGenerator implements ClientesManager{
 
@@ -98,16 +100,16 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     }
 
     @Override
-    public ClienteBean getClienteByDni(String tcDni) {
-        ClienteBean cliente = null;
-        if (FieldValidator.isDni(tcDni)) {
-            for (ClienteBean cli : clientes) {
-                if (cli.getDni() == tcDni) {
-                    cliente = cli;
-                }
-            }
+    public Collection getClientesByCriteria(String criteria) {
+        List<ClienteBean> filteredClientes = new ArrayList();
+        try {
+            filteredClientes = clientes.stream()
+                    .filter(c -> (c.getDni().equals(criteria) || c.getNombre().equals(criteria)))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.info("Error en búsqueda de clientes.");
         }
-        return cliente;
+        return filteredClientes;
     }
 
     @Override

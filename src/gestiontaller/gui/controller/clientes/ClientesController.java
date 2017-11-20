@@ -39,8 +39,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -49,13 +51,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
 /**
  * FXML Controller class
  *
  * @author Carlos
  */
 public class ClientesController implements Initializable {
+
     private static final Logger logger = Logger.getLogger(ClientesController.class.getName());
     private Stage stage;
     private Stage ownerStage;
@@ -94,7 +96,6 @@ public class ClientesController implements Initializable {
     private Button btnSalir;
     @FXML
     private Pagination pgClientes;
-    
 
     // </editor-fold>
     /**
@@ -105,7 +106,7 @@ public class ClientesController implements Initializable {
         btnHistorial.setDisable(true);
         btnModificar.setDisable(true);
         btnEliminar.setDisable(true);
-        
+
     }
 
     /**
@@ -127,6 +128,7 @@ public class ClientesController implements Initializable {
         stage.setScene(scene);
 
         stage.setTitle("Gestión de taller - Clientes");
+        stage.getIcons().add(new Image(GTConstants.PATH_LOGO));
         stage.setResizable(true);
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -159,8 +161,9 @@ public class ClientesController implements Initializable {
         initContextMenu();
         initPagination();
         handleActionEvents();
+        handleKeysOnTable();
     }
-    
+
     /**
      * Modelo de creación de pagina para paginación.
      *
@@ -175,13 +178,13 @@ public class ClientesController implements Initializable {
     }
 
     public void setClientesManager(ClientesManager businessLogicController) {
-        this.clientesLogicController=businessLogicController;
+        this.clientesLogicController = businessLogicController;
     }
-    
-    public void initTable(){
+
+    public void initTable() {
         // Obtener Collection de Facturas
         clientesData = FXCollections.observableArrayList(clientesLogicController.getAllClientes());
-        
+
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcDni.setCellValueFactory(new PropertyValueFactory<>("dni"));
         tcNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -189,16 +192,15 @@ public class ClientesController implements Initializable {
         tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tcTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         tvClientes.getSelectionModel().selectedItemProperty().addListener(this::handleClientesTableSelectionChanged);
-       
-        
+
         tvClientes.setItems(clientesData);
     }
-    
-    public void initContextMenu(){
+
+    public void initContextMenu() {
         final ContextMenu cm = new ContextMenu();
         MenuItem cmItem1 = new MenuItem("Eliminar");
         MenuItem cmItem2 = new MenuItem("Modificar");
-        
+
         //ContextMenu Eliminar
         cmItem1.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
@@ -207,39 +209,43 @@ public class ClientesController implements Initializable {
         });
         cm.getItems().add(cmItem1);
         tvClientes.addEventHandler(MouseEvent.MOUSE_CLICKED,
-            new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent e) {
-                    if (e.getButton() == MouseButton.SECONDARY)  
-                        cm.show(tvClientes, e.getScreenX(), e.getScreenY());
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    cm.show(tvClientes, e.getScreenX(), e.getScreenY());
                 }
+            }
         });
         //ContextMenu Modificar
         cmItem2.setOnAction(e -> loadCrearMod(tvClientes.getSelectionModel().getSelectedItem()));
-        
+
         cm.getItems().add(cmItem2);
         tvClientes.addEventHandler(MouseEvent.MOUSE_CLICKED,
-            new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent e) {
-                    if (e.getButton() == MouseButton.SECONDARY)  
-                        cm.show(tvClientes, e.getScreenX(), e.getScreenY());
+                new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    cm.show(tvClientes, e.getScreenX(), e.getScreenY());
                 }
+            }
         });
-        
+
     }
-    
-    private void handleClientesTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue){
-        if(newValue!=null){
+
+    private void handleClientesTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue) {
+        if (newValue != null) {
             btnHistorial.setDisable(false);
             btnModificar.setDisable(false);
             btnEliminar.setDisable(false);
-        }else{
+        } else {
             btnHistorial.setDisable(true);
             btnModificar.setDisable(true);
             btnEliminar.setDisable(true);
         }
-        
+
     }
-    
+
     /**
      * Obtiene datos del modelo y los carga en la tabla.
      */
@@ -250,14 +256,14 @@ public class ClientesController implements Initializable {
         initPagination();
         tvClientes.refresh();
     }
-    
-    private void handleActionEvents(){
+
+    private void handleActionEvents() {
         // CRUD
         btnAnadir.setOnAction(e -> loadCrearMod(null));
         btnModificar.setOnAction(e -> loadCrearMod(tvClientes.getSelectionModel().getSelectedItem()));
         btnBuscar.setOnAction(e -> actionBuscar());
     }
-    
+
     /**
      * Acción Crear/Modificar factura
      */
@@ -288,14 +294,14 @@ public class ClientesController implements Initializable {
         }
 
     }
-    
+
     @FXML
     private void actionEliminar() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setHeaderText(null);
         alert.setContentText("¿Desea eliminar el cliente?");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK) {
             int cpindex = pgClientes.getCurrentPageIndex();
 
             if (clientesLogicController.deleteCliente(tvClientes.getSelectionModel().getSelectedItem())) {
@@ -315,31 +321,26 @@ public class ClientesController implements Initializable {
             if (cpindex > 0) {
                 pgClientes.setCurrentPageIndex(cpindex);
             }
-        } 
-        
+        }
+
     }
-    
+
     private void actionBuscar() {
         String criteria = tfBuscar.getText().trim();
         boolean res = false;
-        
+
         if (!criteria.isEmpty()) {
-            tvClientes.getItems().stream()
-            .filter(item -> Objects.equals(item.getDni(), criteria))
-            .findAny()
-            .ifPresent((ClienteBean item) -> {
-                tvClientes.getSelectionModel().select(item);
-                tvClientes.scrollTo(item);
-            });
+            
+            ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClientesByCriteria(criteria));
+            if (!searchResults.isEmpty()) {
+                clientesData.setAll(searchResults);
+                res = true;
+            }
+        }else{
+            clientesData = FXCollections.observableArrayList(clientesLogicController.getAllClientes());
             res = true;
         }
-//        ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClienteByDni(criteria));
-//        
-//        if (!criteria.isEmpty()) {
-//            clientesData.setAll(searchResults);
-//            res = true;
-//        }
-        
+
         if (res) {
             tvClientes.setItems(clientesData);
             logger.log(Level.SEVERE, "entra.");
@@ -352,12 +353,13 @@ public class ClientesController implements Initializable {
         tvClientes.refresh();
 
     }
+
     @FXML
     private void actionVolver() {
         stage.close();
         ownerStage.requestFocus();
     }
-    
+
     private void loadCrearMod(ClienteBean cliente) {
         try {
             ClientesManager clientesLogicController = new ClientesManagerTestDataGenerator();
@@ -368,7 +370,7 @@ public class ClientesController implements Initializable {
             ctr.setStage(new Stage());
             ctr.setClientesManager(clientesLogicController);
             ctr.setClientesController(this);
-            
+
             // En caso de opción Modificar
             if (cliente != null) {
                 ctr.setCliente(cliente);
@@ -380,7 +382,7 @@ public class ClientesController implements Initializable {
             logger.log(Level.SEVERE, "Error al cargar ventana nuevo_cliente.fxml.", ex);
         }
     }
-    
+
     /**
      * Modelo de creación de pagina para paginación.
      *
@@ -395,8 +397,32 @@ public class ClientesController implements Initializable {
 
         return new BorderPane(tvClientes);
     }
-    
-    public TableView getTableView(){
+
+    public TableView getTableView() {
         return this.tvClientes;
+    }
+    
+    private void handleKeysOnTable() {
+        tvClientes.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case ENTER:
+                        if (tvClientes.getSelectionModel().getSelectedItem() != null) {
+                            loadCrearMod(tvClientes.getSelectionModel().getSelectedItem());
+                        }
+                        break;
+                    
+                    case DELETE:
+                        if (tvClientes.getSelectionModel().getSelectedItem() != null) {
+                            actionEliminar();
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        });
     }
 }
