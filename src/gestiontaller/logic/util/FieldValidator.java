@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiontaller.logic.util;
 
 import gestiontaller.config.GTConstants;
@@ -15,8 +10,6 @@ import java.util.regex.Pattern;
 
 /**
  * Clase util para validación de campos
- *
- * @author Carlos
  */
 public final class FieldValidator {
 
@@ -100,7 +93,6 @@ public final class FieldValidator {
      * @return ..
      */
     private static boolean soloNumeros(String testvalue) {
-
         int i, j = 0;
         String numero = ""; // Es el número que se comprueba uno a uno por si hay alguna letra entre los 8 primeros dígitos
         String miDNI = ""; // Guardamos en una cadena los números para después calcular la letra
@@ -124,9 +116,6 @@ public final class FieldValidator {
     }
 
     private static String letraDNI(String testvalue) {
-        // El método es privado porque lo voy a usar internamente en esta clase, no se necesita fuera de ella
-
-        // pasar miNumero a integer
         int miDNI = Integer.parseInt(testvalue.substring(0, 8));
         int resto = 0;
         String miLetra = "";

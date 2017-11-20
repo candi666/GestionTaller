@@ -51,6 +51,7 @@ public class FacturasCuController implements Initializable {
     private FacturasController facturasController;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    //<editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
     private Label lblTitulo;
     @FXML
@@ -81,6 +82,7 @@ public class FacturasCuController implements Initializable {
     private ImageView hintTotal;
     @FXML
     private AnchorPane rootPane;
+    // </editor-fold>
 
     /**
      * Initializes the controller class.
@@ -364,7 +366,7 @@ public class FacturasCuController implements Initializable {
     }
 
     /**
-     * Verifica cada campo dle formulario, si alguno no es válido, entonces el
+     * Verifica cada campo del formulario, si alguno no es válido, entonces el
      * formulario no es válido.
      *
      * @return validéz del formulario.

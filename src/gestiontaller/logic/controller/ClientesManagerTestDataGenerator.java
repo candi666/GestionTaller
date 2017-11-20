@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Datos de prueba
+ * 
  * @author Ionut
  */
 public class ClientesManagerTestDataGenerator implements ClientesManager{
@@ -21,7 +22,7 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     private int maxid = 0;
 
     /**
-     *
+     * Generar clientes para pruebas
      */
     public ClientesManagerTestDataGenerator(){
         clientes=new ArrayList();
@@ -32,14 +33,12 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     }
 
     /**
+     * Obtener los clientes
      *
      * @return
      */
     @Override
     public Collection getAllClientes() {
-//        for (int i=0; i<clientes.size();i++){
-//            System.out.println("id: "+clientes.get(i).getId()+"   fecha: "+clientes.get(i).getDni());
-//        }
         return clientes;
     }
     
@@ -52,7 +51,7 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
         try {
             cliente.setId(getMaxId() + 1);
             clientes.add(cliente);
-            logger.info("Creada cliente id: " + cliente.getId());
+            logger.info("Creado cliente id: " + cliente.getId());
             return true;
         } catch (Exception e) {
             logger.info("Ha ocurrido un error al crear cliente.");
@@ -61,7 +60,7 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     }
     
     /**
-     * Modificar Cliente
+     * Modificar cliente
      * @param cliente
      * @return 
      */
@@ -88,6 +87,11 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
         }
     }
     
+    /**
+     * Obtener el id maximo de la tabla
+     * 
+     * @return 
+     */
     private int getMaxId() {
         for (ClienteBean fact : clientes) {
             if (fact.getId() > maxid) {
@@ -99,7 +103,7 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     }
 
     /**
-     *
+     * Eliminar cliente
      * @param cliente
      * @return
      */
@@ -116,7 +120,7 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     }
 
     /**
-     *
+     * Obtener cliente por DNI y Nombre
      * @param criteria
      * @return
      */
