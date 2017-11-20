@@ -63,7 +63,7 @@ public class ClientesController implements Initializable {
     private Stage ownerStage;
     private ClientesManager clientesLogicController;
     private ObservableList<ClienteBean> clientesData;
-    private static final int rowsPerPage = GTConstants.MAX_ROWS_TABLE_CLIENTES;
+    private static int rowsPerPage = GTConstants.MAX_ROWS_TABLE_CLIENTES;
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
@@ -162,6 +162,7 @@ public class ClientesController implements Initializable {
         initPagination();
         handleActionEvents();
         handleKeysOnTable();
+        handleTvClientesHeightChanged();
     }
 
     /**
@@ -182,7 +183,8 @@ public class ClientesController implements Initializable {
     }
 
     public void initTable() {
-        // Obtener Collection de Facturas
+        tableColumnResizeBinds();
+        
         clientesData = FXCollections.observableArrayList(clientesLogicController.getAllClientes());
 
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -232,6 +234,34 @@ public class ClientesController implements Initializable {
         });
 
     }
+    
+    /**
+     * Redimensionado de las columnas al maximizar ventana
+     */
+    public void tableColumnResizeBinds() {
+
+        tvClientes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tcId.setResizable(false);
+        tcDni.setResizable(false);
+        tcNombre.setResizable(false);
+        tcApellidos.setResizable(false);
+        tcEmail.setResizable(false);
+        tcTelefono.setResizable(false);
+
+        tcId.setMaxWidth(10000);
+        tcDni.setMaxWidth(20000);
+        tcNombre.setMaxWidth(20000);
+        tcApellidos.setMaxWidth(10000);
+        tcEmail.setMaxWidth(20000);
+        tcTelefono.setMaxWidth(20000);
+
+        tcId.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.1));
+        tcDni.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.2));
+        tcNombre.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.2));
+        tcApellidos.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.2));
+        tcEmail.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.2));
+        tcTelefono.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.1));
+    }
 
     private void handleClientesTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue) {
         if (newValue != null) {
@@ -244,6 +274,44 @@ public class ClientesController implements Initializable {
             btnEliminar.setDisable(true);
         }
 
+    }
+    
+    /**
+     * Redimensionado de los valores de la tabla al maximizar ventana
+     */
+    public void handleTvClientesHeightChanged() {
+        tvClientes.heightProperty().addListener((observable, oldValue, newValue) -> {
+
+            if (newValue.doubleValue() > 0 && oldValue.doubleValue() != 0) {
+
+                int currentItemIndex = 0;
+                ClienteBean selectedFactura = tvClientes.getSelectionModel().getSelectedItem();
+
+                if (selectedFactura != null) {
+                    currentItemIndex = (pgClientes.getCurrentPageIndex() * rowsPerPage) + tvClientes.getSelectionModel().getSelectedIndex();
+                }
+
+                Double rpp = (newValue.doubleValue() - GTConstants.DEFAULT_ROW_HEIGHT) / GTConstants.DEFAULT_ROW_HEIGHT;
+                rowsPerPage = rpp.intValue();
+
+                pgClientes.setPageCount((clientesData.size() / rowsPerPage) + 1);
+
+                if (currentItemIndex > rowsPerPage) {
+                    int pageIndex = (int) (currentItemIndex / rowsPerPage);
+                    pgClientes.setCurrentPageIndex(pageIndex);
+                    tvClientes.getSelectionModel().select(selectedFactura);
+                } else {
+                    pgClientes.setCurrentPageIndex(-1);
+                }
+                tvClientes.refresh();
+
+                if (tvClientes.isFocused()) {
+                    tfBuscar.requestFocus();
+                } else {
+                    tvClientes.requestFocus();
+                }
+            }
+        });
     }
 
     /**

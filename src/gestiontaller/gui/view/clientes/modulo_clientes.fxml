@@ -113,12 +113,12 @@
          </cursor></Pagination>
       <TableView fx:id="tvClientes" layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
         <columns>
-          <TableColumn fx:id="tcId" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
-          <TableColumn fx:id="tcDni" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="DNI" />
-            <TableColumn fx:id="tcNombre" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="NOMBRE" />
-            <TableColumn fx:id="tcApellidos" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="APELLIDOS" />
-            <TableColumn fx:id="tcEmail" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="EMAIL" />
-            <TableColumn fx:id="tcTelefono" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TELEFONO" />
+          <TableColumn fx:id="tcId" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" styleClass="first-col" text="ID" />
+          <TableColumn fx:id="tcDni" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="DNI" />
+            <TableColumn fx:id="tcNombre" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="NOMBRE" />
+            <TableColumn fx:id="tcApellidos" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="APELLIDOS" />
+            <TableColumn fx:id="tcEmail" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="EMAIL" />
+            <TableColumn fx:id="tcTelefono" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" styleClass="last-col" text="TELEFONO" />
         </columns>
       </TableView>
       <Button fx:id="btnSalir" layoutX="24.0" layoutY="9.0" maxHeight="32.0" maxWidth="32.0" minHeight="23.0" minWidth="32.0" mnemonicParsing="false" onAction="#actionVolver" prefHeight="32.0" prefWidth="32.0" styleClass="btn-icon" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
