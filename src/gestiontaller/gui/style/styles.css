@@ -115,3 +115,14 @@
 .tf-invalid{
     -fx-border-color: #ff3333;
 }
+
+.btn-mod:focused{
+    -fx-border-width: 2px;
+    -fx-border-color: gray;
+}
+.button:focused{
+    -fx-border-color: gray;
+}
+.pagination .button{
+    -fx-border-color: transparent;
+}
