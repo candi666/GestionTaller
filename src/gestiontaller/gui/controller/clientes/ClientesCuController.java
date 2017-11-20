@@ -79,13 +79,18 @@ public class ClientesCuController implements Initializable {
         // TODO
     }
 
+    /**
+     * Inicializa stage
+     * 
+     * @param root 
+     */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
 
         stage.setTitle("Gestión de Taller");
         if (cliente != null) {
-            logger.info("Abierta ventana modificar factura.");
+            logger.info("Abierta ventana modificar cliente.");
             lblTitulo.setText(HomeController.bundle.getString("app.gui.clientes.cu.title.update"));
             btnCrear.setText(HomeController.bundle.getString("generic.crud.update"));
         }
@@ -104,12 +109,17 @@ public class ClientesCuController implements Initializable {
 
     }
 
+    /**
+     * Establecer owner stage
+     * 
+     * @param ownerStage 
+     */
     public void setOwnerStage(Stage ownerStage) {
         this.ownerStage = ownerStage;
     }
 
     /**
-     * Establece cliente a modificar.
+     * Establece cliente a modificar
      *
      * @param cliente
      */
@@ -117,10 +127,21 @@ public class ClientesCuController implements Initializable {
         this.cliente = cliente;
     }
 
+    /**
+     * Instancia controlador
+     * 
+     * @param clientesController 
+     */
     public void setClientesController(ClientesController clientesController) {
         this.clientesController = clientesController;
     }
 
+    /**
+     * Handle on window showing
+     * Establecer acciones al presionar teclas: ESC, ENTER
+     * 
+     * @param event 
+     */
     private void handleWindowShowing(WindowEvent event) {
         populateForm();
         initTooltips();
@@ -142,6 +163,9 @@ public class ClientesCuController implements Initializable {
         });
     }
     
+    /**
+     *  Cargar datos formulario
+     */
     private void populateForm() {
         if (cliente != null) {
             logger.info("Abierta ventana modificar cliente.");
@@ -156,16 +180,27 @@ public class ClientesCuController implements Initializable {
 
     }
 
+    /**
+     * Establecer stage
+     * 
+     * @param stage 
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * Cerrar ventana
+     */
     @FXML
     private void actionVolver() {
         stage.close();
         ownerStage.requestFocus();
     }
 
+    /**
+     * Crea o modifica el cliente
+     */
     @FXML
     private void actionCrearMod() {
         if (validar()) {
@@ -187,6 +222,9 @@ public class ClientesCuController implements Initializable {
         }
     }
 
+    /**
+     * Tooltips para las validaciones
+     */
     public void initTooltips() {
         // Tooltip DNI
         Tooltip tipToolDNI = new Tooltip("Este campo es obligatorio. Ej: 11111111H");
@@ -215,11 +253,20 @@ public class ClientesCuController implements Initializable {
         Tooltip.install(hintTelefono, tipToolTelefono);
     }
     
+    /**
+     * Instancia controlador
+     * 
+     * @param clientesLogicController 
+     */
     public void setClientesManager(ClientesManager clientesLogicController) {
         this.clientesLogicController = clientesLogicController;
     }
 
-    //Validacion
+    /**
+     * Validar campos del formulario
+     * 
+     * @return 
+     */
     public boolean validar() {
         boolean res = true;
         
