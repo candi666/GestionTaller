@@ -64,7 +64,7 @@ public class PiezasController implements Initializable {
     
     /**
      * Conecta Stage a controlador
-     * @param stage
+     * @param stage stage
      */
     public void setStage(Stage stage){
         this.stage=stage;
@@ -94,7 +94,7 @@ public class PiezasController implements Initializable {
     
     /**
      * Establece owner stage
-     * @param ownerStage 
+     * @param ownerStage parent stage
      */
     public void setOwnerStage(Stage ownerStage){
         this.ownerStage=ownerStage;

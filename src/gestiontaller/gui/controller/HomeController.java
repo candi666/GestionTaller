@@ -84,7 +84,7 @@ public class HomeController implements Initializable {
     /**
      * Conecta Stage a controlador
      *
-     * @param stage
+     * @param stage stage actual
      */
     public void setStage(Stage stage) {
         this.stage = stage;
