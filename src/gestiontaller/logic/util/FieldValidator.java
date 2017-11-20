@@ -54,17 +54,12 @@ public final class FieldValidator {
      * @return True -> Es dni.
      */
     public static boolean isDni(String testvalue) {
-        // TODO validacion dni
-        String letraMayuscula = ""; //Guardaremos la letra introducida en formato mayúscula
+        String letraMayuscula = ""; 
 
-        // Aquí excluimos cadenas distintas a 9 caracteres que debe tener un dni y también si el último caracter no es una letra
         if (testvalue.length() != 9 || Character.isLetter(testvalue.charAt(8)) == false) {
             return false;
         }
-        // Al superar la primera restricción, la letra la pasamos a mayúscula
         letraMayuscula = (testvalue.substring(8)).toUpperCase();
-        // Por último validamos que sólo tengo 8 dígitos entre los 8 primeros caracteres y que la letra introducida es igual a la de la ecuación
-        // Llamamos a los métodos privados de la clase soloNumeros() y letraDNI()
         if (soloNumeros(testvalue) != true && letraDNI(testvalue).equals(letraMayuscula)) {
             return false;
         }
@@ -77,10 +72,8 @@ public final class FieldValidator {
      * @return 
      */
     public static boolean isEmail(String testvalue) {
-        // Compiles the given regular expression into a pattern.
         Pattern pattern = Pattern.compile(PATTERN_EMAIL);
 
-        // Match the given input against this pattern
         Matcher matcher = pattern.matcher(testvalue);
         return matcher.matches();
     }
