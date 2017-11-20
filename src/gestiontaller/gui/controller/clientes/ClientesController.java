@@ -259,7 +259,7 @@ public class ClientesController implements Initializable {
     }
     
     /**
-     * Acción Crear/Modificar factura
+     * Acción Crear/Modificar Cliente
      */
     public void actionCrearMod(ClienteBean cliente) {
         /* facturasData: lista con todas las facturas
