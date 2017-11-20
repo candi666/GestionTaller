@@ -55,8 +55,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
- * Controlador para ventana de gestión de facturas.
+ * FXML Controller class Controlador para ventana de gestión de facturas.
+ *
  * @author Carlos
  */
 public class FacturasController implements Initializable {
@@ -165,7 +165,7 @@ public class FacturasController implements Initializable {
      */
     private void initPagination() {
 
-        pgFacturas.setPageCount((facturasData.size() / rowsPerPage)+1);
+        pgFacturas.setPageCount((facturasData.size() / rowsPerPage) + 1);
         pgFacturas.setPageFactory(this::createPage);
     }
 
@@ -270,7 +270,8 @@ public class FacturasController implements Initializable {
     }
 
     /**
-     * Binds para cambiar el tamaño de las columnas cuando cambie el tamaño de la tabla. 
+     * Binds para cambiar el tamaño de las columnas cuando cambie el tamaño de
+     * la tabla.
      */
     public void tableColumnResizeBinds() {
 
@@ -374,6 +375,7 @@ public class FacturasController implements Initializable {
          */
         int cpindex = pgFacturas.getCurrentPageIndex();
 
+        // Caso nueva factura
         if (factura.getId() == 0) {
             if (facturasLogicController.createFactura(factura)) {
                 reloadTable();
@@ -382,19 +384,19 @@ public class FacturasController implements Initializable {
                 // Si esta llena la pagina actual...
                 if ((facturasData.size() - 2) > (pcount) * rowsPerPage) {
                     pgFacturas.setPageCount(pcount + 1);
-                    
+
                 }
-                
+
                 pgFacturas.setCurrentPageIndex(pcount + 1);
             }
-            
 
-        } else {
+        } else { // Caso modificar factura
 
             facturasLogicController.updateFactura(factura);
             reloadTable();
             tvFacturas.refresh();
             pgFacturas.setCurrentPageIndex(cpindex);
+            tvFacturas.getSelectionModel().select(factura);
         }
 
     }
@@ -423,50 +425,72 @@ public class FacturasController implements Initializable {
         // TODO Implementar busqueda en bases de datos.
 
         String criteria = tfBuscar.getText().trim();
-        int searchId;
         LocalDate fromDate = dpFromDate.getValue();
         LocalDate toDate = dpToDate.getValue();
 
+        if (fromDate == null) {
+            fromDate = LocalDate.now().minusYears(10);
+
+        }
+        if (toDate == null) {
+            toDate = LocalDate.now();
+
+        }
+        System.out.println("from: " + fromDate);
+        System.out.println("to: " + toDate);
+
         boolean res = false;
 
+        /**
+         * Busqueda TODAS (Todas las facturas en un rango de fechas)
+         */
         if (cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_ALL) {
-            if (fromDate == null && toDate == null) {
-                facturasData = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
+
+            ObservableList<FacturaBean> searchResults = FXCollections.observableArrayList(facturasLogicController.getFacturasByDate(fromDate, toDate));
+            if (!searchResults.isEmpty()) {
+                facturasData.setAll(searchResults);
                 res = true;
-            } else {
-                ObservableList<FacturaBean> searchResults = FXCollections.observableArrayList(facturasLogicController.getFacturasByDate(fromDate, toDate));
-                if (!searchResults.isEmpty()) {
-                    facturasData.setAll(searchResults);
-                    res = true;
-                }
             }
 
         } else if (!criteria.isEmpty()) {
             switch (cbCriteria.getSelectionModel().getSelectedIndex()) {
+                // Buscar factura por ID
                 case GTConstants.CRITERIA_INDEX_ID: {
-                    if(FieldValidator.isInteger(criteria)){
-                        // TODOOOOOO
-                    }
-                    
-                    FacturaBean factura = facturasLogicController.getFacturaById(criteria);
-                    if (factura != null) {
-                        facturasData.setAll(factura);
-                        res = true;
+                    if (FieldValidator.isInteger(criteria)) {
+
+                        FacturaBean factura = facturasLogicController.getFacturaById(Integer.parseInt(criteria));
+                        if (factura != null) {
+                            facturasData.setAll(factura);
+                            res = true;
+                        }
                     }
                     break;
                 }
+
+                // Buscar factura por id cliente + fecha
                 case GTConstants.CRITERIA_INDEX_CLIENTE:
-                    ObservableList<FacturaBean> searchResults = FXCollections.observableArrayList(facturasLogicController.getFacturasByCliente(criteria, fromDate, toDate));
-                    if (!searchResults.isEmpty()) {
-                        facturasData.setAll(searchResults);
-                        res = true;
+
+                    if (FieldValidator.isInteger(criteria)) {
+                        ObservableList<FacturaBean> searchResults
+                                = FXCollections.observableArrayList(
+                                        facturasLogicController.getFacturasByCliente(Integer.parseInt(criteria),
+                                                fromDate, toDate));
+
+                        if (!searchResults.isEmpty()) {
+                            facturasData.setAll(searchResults);
+                            res = true;
+                        }
                     }
                     break;
+
+                // Buscar factura por id reparación    
                 case GTConstants.CRITERIA_INDEX_REPARACION: {
-                    FacturaBean factura = facturasLogicController.getFacturaByReparacion(tfBuscar.getText().trim());
-                    if (factura != null) {
-                        facturasData.setAll(factura);
-                        res = true;
+                    if (FieldValidator.isInteger(criteria)) {
+                        FacturaBean factura = facturasLogicController.getFacturaByReparacion(Integer.parseInt(criteria));
+                        if (factura != null) {
+                            facturasData.setAll(factura);
+                            res = true;
+                        }
                     }
                     break;
                 }
@@ -524,8 +548,7 @@ public class FacturasController implements Initializable {
             logger.log(Level.SEVERE, "Error al cargar ventana nueva_factura.fxml.", ex);
         }
     }
-    
-    
+
     /* -----------------------------------------------------------------------*/
  /*                                  EVENTOS                                */
  /* -----------------------------------------------------------------------*/
@@ -557,8 +580,8 @@ public class FacturasController implements Initializable {
     }
 
     /**
-     * Cuando cambia el alto de la tabla se recalcula el nro de filas posibles
-     * y se actualiza la paginación acorde al nro de items por página.
+     * Cuando cambia el alto de la tabla se recalcula el nro de filas posibles y
+     * se actualiza la paginación acorde al nro de items por página.
      */
     public void handleTvFacturasHeightChanged() {
         tvFacturas.heightProperty().addListener((observable, oldValue, newValue) -> {
@@ -568,7 +591,7 @@ public class FacturasController implements Initializable {
                 // Calcular index del item seleccionado actualmente
                 int currentItemIndex = 0;
                 FacturaBean selectedFactura = tvFacturas.getSelectionModel().getSelectedItem();
-                
+
                 if (selectedFactura != null) {
                     currentItemIndex = (pgFacturas.getCurrentPageIndex() * rowsPerPage) + tvFacturas.getSelectionModel().getSelectedIndex();
                 }
@@ -578,8 +601,8 @@ public class FacturasController implements Initializable {
                 rowsPerPage = rpp.intValue();
 
                 // Reiniciar paginación con el nuevo valor asignado a rowsPerPage
-                pgFacturas.setPageCount((facturasData.size() / rowsPerPage)+1);
-                
+                pgFacturas.setPageCount((facturasData.size() / rowsPerPage) + 1);
+
                 // Si es el caso, ir a la página donde se encuentra el ultimo item seleccionado en la tabla.
                 if (currentItemIndex > rowsPerPage) {
                     int pageIndex = (int) (currentItemIndex / rowsPerPage);
@@ -590,18 +613,19 @@ public class FacturasController implements Initializable {
                 }
                 //pgFacturas.setCurrentPageIndex(-1);
                 tvFacturas.refresh();
-           
-                /**  Fix temporal para problema de actualización de tabla en 
-                *   primera página al hacer resize. 
-                *   ** No actualiza hasta que se haga focus, y si esta seleccionada ya
-                *   hasta que se haga focus en otro nodo.
-                *   TODO Buscar mejor solución. Investigar posible bug de javafx en este tema.    
-                */
-                if(tvFacturas.isFocused()){
+
+                /**
+                 * Fix temporal para problema de actualización de tabla en
+                 * primera página al hacer resize. ** No actualiza hasta que se
+                 * haga focus, y si esta seleccionada ya hasta que se haga focus
+                 * en otro nodo. TODO Buscar mejor solución. Investigar posible
+                 * bug de javafx en este tema.
+                 */
+                if (tvFacturas.isFocused()) {
                     cbCriteria.requestFocus();
-                }else{
+                } else {
                     tvFacturas.requestFocus();
-                }     
+                }
             }
         });
     }
@@ -655,7 +679,8 @@ public class FacturasController implements Initializable {
 
     /**
      * Controla acciones cuando cambia el criterio de busqueda.
-     * @param e 
+     *
+     * @param e
      */
     private void handleCbCriteriaValueChange(Event e) {
 
@@ -676,11 +701,11 @@ public class FacturasController implements Initializable {
                 tfBuscar.setDisable(false);
             }
         }
-
+        tfBuscar.clear();
+        dpFromDate.setValue(null);
+        dpToDate.setValue(null);
         reloadTable();
     }
-
-    
 
     /* -----------------------------------------------------------------------*/
  /*                         GETTERS AND SETTERS                            */
@@ -720,6 +745,5 @@ public class FacturasController implements Initializable {
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
     }
-    
-    
+
 }

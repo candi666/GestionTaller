@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * Clase para generar datos para pruebas.
+ *
  * @author Carlos
  */
 public class FacturasManagerTestDataGenerator implements FacturasManager {
@@ -70,17 +71,12 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      * @param id id de factura a buscar.
      * @return FacturaBean resultado
      */
-    public FacturaBean getFacturaById(String id) {
+    public FacturaBean getFacturaById(int id) {
         FacturaBean factura = null;
-        
-        //factura = facturas.stream().filter(f -> f.getId() == id);
-        
-        if (FieldValidator.isInteger(id)) {
-            for (FacturaBean fact : facturas) {
-                if (fact.getId() == Integer.valueOf(id)) {
-                    factura = fact;
-                }
-            }
+        try {
+            factura = facturas.stream().filter(f -> f.getId() == id).findFirst().get();
+        } catch (Exception e) {
+            logger.info("Error en búsqueda por id.");
         }
         return factura;
     }
@@ -91,16 +87,13 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      * @param id id de reparación a buscar.
      * @return FacturaBean resultado
      */
-    public FacturaBean getFacturaByReparacion(String id) {
+    public FacturaBean getFacturaByReparacion(int id) {
         FacturaBean factura = null;
-    
-        
-        if (FieldValidator.isInteger(id)) {
-            for (FacturaBean fact : facturas) {
-                if (fact.getIdreparacion() == Integer.valueOf(id)) {
-                    factura = fact;
-                }
-            }
+
+        try {
+            factura = facturas.stream().filter(f -> f.getId() == id).findFirst().get();
+        } catch (Exception e) {
+            logger.info("Error en búsqueda por id reparación.");
         }
         return factura;
     }
@@ -113,46 +106,54 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      * @return
      */
     public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate) {
-        String fDate = fromDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        String tDate = toDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        System.out.println(fDate);
+        List<FacturaBean> filteredList = new ArrayList();
 
-        // Busqueda Java8 Lambda Aggregation (Revisar funcionamiento)
-//        List<FacturaBean> filteredxList = facturas.stream().filter(f -> dateIn(f.getFecha(),fromDate,toDate))
-//                         .collect(Collectors.toList());
-        
-//        List<FacturaBean> filteredList = facturas.stream()
-//                .filter(f -> LocalDate.parse(f.getFecha(),
-//                        DateTimeFormatter.ofPattern("dd-MM-yyyy")).compareTo(fromDate)>=0)
-//                .collect(Collectors.toList());
+        try {
+            System.out.println("from: " + fromDate);
+            System.out.println("to: " + toDate);
+            filteredList = facturas.stream()
+                    .filter(f -> LocalDate.parse(f.getFecha(),
+                    DateTimeFormatter.ofPattern(GTConstants.DATE_FORMAT_SPAIN)).compareTo(fromDate) >= 0)
+                    .filter(f -> LocalDate.parse(f.getFecha(),
+                    DateTimeFormatter.ofPattern(GTConstants.DATE_FORMAT_SPAIN)).compareTo(toDate) <= 0)
+                    .collect(Collectors.toList());
 
-        // Busqueda recorriendo ArrayList
-        ArrayList<FacturaBean> filteredList = new ArrayList();
-        for (FacturaBean factura : facturas) {
-            if(dateIn(factura.getFecha(),fromDate,toDate)){
-                filteredList.add(factura);
-            }
+        } catch (Exception ex) {
+            logger.info("Error al buscar por fecha.");
         }
-        
 
-        System.out.println(filteredList.size());
-
-
-        // TODO
         return filteredList;
     }
 
     /**
-     * Obtiene facturas para un cliente en un rango de fechas
+     * Obtiene facturas para un cliente en un rango de fechas 1. Ambas fechas
+     * nulas -> Se buscan todas las facturas para ese cliente. 2. fromDate nula
+     * -> se buscan facturas desde 10 años atras hasta toDate ** Una vez
+     * implementada la db, la busqueda sera desde la fecha de creación ** de
+     * usuario. 3. toDate nula -> Busqueda desde fromDate hasta now()
      *
      * @param cliente
      * @param fromDate
      * @param toDate
      * @return
      */
-    public Collection getFacturasByCliente(String cliente, LocalDate fromDate, LocalDate toDate) {
-        // TODO
-        return null;
+    public Collection getFacturasByCliente(int idcliente, LocalDate fromDate, LocalDate toDate) {
+        List<FacturaBean> filteredList = new ArrayList();
+
+        try {
+
+            filteredList = facturas.stream().filter(f -> f.getIdcliente() == idcliente)
+                    .filter(f -> LocalDate.parse(f.getFecha(),
+                    DateTimeFormatter.ofPattern(GTConstants.DATE_FORMAT_SPAIN)).compareTo(fromDate) >= 0)
+                    .filter(f -> LocalDate.parse(f.getFecha(),
+                    DateTimeFormatter.ofPattern(GTConstants.DATE_FORMAT_SPAIN)).compareTo(toDate) <= 0)
+                    .collect(Collectors.toList());
+
+        } catch (Exception ex) {
+            logger.info("Error al buscar cliente.");
+        }
+
+        return filteredList;
     }
 
     /**
@@ -268,24 +269,25 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         return maxid;
 
     }
-    
+
     /**
      * Verifica si una fecha esta dentro de un rango de fechas.
+     *
      * @param fechaComp
      * @param fromDate
      * @param toDate
-     * @return 
+     * @return
      */
     private boolean dateIn(String fechaComp, LocalDate fromDate, LocalDate toDate) {
         LocalDate fecha;
         Boolean res = false;
 
         try {
-            fecha=LocalDate.parse(fechaComp, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            fecha = LocalDate.parse(fechaComp, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             if (fecha.equals(fromDate) || fecha.equals(toDate) || (fecha.isAfter(fromDate) && fecha.isBefore(fecha))) {
                 res = true;
                 //logger.info("Fecha encontrada: "+fecha.toString());
-            }else{
+            } else {
                 //logger.info("Fecha fuera de rango: "+fecha.toString());
             }
         } catch (Exception ex) {
