@@ -19,17 +19,30 @@
    <children>
       <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" styleClass="header-pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="%app.gui.clientes.title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Pagination fx:id="pgClientes" layoutX="402.0" layoutY="527.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0" />
-      <TableView fx:id="tvClientes" layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
-        <columns>
-          <TableColumn fx:id="tcId" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
-          <TableColumn fx:id="tcDni" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="DNI" />
-            <TableColumn fx:id="tcNombre" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="NOMBRE" />
-            <TableColumn fx:id="tcApellidos" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="APELLIDOS" />
-            <TableColumn fx:id="tcEmail" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="EMAIL" />
-            <TableColumn fx:id="tcTelefono" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TELEFONO" />
-        </columns>
-      </TableView>
+      <HBox alignment="CENTER" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <TextField fx:id="tfBuscar" maxHeight="32.0" maxWidth="300.0" minHeight="32.0" minWidth="300.0" prefHeight="32.0" prefWidth="300.0" styleClass="btn-mod" />
+            <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../resources/img/24/ic_search.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            
+         </children>
+      </HBox>
       <HBox alignment="BOTTOM_RIGHT" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="20.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="80.0">
          <children>
             <Button fx:id="btnHistorial" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon" visible="false">
@@ -94,30 +107,20 @@
             </Button>
          </children>
       </HBox>
-      <HBox alignment="CENTER" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="80.0">
-         <children>
-            <TextField fx:id="tfBuscar" maxHeight="32.0" maxWidth="300.0" minHeight="32.0" minWidth="300.0" prefHeight="32.0" prefWidth="300.0" />
-            <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../resources/img/24/ic_search.png" />
-                     </image>
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            
-         </children>
-      </HBox>
+      <Pagination fx:id="pgClientes" layoutX="402.0" layoutY="527.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Pagination>
+      <TableView fx:id="tvClientes" layoutX="141.0" layoutY="253.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="125.0">
+        <columns>
+          <TableColumn fx:id="tcId" maxWidth="80.0" minWidth="80.0" styleClass="first-col" text="ID" />
+          <TableColumn fx:id="tcDni" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="DNI" />
+            <TableColumn fx:id="tcNombre" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="NOMBRE" />
+            <TableColumn fx:id="tcApellidos" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="APELLIDOS" />
+            <TableColumn fx:id="tcEmail" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="EMAIL" />
+            <TableColumn fx:id="tcTelefono" maxWidth="162.0" minWidth="162.0" prefWidth="162.0" styleClass="last-col" text="TELEFONO" />
+        </columns>
+      </TableView>
       <Button fx:id="btnSalir" layoutX="24.0" layoutY="9.0" maxHeight="32.0" maxWidth="32.0" minHeight="23.0" minWidth="32.0" mnemonicParsing="false" onAction="#actionVolver" prefHeight="32.0" prefWidth="32.0" styleClass="btn-icon" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">

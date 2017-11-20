@@ -323,22 +323,22 @@ public class ClientesController implements Initializable {
         String criteria = tfBuscar.getText().trim();
         boolean res = false;
         
-//        if (!criteria.isEmpty()) {
-//            tvClientes.getItems().stream()
-//            .filter(item -> Objects.equals(item.getDni(), criteria))
-//            .findAny()
-//            .ifPresent((ClienteBean item) -> {
-//                tvClientes.getSelectionModel().select(item);
-//                tvClientes.scrollTo(item);
-//            });
-//            res = true;
-//        }
-        ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClienteByDni(criteria));
-        
         if (!criteria.isEmpty()) {
-            clientesData.setAll(searchResults);
+            tvClientes.getItems().stream()
+            .filter(item -> Objects.equals(item.getDni(), criteria))
+            .findAny()
+            .ifPresent((ClienteBean item) -> {
+                tvClientes.getSelectionModel().select(item);
+                tvClientes.scrollTo(item);
+            });
             res = true;
         }
+//        ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClienteByDni(criteria));
+//        
+//        if (!criteria.isEmpty()) {
+//            clientesData.setAll(searchResults);
+//            res = true;
+//        }
         
         if (res) {
             tvClientes.setItems(clientesData);
