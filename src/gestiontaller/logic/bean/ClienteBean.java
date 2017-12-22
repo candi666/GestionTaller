@@ -11,6 +11,16 @@ public class ClienteBean {
     private final SimpleStringProperty tcEmail;
     private final SimpleStringProperty tcTelefono;
     
+    /**
+     * Contructor
+     * 
+     * @param id
+     * @param dni
+     * @param nombre
+     * @param apellidos
+     * @param email
+     * @param telefono 
+     */
     public ClienteBean(Integer id, String dni, String nombre, String apellidos, String email, String telefono){
         this.tcId=new SimpleIntegerProperty(id);
         this.tcDni=new SimpleStringProperty(dni);

@@ -128,7 +128,7 @@ public class FacturasController implements Initializable {
  /*                        METODOS DE INICIALIZACIÓN                       */
  /* -----------------------------------------------------------------------*/
     /**
-     * Inicializa la stage
+     * Inicializa stage
      *
      * @param root Elemento Parent del fxml
      */
@@ -412,7 +412,8 @@ public class FacturasController implements Initializable {
     }
 
     /**
-     * Acción Crear/Modificar factura
+     * Accion crear/modificar factura
+     * @param factura If null entonces crear factura
      */
     public void actionCrearMod(FacturaBean factura) {
         /* facturasData: lista con todas las facturas
@@ -784,7 +785,7 @@ public class FacturasController implements Initializable {
     /**
      * Obtener tabla de facturas
      *
-     * @return
+     * @return tabla de facturas
      */
     public TableView<FacturaBean> getTvFacturas() {
         return tvFacturas;
@@ -793,7 +794,7 @@ public class FacturasController implements Initializable {
     /**
      * Conecta Stage a controlador
      *
-     * @param stage
+     * @param stage stage
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -802,16 +803,16 @@ public class FacturasController implements Initializable {
     /**
      * Establece owner stage
      *
-     * @param ownerStage
+     * @param ownerStage parent stage
      */
     public void setOwnerStage(Stage ownerStage) {
         this.ownerStage = ownerStage;
     }
 
     /**
-     * Pasa objeto interfaz de facturas.
+     * Establece objeto interfaz de facturas.
      *
-     * @param facturasLogicController
+     * @param facturasLogicController controlador de lógica
      */
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;

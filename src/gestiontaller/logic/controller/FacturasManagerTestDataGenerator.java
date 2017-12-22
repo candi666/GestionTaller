@@ -55,7 +55,7 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     /**
      * Obtener todas las facturas
      *
-     * @return
+     * @return Colección con todas las facturas.
      */
     public Collection getAllFacturas() {
 //        for(FacturaBean factura:facturas){
@@ -69,7 +69,7 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
      * Obtener factura por id
      *
      * @param id id de factura a buscar.
-     * @return FacturaBean resultado
+     * @return FacturaBean factura
      */
     public FacturaBean getFacturaById(int id) {
         FacturaBean factura = null;
@@ -101,9 +101,9 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     /**
      * Obtiene facturas en un rango de fechas
      *
-     * @param fromDate
-     * @param toDate
-     * @return
+     * @param fromDate fecha desde
+     * @param toDate fecha hasta
+     * @return colección de facturas en ese rango de fechas.
      */
     public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate) {
         List<FacturaBean> filteredList = new ArrayList();
@@ -125,15 +125,15 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
 
     /**
      * Obtiene facturas para un cliente en un rango de fechas 1. Ambas fechas
-     * nulas -> Se buscan todas las facturas para ese cliente. 2. fromDate nula
-     * -> se buscan facturas desde 10 años atras hasta toDate ** Una vez
+     * nulas: Se buscan todas las facturas para ese cliente. 2. fromDate nula:
+     * se buscan facturas desde 10 años atras hasta toDate ** Una vez
      * implementada la db, la busqueda sera desde la fecha de creación ** de
-     * usuario. 3. toDate nula -> Busqueda desde fromDate hasta now()
+     * usuario. 3. toDate nula: Busqueda desde fromDate hasta now.
      *
-     * @param cliente
-     * @param fromDate
-     * @param toDate
-     * @return
+     * @param idcliente id de cliente
+     * @param fromDate fecha desde
+     * @param toDate fecha hasta
+     * @return clientes con facturas en rango de fechas
      */
     public Collection getFacturasByCliente(int idcliente, LocalDate fromDate, LocalDate toDate) {
         List<FacturaBean> filteredList = new ArrayList();
@@ -157,8 +157,8 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     /**
      * Crear factura
      *
-     * @param factura
-     * @return
+     * @param factura factura a crear
+     * @return resultado de la operación
      */
     public boolean createFactura(FacturaBean factura) {
         try {
@@ -175,8 +175,8 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     /**
      * Modificar factura
      *
-     * @param factura
-     * @return
+     * @param factura factura a modificar
+     * @return resultado de la operación
      */
     public boolean updateFactura(FacturaBean factura) {
         boolean res = false;
@@ -205,8 +205,8 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     /**
      * Eliminar factura
      *
-     * @param factura
-     * @return
+     * @param factura factura a eliminar
+     * @return resultado de la operación
      */
     public boolean deleteFactura(FacturaBean factura) {
         try {
@@ -256,7 +256,7 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
     /**
      * Obtiene el maximo id con el fin de simular AUTOINCREMENT
      *
-     * @return
+     * @return id para nuevo factura
      */
     private int getMaxId() {
         for (FacturaBean fact : facturas) {
@@ -266,33 +266,6 @@ public class FacturasManagerTestDataGenerator implements FacturasManager {
         }
         return maxid;
 
-    }
-
-    /**
-     * Verifica si una fecha esta dentro de un rango de fechas.
-     *
-     * @param fechaComp
-     * @param fromDate
-     * @param toDate
-     * @return
-     */
-    private boolean dateIn(String fechaComp, LocalDate fromDate, LocalDate toDate) {
-        LocalDate fecha;
-        Boolean res = false;
-
-        try {
-            fecha = LocalDate.parse(fechaComp, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-            if (fecha.equals(fromDate) || fecha.equals(toDate) || (fecha.isAfter(fromDate) && fecha.isBefore(fecha))) {
-                res = true;
-                //logger.info("Fecha encontrada: "+fecha.toString());
-            } else {
-                //logger.info("Fecha fuera de rango: "+fecha.toString());
-            }
-        } catch (Exception ex) {
-            logger.info(HomeController.bundle.getString("app.error.indate"));
-        }
-
-        return res;
     }
 
 }

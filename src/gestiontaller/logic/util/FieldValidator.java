@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiontaller.logic.util;
 
 import gestiontaller.config.GTConstants;
@@ -15,8 +10,6 @@ import java.util.regex.Pattern;
 
 /**
  * Clase util para validación de campos
- *
- * @author Carlos
  */
 public final class FieldValidator {
 
@@ -33,8 +26,8 @@ public final class FieldValidator {
     /**
      * Verifica si un string puede ser convertido a fecha.
      *
-     * @param date
-     * @return
+     * @param date fecha a comprobar.
+     * @return fecha valida o no.
      */
     public static boolean isDate(LocalDate date) {
         try {
@@ -51,7 +44,7 @@ public final class FieldValidator {
      * Varifica si un string es un dni.
      *
      * @param testvalue string a probar.
-     * @return True -> Es dni.
+     * @return Es dni o  no.
      */
     public static boolean isDni(String testvalue) {
         String letraMayuscula = ""; 
@@ -68,8 +61,8 @@ public final class FieldValidator {
 
     /**
      * Verifica si un string cumple con las condiciones para ser un email.
-     * @param testvalue
-     * @return 
+     * @param testvalue string a probar
+     * @return Es email o no.
      */
     public static boolean isEmail(String testvalue) {
         Pattern pattern = Pattern.compile(PATTERN_EMAIL);
@@ -83,32 +76,23 @@ public final class FieldValidator {
      * Password debe tener al menos 8 caracteres y no mas de 16.
      * FieldValidator.lengthBetween(testvalue,8,16);
      *
+     * @param testvalue string a comprobar
      * @param minLength length minimo del string.
      * @param maxLength length max del string.
-     * @return
+     * @return valido o no.
      */
     public static boolean lengthBetween(String testvalue, int minLength, int maxLength) {
         // TODO
         return true;
     }
 
-    /**
-     * Verifica si un string es un numero.
-     *
-     * @return
-     */
-    public static boolean isNumber() {
-        // TODO
-        return true;
-    }
 
     /**
      * 
-     * @param testvalue
-     * @return 
+     * @param testvalue string a probar
+     * @return ..
      */
     private static boolean soloNumeros(String testvalue) {
-
         int i, j = 0;
         String numero = ""; // Es el número que se comprueba uno a uno por si hay alguna letra entre los 8 primeros dígitos
         String miDNI = ""; // Guardamos en una cadena los números para después calcular la letra
@@ -132,9 +116,6 @@ public final class FieldValidator {
     }
 
     private static String letraDNI(String testvalue) {
-        // El método es privado porque lo voy a usar internamente en esta clase, no se necesita fuera de ella
-
-        // pasar miNumero a integer
         int miDNI = Integer.parseInt(testvalue.substring(0, 8));
         int resto = 0;
         String miLetra = "";
@@ -151,8 +132,8 @@ public final class FieldValidator {
      * Verifica si un string puede ser parseado a int. + Buscar una solución
      * mejor, que no tenga excepciones.
      *
-     * @param s
-     * @return
+     * @param s string a validar
+     * @return Es un numero entero o no.
      */
     public static boolean isInteger(String s) {
         try {

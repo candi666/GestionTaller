@@ -100,8 +100,8 @@ public class ClientesController implements Initializable {
     // </editor-fold>
     /**
      * Initializes the controller class.
-     * @param url
-     * @param rb
+     * @param url ..
+     * @param rb ..
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -114,14 +114,14 @@ public class ClientesController implements Initializable {
     /**
      * Conecta Stage a controlador
      *
-     * @param stage
+     * @param stage 
      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
     /**
-     * Inicializa la stage
+     * Inicializa stage
      *
      * @param root Elemento Parent del fxml
      */
@@ -136,9 +136,7 @@ public class ClientesController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(ownerStage);
         stage.setOnShowing(this::handleWindowShowing);
-//        stage.setMaxWidth(1024);
         stage.setMinWidth(1024);
-//        stage.setMaxHeight(1024);
         stage.setMinHeight(748);
         stage.show();
 
@@ -147,7 +145,7 @@ public class ClientesController implements Initializable {
     /**
      * Establece owner stage
      *
-     * @param ownerStage
+     * @param ownerStage 
      */
     public void setOwnerStage(Stage ownerStage) {
         this.ownerStage = ownerStage;
@@ -168,28 +166,24 @@ public class ClientesController implements Initializable {
     }
 
     /**
-     * Modelo de creación de pagina para paginación.
-     *
-     * @param pageIndex
-     * @return
+     * Actualizar numero de paginas
      */
     private void initPagination() {
-
         pgClientes.setPageCount((clientesData.size() / rowsPerPage) + 1);
         pgClientes.setPageFactory(this::createPage);
-
     }
 
     /**
-     *
-     * @param clientesLogicController
+     * Establecer interfaz
+     * 
+     * @param clientesLogicController ..
      */
     public void setClientesManager(ClientesManager clientesLogicController) {
         this.clientesLogicController = clientesLogicController;
     }
 
     /**
-     *
+     * Cargar datos a la tabla
      */
     public void initTable() {
         tableColumnResizeBinds();
@@ -208,7 +202,7 @@ public class ClientesController implements Initializable {
     }
 
     /**
-     *
+     * Menu Contextual
      */
     public void initContextMenu() {
         final ContextMenu cm = new ContextMenu();
@@ -274,7 +268,14 @@ public class ClientesController implements Initializable {
         tcEmail.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.2));
         tcTelefono.prefWidthProperty().bind(tvClientes.widthProperty().multiply(0.1));
     }
-
+    
+    /**
+     * Listener de seleccion
+     * 
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
     private void handleClientesTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue) {
         if (newValue != null) {
             btnHistorial.setDisable(false);
@@ -295,7 +296,6 @@ public class ClientesController implements Initializable {
         tvClientes.heightProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue.doubleValue() > 0 && oldValue.doubleValue() != 0) {
-
                 int currentItemIndex = 0;
                 ClienteBean selectedFactura = tvClientes.getSelectionModel().getSelectedItem();
 
@@ -305,7 +305,6 @@ public class ClientesController implements Initializable {
 
                 Double rpp = (newValue.doubleValue() - GTConstants.DEFAULT_ROW_HEIGHT) / GTConstants.DEFAULT_ROW_HEIGHT;
                 rowsPerPage = rpp.intValue();
-
                 pgClientes.setPageCount((clientesData.size() / rowsPerPage) + 1);
 
                 if (currentItemIndex > rowsPerPage) {
@@ -327,7 +326,7 @@ public class ClientesController implements Initializable {
     }
 
     /**
-     * Obtiene datos del modelo y los carga en la tabla.
+     * Obtiene datos del modelo y los carga en la tabla
      */
     public void reloadTable() {
         clientesData = FXCollections.observableArrayList(clientesLogicController.getAllClientes());
@@ -336,9 +335,11 @@ public class ClientesController implements Initializable {
         initPagination();
         tvClientes.refresh();
     }
-
+    
+    /**
+     * Inicializa acciones 
+     */
     private void handleActionEvents() {
-        // CRUD
         btnAnadir.setOnAction(e -> loadCrearMod(null));
         btnModificar.setOnAction(e -> loadCrearMod(tvClientes.getSelectionModel().getSelectedItem()));
         btnBuscar.setOnAction(e -> actionBuscar());
@@ -363,7 +364,6 @@ public class ClientesController implements Initializable {
             }
 
         } else {
-
             clientesLogicController.updateCliente(cliente);
             reloadTable();
             tvClientes.refresh();
@@ -372,6 +372,9 @@ public class ClientesController implements Initializable {
 
     }
 
+    /**
+     * Eliminar cliente
+     */
     @FXML
     private void actionEliminar() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -385,7 +388,6 @@ public class ClientesController implements Initializable {
                 reloadTable();
                 int pcount = pgClientes.getPageCount();
 
-                // Si es la ultima row de una pagina...
                 if ((clientesData.size()) < (pcount - 1) * (rowsPerPage)) {
                     pgClientes.setPageCount(pcount - 1);
                     if (cpindex == (pcount - 1)) {
@@ -394,7 +396,6 @@ public class ClientesController implements Initializable {
                 }
             }
 
-            // Si no es la primera pagina 
             if (cpindex > 0) {
                 pgClientes.setCurrentPageIndex(cpindex);
             }
@@ -402,13 +403,16 @@ public class ClientesController implements Initializable {
 
     }
 
+    /**
+     * Buscar cliente
+     */
     private void actionBuscar() {
         String criteria = tfBuscar.getText().trim();
         boolean res = false;
 
         if (!criteria.isEmpty()) {
-            
             ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClientesByCriteria(criteria));
+            
             if (!searchResults.isEmpty()) {
                 clientesData.setAll(searchResults);
                 res = true;
@@ -420,23 +424,29 @@ public class ClientesController implements Initializable {
 
         if (res) {
             tvClientes.setItems(clientesData);
-            logger.log(Level.SEVERE, "entra.");
         } else {
             clientesData.clear();
             tvClientes.getItems().clear();
-            logger.log(Level.SEVERE, ".........");
         }
         initPagination();
         tvClientes.refresh();
 
     }
 
+    /**
+     * Cerrar ventana
+     */
     @FXML
     private void actionVolver() {
         stage.close();
         ownerStage.requestFocus();
     }
 
+    /**
+     * Abre ventana de Crear o Modificar cliente
+     * 
+     * @param cliente 
+     */
     private void loadCrearMod(ClienteBean cliente) {
         try {
             ClientesManager clientesLogicController = new ClientesManagerTestDataGenerator();
@@ -448,7 +458,7 @@ public class ClientesController implements Initializable {
             ctr.setClientesManager(clientesLogicController);
             ctr.setClientesController(this);
 
-            // En caso de opción Modificar
+            //Modificar
             if (cliente != null) {
                 ctr.setCliente(cliente);
             }
@@ -476,13 +486,17 @@ public class ClientesController implements Initializable {
     }
 
     /**
-     *
+     * Obtiene tabla
+     * 
      * @return
      */
     public TableView getTableView() {
         return this.tvClientes;
     }
     
+    /**
+     * Acciones para modificar y borrar fila selecionada desde teclado
+     */
     private void handleKeysOnTable() {
         tvClientes.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
