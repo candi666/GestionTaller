@@ -61,7 +61,7 @@
             <Label text="%app.gui.facturas.cu.reparacion" />
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="cbReparacion" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
+                  <ComboBox fx:id="cbReparacion" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" styleClass="btn-mod" />
                   <ImageView fx:id="hintReparacion" fitHeight="16.0" fitWidth="16.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../../../../resources/img/16/info.png" />
@@ -75,7 +75,7 @@
             <Label text="%app.gui.facturas.cu.cliente" />
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="cbCliente" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" />
+                  <ComboBox fx:id="cbCliente" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" styleClass="btn-mod" />
                   <ImageView fx:id="hintCliente" fitHeight="16.0" fitWidth="16.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../../../../resources/img/16/info.png" />
@@ -110,12 +110,12 @@
             </HBox>
                  <HBox alignment="CENTER_LEFT" prefHeight="24.0" prefWidth="258.0" spacing="20.0">
                     <children>
-                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" text="%generic.crud.add">
+                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" styleClass="btn-mod" text="%generic.crud.add">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>
                        </Button>
-                       <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#actionVolver" text="Volver">
+                       <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#actionVolver" styleClass="btn-mod" text="Volver">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>

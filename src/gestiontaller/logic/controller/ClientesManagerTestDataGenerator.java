@@ -107,10 +107,10 @@ public class ClientesManagerTestDataGenerator implements ClientesManager{
     public boolean deleteCliente(ClienteBean cliente) {
        try {
             clientes.remove(cliente);
-            logger.info("Factura id: " + cliente.getId() + " eliminada.");
+            logger.info("Cliente id: " + cliente.getId() + " eliminada.");
             return true;
         } catch (Exception e) {
-            logger.info("Ha ocurrido un error al intentar eliminar factura id: " + cliente.getId());
+            logger.info("Ha ocurrido un error al intentar eliminar cliente id: " + cliente.getId());
             return false;
         }
     }
