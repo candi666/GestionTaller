@@ -94,12 +94,12 @@
             </HBox>
                  <HBox alignment="CENTER" prefHeight="47.0" prefWidth="260.0" spacing="50.0">
                     <children>
-                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" text="%generic.crud.add">
+                       <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#actionCrearMod" styleClass="btn-mod" text="%generic.crud.add">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>
                        </Button>
-                       <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#actionVolver" text="%generic.label.back">
+                       <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#actionVolver" styleClass="btn-mod" text="%generic.label.back">
                           <cursor>
                              <Cursor fx:constant="HAND" />
                           </cursor>

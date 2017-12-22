@@ -21,7 +21,7 @@
       <Label alignment="CENTER" contentDisplay="TOP" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="mod-title" text="%app.gui.clientes.title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <HBox alignment="CENTER" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="80.0">
          <children>
-            <TextField fx:id="tfBuscar" maxHeight="32.0" maxWidth="300.0" minHeight="32.0" minWidth="300.0" prefHeight="32.0" prefWidth="300.0" styleClass="btn-mod" />
+            <TextField fx:id="tfBuscar" maxHeight="32.0" maxWidth="300.0" minHeight="32.0" minWidth="300.0" prefHeight="32.0" prefWidth="300.0" promptText="Buscar por: ID, Nombre, DNI" styleClass="btn-mod" />
             <Button fx:id="btnBuscar" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="btn-icon">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
