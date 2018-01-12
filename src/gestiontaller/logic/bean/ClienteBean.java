@@ -2,7 +2,9 @@ package gestiontaller.logic.bean;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name="cliente")
 public class ClienteBean {
     private final SimpleIntegerProperty tcId;
     private final SimpleStringProperty tcDni; 

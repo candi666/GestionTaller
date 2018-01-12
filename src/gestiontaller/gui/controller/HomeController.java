@@ -6,7 +6,7 @@ import gestiontaller.gui.controller.clientes.ClientesController;
 import gestiontaller.gui.controller.facturas.FacturasController;
 import gestiontaller.gui.controller.piezas.PiezasController;
 import gestiontaller.gui.controller.reparaciones.ReparacionesController;
-import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
+import gestiontaller.logic.controller.ClientesManagerImplementation;
 import gestiontaller.logic.controller.FacturasManagerTestDataGenerator;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.interfaces.FacturasManager;
@@ -149,7 +149,7 @@ public class HomeController implements Initializable {
     @FXML
     private void loadClientes() {
         try {
-            ClientesManager clientesLogicController = new ClientesManagerTestDataGenerator();
+            ClientesManager clientesLogicController = new ClientesManagerImplementation();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/clientes/modulo_clientes.fxml"));
             loader.setResources(bundle);
             AnchorPane root = (AnchorPane) loader.load();
