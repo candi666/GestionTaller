@@ -8,15 +8,21 @@ import gestiontaller.logic.bean.FacturaBean;
 import gestiontaller.logic.util.FieldValidator;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,13 +47,17 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import static javafx.scene.input.KeyCode.S;
+import static javafx.scene.input.KeyCode.T;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -57,6 +67,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class Controlador para ventana de gestión de facturas.
@@ -71,6 +82,7 @@ public class FacturasController implements Initializable {
     private FacturasManager facturasLogicController;
     private ObservableList<FacturaBean> facturasData;
     private int rowsPerPage = GTConstants.MAX_ROWS_TABLE_FACTURAS;
+    DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
     // <editor-fold defaultstate="collapsed" desc="@FXML NODES">
     @FXML
@@ -96,13 +108,13 @@ public class FacturasController implements Initializable {
     @FXML
     private TableColumn<FacturaBean, SimpleIntegerProperty> tcId;
     @FXML
-    private TableColumn<FacturaBean, SimpleStringProperty> tcFecha;
+    private TableColumn<FacturaBean, Date> tcFecha;
     @FXML
-    private TableColumn<FacturaBean, SimpleStringProperty> tcFechaVenc;
+    private TableColumn<FacturaBean, Date> tcFechaVenc;
     @FXML
-    private TableColumn<FacturaBean, SimpleIntegerProperty> tcIdReparacion;
+    private TableColumn<FacturaBean, SimpleObjectProperty> tcIdReparacion;
     @FXML
-    private TableColumn<FacturaBean, SimpleIntegerProperty> tcIdCliente;
+    private TableColumn<FacturaBean, SimpleObjectProperty> tcIdCliente;
     @FXML
     private TableColumn<FacturaBean, SimpleDoubleProperty> tcTotal;
     @FXML
@@ -172,7 +184,7 @@ public class FacturasController implements Initializable {
      */
     private void initPagination() {
 
-        pgFacturas.setPageCount((facturasData.size() / rowsPerPage) + 1);
+        pgFacturas.setPageCount(((facturasData == null ? 0 : facturasData.size()) / rowsPerPage) + 1);
         pgFacturas.setPageFactory(this::createPage);
     }
 
@@ -194,8 +206,8 @@ public class FacturasController implements Initializable {
         cbCriteria.setOnAction(this::handleCbCriteriaValueChange);
         tfBuscar.setDisable(true);
     }
-    
-    private void initTooltips(){
+
+    private void initTooltips() {
         // Tooltip fecha
         Tooltip tipFecha = new Tooltip("Ej: 01/01/2017 ó 01-01-2017");
         tipFecha.setAutoFix(true);
@@ -203,35 +215,35 @@ public class FacturasController implements Initializable {
         tipFecha.setMaxSize(200, 60);
         Tooltip.install(dpFromDate, tipFecha);
         Tooltip.install(dpToDate, tipFecha);
-        
+
         // Tooltip crear
         Tooltip tipAdd = new Tooltip("Crear");
         tipFecha.setAutoFix(true);
         tipFecha.setWrapText(true);
         tipFecha.setMaxSize(200, 60);
         Tooltip.install(btnAnadir, tipAdd);
-        
+
         // Tooltip modificar
         Tooltip tipUpdate = new Tooltip("Modificar");
         tipFecha.setAutoFix(true);
         tipFecha.setWrapText(true);
         tipFecha.setMaxSize(200, 60);
         Tooltip.install(btnModificar, tipUpdate);
-        
+
         // Tooltip eliminar
         Tooltip tipDelete = new Tooltip("Eliminar");
         tipFecha.setAutoFix(true);
         tipFecha.setWrapText(true);
         tipFecha.setMaxSize(200, 60);
         Tooltip.install(btnEliminar, tipDelete);
-        
+
         // Tooltip pagar
         Tooltip tipPay = new Tooltip("Pagar");
         tipFecha.setAutoFix(true);
         tipFecha.setWrapText(true);
         tipFecha.setMaxSize(200, 60);
         Tooltip.install(btnPagado, tipPay);
-        
+
     }
 
     /**
@@ -255,9 +267,46 @@ public class FacturasController implements Initializable {
         // TableCellFactory
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        // Custom rendering of the table cell.
+        tcFecha.setCellFactory(column -> {
+            return new TableCell<FacturaBean, Date>() {
+                @Override
+                protected void updateItem(Date item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        // Format date.
+                        setText(dateFormatter.format(item));
+                    }
+                }
+            };
+        });
+
         tcFechaVenc.setCellValueFactory(new PropertyValueFactory<>("fechavenc"));
-        tcIdReparacion.setCellValueFactory(new PropertyValueFactory<>("idreparacion"));
-        tcIdCliente.setCellValueFactory(new PropertyValueFactory<>("idcliente"));
+        // Custom rendering of the table cell.
+        tcFechaVenc.setCellFactory(column -> {
+            return new TableCell<FacturaBean, Date>() {
+                @Override
+                protected void updateItem(Date item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        // Format date.
+                        setText(dateFormatter.format(item));
+                    }
+                }
+            };
+        });
+        
+        tcIdReparacion.setCellValueFactory(new PropertyValueFactory<>("reparacion"));
+        tcIdCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
+
         tcTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
 
         /* Definición de columna Pagado.
@@ -413,6 +462,7 @@ public class FacturasController implements Initializable {
 
     /**
      * Accion crear/modificar factura
+     *
      * @param factura If null entonces crear factura
      */
     public void actionCrearMod(FacturaBean factura) {
@@ -471,16 +521,8 @@ public class FacturasController implements Initializable {
         // TODO Implementar busqueda en bases de datos.
 
         String criteria = tfBuscar.getText().trim();
-        LocalDate fromDate = dpFromDate.getValue();
-        LocalDate toDate = dpToDate.getValue();
-
-        if (fromDate == null) {
-            fromDate = LocalDate.now().minusYears(10);
-
-        }
-        if (toDate == null) {
-            toDate = LocalDate.now();
-        }
+        LocalDate fromDate = dpFromDate.getValue()==null ? LocalDate.now().minusYears(10) : dpFromDate.getValue();
+        LocalDate toDate = dpToDate.getValue()==null ? LocalDate.now() : dpToDate.getValue();
 
         boolean res = false;
 
@@ -490,6 +532,7 @@ public class FacturasController implements Initializable {
         if (cbCriteria.getSelectionModel().getSelectedIndex() == GTConstants.CRITERIA_INDEX_ALL) {
 
             ObservableList<FacturaBean> searchResults = FXCollections.observableArrayList(facturasLogicController.getFacturasByDate(fromDate, toDate));
+            System.out.println(searchResults.size());
             if (!searchResults.isEmpty()) {
                 facturasData.setAll(searchResults);
                 res = true;
@@ -593,8 +636,7 @@ public class FacturasController implements Initializable {
     }
 
     /**
-     * Acciones con teclado cuando tableview is focused
-     * 1. ENTER -> modificar.
+     * Acciones con teclado cuando tableview is focused 1. ENTER -> modificar.
      * 2. DELETE -> eliminar.
      */
     private void handleKeysOnTable() {
@@ -607,13 +649,13 @@ public class FacturasController implements Initializable {
                             loadCrearMod(tvFacturas.getSelectionModel().getSelectedItem());
                         }
                         break;
-                    
+
                     case DELETE:
                         if (tvFacturas.getSelectionModel().getSelectedItem() != null) {
                             actionEliminar();
                         }
                         break;
-                        
+
                     default:
                         break;
                 }

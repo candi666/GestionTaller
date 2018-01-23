@@ -77,4 +77,9 @@ public class ClienteBean {
     public void setTelefono(String telefono){
         this.telefono.set(telefono);
     }
+    
+    @Override
+    public String toString(){
+        return this.getId().toString();
+    }
 }

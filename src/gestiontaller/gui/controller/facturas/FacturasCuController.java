@@ -2,8 +2,14 @@ package gestiontaller.gui.controller.facturas;
 
 import gestiontaller.config.GTConstants;
 import gestiontaller.gui.controller.HomeController;
+import gestiontaller.logic.bean.ClienteBean;
 import gestiontaller.logic.interfaces.FacturasManager;
 import gestiontaller.logic.bean.FacturaBean;
+import gestiontaller.logic.bean.ReparacionBean;
+import gestiontaller.logic.controller.ClientesManagerImplementation;
+import gestiontaller.logic.controller.ReparacionesManagerImp;
+import gestiontaller.logic.interfaces.ClientesManager;
+import gestiontaller.logic.interfaces.ReparacionesManager;
 import gestiontaller.logic.util.FieldValidator;
 import java.net.URL;
 import java.time.LocalDate;
@@ -28,6 +34,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -37,6 +45,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
@@ -50,6 +60,8 @@ public class FacturasCuController implements Initializable {
     private Stage ownerStage;
     private FacturaBean factura;
     private FacturasManager facturasLogicController;
+    private ReparacionesManager reparacionesLogicController;
+    private ClientesManager clientesLogicController;
     private FacturasController facturasController;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -61,9 +73,9 @@ public class FacturasCuController implements Initializable {
     @FXML
     private DatePicker dpFechaVenc;
     @FXML
-    private ComboBox<Integer> cbReparacion;
+    private ComboBox<ReparacionBean> cbReparacion;
     @FXML
-    private ComboBox<Integer> cbCliente;
+    private ComboBox<ClienteBean> cbCliente;
     @FXML
     private TextField tfTotal;
     @FXML
@@ -91,7 +103,8 @@ public class FacturasCuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        reparacionesLogicController = new ReparacionesManagerImp();
+        clientesLogicController = new ClientesManagerImplementation();
     }
 
     /**
@@ -108,7 +121,7 @@ public class FacturasCuController implements Initializable {
             lblTitulo.setText("Modificar factura");
             btnCrear.setText("Modificar");
         }
-        
+
         stage.getIcons().add(new Image(GTConstants.PATH_LOGO));
         stage.setResizable(false);
 
@@ -166,7 +179,7 @@ public class FacturasCuController implements Initializable {
      * Carga datos en el formulario
      */
     private void populateForm() {
-        initComboBoxes();
+
         if (factura != null) {
             logger.info("Abierta ventana modificar factura.");
 
@@ -181,8 +194,7 @@ public class FacturasCuController implements Initializable {
             // Asignar valores de objeto seleccionado a los campos
             dpFecha.setValue(fecha);
             dpFechaVenc.setValue(fechaVenc);
-            cbReparacion.setValue(factura.getReparacion().getId());
-            cbCliente.setValue(factura.getCliente().getId());
+            initComboBoxes(factura.getReparacion(), factura.getCliente());
             chbPagada.setSelected(factura.getPagada());
 
             // TODO FORMAT DOUBLE DOS DECIMALES
@@ -236,7 +248,9 @@ public class FacturasCuController implements Initializable {
                 //factura.setFecha(fecha);
                 factura.setFechavenc(fechavenc);
                 factura.setTotal(total);
+
                 factura.setReparacion(cbReparacion.getValue());
+
                 factura.setCliente(cbCliente.getValue());
                 factura.setPagada(chbPagada.isSelected());
 
@@ -254,33 +268,87 @@ public class FacturasCuController implements Initializable {
     }
 
     /**
-     * Carga datos en comboboxes reparacion y cliente.
+     * Populate Reparacion and Cliente comboboxes
      */
-    public void initComboBoxes() {
-        ObservableList<FacturaBean> obList = FXCollections.observableArrayList(facturasLogicController.getAllFacturas());
-        cbReparacion.getItems().clear();
-        cbCliente.getItems().clear();
+    public void initComboBoxes(ReparacionBean reparacion, ClienteBean cliente) {
+//        cbReparacion.getItems().clear();
+//        cbCliente.getItems().clear();
 
-        ArrayList<Integer> reparaciones = new ArrayList();
-        ArrayList<Integer> clientes = new ArrayList();
-
-        for (FacturaBean factura : obList) {
-            /* TODO Al implementar la base de datos se deberan cargar solo los
-             * idreparacion que no esten asociados a ninguna factura.
-             */
-            reparaciones.add(factura.getIdreparacion());
-
-            /* TODO Carga los clientes registrados en la aplicación.
-             * Al implementar la base de datos debera buscar en la tabla clientes.
-             */
-            if (!cbCliente.getItems().contains(factura.getIdcliente())) {
-                clientes.add(factura.getIdcliente());
+        cbReparacion.setItems(FXCollections.observableArrayList(reparacionesLogicController.getAllReparaciones()));
+        cbReparacion.setCellFactory(new Callback<ListView<ReparacionBean>, ListCell<ReparacionBean>>() {
+            @Override
+            public ListCell<ReparacionBean> call(ListView<ReparacionBean> p) {
+                final ListCell<ReparacionBean> cell = new ListCell<ReparacionBean>() {
+                    @Override
+                    protected void updateItem(ReparacionBean reparacion, boolean bln) {
+                        super.updateItem(reparacion, bln);
+                        if (reparacion != null) {
+                            setText(reparacion.getId() + ", " + reparacion.getDescripcion());
+                        } else {
+                            setText(null);
+                        }
+                    }
+                };
+                return cell;
             }
-        }
-        reparaciones.sort(null);
-        cbReparacion.getItems().addAll(reparaciones);
-        clientes.sort(null);
-        cbCliente.getItems().addAll(clientes);
+        });
+        //selected value showed in combo box
+        cbReparacion.setConverter(new StringConverter<ReparacionBean>() {
+              @Override
+              public String toString(ReparacionBean reparacion) {
+                if (reparacion == null){
+                  return null;
+                } else {
+                  return reparacion.getId()+", "+reparacion.getDescripcion();
+                }
+              }
+
+            @Override
+            public ReparacionBean fromString(String id) {
+                return reparacion;
+            }
+        });
+        
+        
+        cbCliente.setItems(FXCollections.observableArrayList(clientesLogicController.getAllClientes()));
+        cbCliente.setCellFactory(new Callback<ListView<ClienteBean>, ListCell<ClienteBean>>() {
+            @Override
+            public ListCell<ClienteBean> call(ListView<ClienteBean> p) {
+                final ListCell<ClienteBean> cell = new ListCell<ClienteBean>() {
+                    @Override
+                    protected void updateItem(ClienteBean cliente, boolean bln) {
+                        super.updateItem(cliente, bln);
+                        if (cliente != null) {
+                            setText(cliente.getId() + ", " + cliente.getNombre() + " " + cliente.getApellidos());
+                        } else {
+                            setText(null);
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+        cbCliente.setConverter(new StringConverter<ClienteBean>() {
+              @Override
+              public String toString(ClienteBean cliente) {
+                if (cliente == null){
+                  return null;
+                } else {
+                  return cliente.getId()+", "+cliente.getNombre()+" "+cliente.getApellidos();
+                }
+              }
+
+            @Override
+            public ClienteBean fromString(String id) {
+                return cliente;
+            }
+        });
+
+        cbReparacion.setValue((reparacion == null ? null : reparacion));
+        cbCliente.setValue((cliente == null ? null : cliente));
+
+        cbReparacion.setPromptText(HomeController.bundle.getString("app.gui.facturas.cu.cbhint"));
+        cbCliente.setPromptText(HomeController.bundle.getString("app.gui.facturas.cu.cbhint"));
 
     }
 
