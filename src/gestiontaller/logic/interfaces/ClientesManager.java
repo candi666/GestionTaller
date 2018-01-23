@@ -12,8 +12,8 @@ public interface ClientesManager {
     
     public ClienteBean getClientesById(Integer id);
     public Collection getAllClientes();
-    public ClienteBean getClientesByDni(String dni);
-    public ClienteBean getClienteByNombre(String nombre);
+    public Collection getClientesByDni(String dni);
+    public Collection getClienteByNombre(String nombre);
     public Collection getClientesByCriteria(String criteria);
     public void deleteCliente(ClienteBean cliente);
     public void createCliente(ClienteBean cliente);

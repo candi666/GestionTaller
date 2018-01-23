@@ -406,10 +406,11 @@ public class ClientesController implements Initializable {
      */
     private void actionBuscar() {
         String criteria = tfBuscar.getText().trim();
+        
         boolean res = false;
 
         if (!criteria.isEmpty()) {
-            ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClientesByCriteria(criteria));
+            ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClienteByNombre(criteria));
             
             if (!searchResults.isEmpty()) {
                 clientesData.setAll(searchResults);
@@ -518,4 +519,21 @@ public class ClientesController implements Initializable {
             }
         });
     }
+    
+    @FXML
+    private void handleHelpAction(ActionEvent event){
+        try{
+            //Load node graph from fxml file
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/gestiontaller/gui/view/clientes/help_clientes.fxml"));
+            AnchorPane root = (AnchorPane)loader.load();
+            Help_clientesController help_clientesController=((Help_clientesController)loader.getController());
+            //Initializes and shows help stage
+            help_clientesController.initAndShowStage(root);
+        }catch(IOException ex){
+            Alert alert=new Alert(Alert.AlertType.ERROR,"No se ha podido abrir la ventana:"+ex.getMessage(),ButtonType.OK);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/gestiontaller/gui/style/help_clientes.css").toExternalForm());
+            alert.showAndWait();
+        }
+
+    } 
 }

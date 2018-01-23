@@ -34,15 +34,17 @@ public class ClientesManagerImplementation implements ClientesManager{
     }
 
     @Override
-    public ClienteBean getClientesByDni(String dni) {
+    public Collection getClientesByDni(String dni) {
         LOGGER.info("ClientesManager: Finding cliente by DNI from REST service (XML).");
-        return webClient.findByDni_XML(ClienteBean.class, dni);
+        List<ClienteBean> clientes = webClient.findByDni_XML(new GenericType<List<ClienteBean>>() {}, dni);
+        return clientes;
     }
 
     @Override
-    public ClienteBean getClienteByNombre(String nombre) {
+    public Collection getClienteByNombre(String nombre) {
         LOGGER.info("ClientesManager: Finding cliente by Nombre from REST service (XML).");
-        return webClient.findByName_XML(ClienteBean.class, nombre);
+        List<ClienteBean> clientes = webClient.findByName_XML(new GenericType<List<ClienteBean>>() {}, nombre);
+        return clientes;
     }
     
     @Override

@@ -6,12 +6,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="cliente")
 public class ClienteBean {
-    private final SimpleIntegerProperty tcId;
-    private final SimpleStringProperty tcDni; 
-    private final SimpleStringProperty tcNombre;
-    private final SimpleStringProperty tcApellidos;
-    private final SimpleStringProperty tcEmail;
-    private final SimpleStringProperty tcTelefono;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty dni; 
+    private final SimpleStringProperty nombre;
+    private final SimpleStringProperty apellidos;
+    private final SimpleStringProperty email;
+    private final SimpleStringProperty telefono;
     
     /**
      * Contructor
@@ -24,48 +24,57 @@ public class ClienteBean {
      * @param telefono 
      */
     public ClienteBean(Integer id, String dni, String nombre, String apellidos, String email, String telefono){
-        this.tcId=new SimpleIntegerProperty(id);
-        this.tcDni=new SimpleStringProperty(dni);
-        this.tcNombre=new SimpleStringProperty(nombre);
-        this.tcApellidos=new SimpleStringProperty(apellidos);
-        this.tcEmail=new SimpleStringProperty(email);
-        this.tcTelefono=new SimpleStringProperty(telefono);
+        this.id=new SimpleIntegerProperty(id);
+        this.dni=new SimpleStringProperty(dni);
+        this.nombre=new SimpleStringProperty(nombre);
+        this.apellidos=new SimpleStringProperty(apellidos);
+        this.email=new SimpleStringProperty(email);
+        this.telefono=new SimpleStringProperty(telefono);
+    }
+    
+    public ClienteBean(){
+        this.id=new SimpleIntegerProperty(0);
+        this.dni=new SimpleStringProperty(null);
+        this.nombre=new SimpleStringProperty(null);
+        this.apellidos=new SimpleStringProperty(null);
+        this.email=new SimpleStringProperty(null);
+        this.telefono=new SimpleStringProperty(null);
     }
 
     public Integer getId(){
-        return this.tcId.get();
+        return this.id.get();
     }
     public void setId(Integer id){
-        this.tcId.set(id);
+        this.id.set(id);
     }
     public String getDni(){
-        return this.tcDni.get();
+        return this.dni.get();
     }
     public void setDni(String dni){
-        this.tcDni.set(dni);
+        this.dni.set(dni);
     }
     public String getNombre(){
-        return this.tcNombre.get();
+        return this.nombre.get();
     }
     public void setNombre(String nombre){
-        this.tcNombre.set(nombre);
+        this.nombre.set(nombre);
     }
     public String getApellidos(){
-        return this.tcApellidos.get();
+        return this.apellidos.get();
     }
     public void setApellidos(String apellidos){
-        this.tcApellidos.set(apellidos);
+        this.apellidos.set(apellidos);
     }
     public String getEmail(){
-        return this.tcEmail.get();
+        return this.email.get();
     }
     public void setEmail(String email){
-        this.tcEmail.set(email);
+        this.email.set(email);
     }
     public String getTelefono(){
-        return this.tcTelefono.get();
+        return this.telefono.get();
     }
     public void setTelefono(String telefono){
-        this.tcTelefono.set(telefono);
+        this.telefono.set(telefono);
     }
 }

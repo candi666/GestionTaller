@@ -136,6 +136,11 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <Button fx:id="btnAyuda" defaultButton="true" layoutX="927.0" layoutY="10.0" maxHeight="32.0" maxWidth="64.0" minHeight="23.0" minWidth="32.0" mnemonicParsing="false" onAction="#handleHelpAction" prefHeight="32.0" prefWidth="64.0" styleClass="btn-icon" text="Ayuda">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
    </children>
    <stylesheets>
       <URL value="@../../style/styles.css" />

@@ -44,13 +44,13 @@ public class ClienteREST {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findByDni_XML(Class<T> responseType, String dni) throws ClientErrorException {
+    public <T> T findByDni_XML(GenericType<T> responseType, String dni) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dni/{0}", new Object[]{dni}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findByName_XML(Class<T> responseType, String nombre) throws ClientErrorException {
+    public <T> T findByName_XML(GenericType<T> responseType, String nombre) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("nombre/{0}", new Object[]{nombre}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
