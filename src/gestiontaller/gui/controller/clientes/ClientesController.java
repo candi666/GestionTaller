@@ -4,7 +4,7 @@ import gestiontaller.App;
 import gestiontaller.config.GTConstants;
 import gestiontaller.gui.controller.HomeController;
 import static gestiontaller.gui.controller.HomeController.bundle;
-import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
+import gestiontaller.logic.controller.ClientesManagerImplementation;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.bean.ClienteBean;
 import java.io.IOException;
@@ -353,16 +353,15 @@ public class ClientesController implements Initializable {
         int cpindex = pgClientes.getCurrentPageIndex();
 
         if (cliente.getId() == 0) {
-            if (clientesLogicController.createCliente(cliente)) {
-                reloadTable();
-                int pcount = pgClientes.getPageCount();
+            clientesLogicController.createCliente(cliente);
+            reloadTable();
+            int pcount = pgClientes.getPageCount();
 
-                if ((clientesData.size() - 1) > (pcount) * rowsPerPage) {
-                    pgClientes.setPageCount(pcount + 1);
-                    pgClientes.setCurrentPageIndex(pcount + 1);
-                }
+            if ((clientesData.size() - 1) > (pcount) * rowsPerPage) {
+                pgClientes.setPageCount(pcount + 1);
+                pgClientes.setCurrentPageIndex(pcount + 1);
             }
-
+            
         } else {
             clientesLogicController.updateCliente(cliente);
             reloadTable();
@@ -384,18 +383,17 @@ public class ClientesController implements Initializable {
         if (result.get() == ButtonType.OK) {
             int cpindex = pgClientes.getCurrentPageIndex();
 
-            if (clientesLogicController.deleteCliente(tvClientes.getSelectionModel().getSelectedItem())) {
-                reloadTable();
-                int pcount = pgClientes.getPageCount();
+            clientesLogicController.deleteCliente(tvClientes.getSelectionModel().getSelectedItem());
+            reloadTable();
+            int pcount = pgClientes.getPageCount();
 
-                if ((clientesData.size()) < (pcount - 1) * (rowsPerPage)) {
-                    pgClientes.setPageCount(pcount - 1);
-                    if (cpindex == (pcount - 1)) {
-                        cpindex--;
-                    }
+            if ((clientesData.size()) < (pcount - 1) * (rowsPerPage)) {
+                pgClientes.setPageCount(pcount - 1);
+                if (cpindex == (pcount - 1)) {
+                    cpindex--;
                 }
             }
-
+            
             if (cpindex > 0) {
                 pgClientes.setCurrentPageIndex(cpindex);
             }
@@ -408,10 +406,11 @@ public class ClientesController implements Initializable {
      */
     private void actionBuscar() {
         String criteria = tfBuscar.getText().trim();
+        
         boolean res = false;
 
         if (!criteria.isEmpty()) {
-            ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClientesByCriteria(criteria));
+            ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClienteByNombre(criteria));
             
             if (!searchResults.isEmpty()) {
                 clientesData.setAll(searchResults);
@@ -449,7 +448,7 @@ public class ClientesController implements Initializable {
      */
     private void loadCrearMod(ClienteBean cliente) {
         try {
-            ClientesManager clientesLogicController = new ClientesManagerTestDataGenerator();
+            ClientesManager clientesLogicController = new ClientesManagerImplementation();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/clientes/nuevo_cliente.fxml"));
             loader.setResources(HomeController.bundle);
             AnchorPane root = (AnchorPane) loader.load();
@@ -520,4 +519,21 @@ public class ClientesController implements Initializable {
             }
         });
     }
+    
+    @FXML
+    private void handleHelpAction(ActionEvent event){
+        try{
+            //Load node graph from fxml file
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/gestiontaller/gui/view/clientes/help_clientes.fxml"));
+            AnchorPane root = (AnchorPane)loader.load();
+            Help_clientesController help_clientesController=((Help_clientesController)loader.getController());
+            //Initializes and shows help stage
+            help_clientesController.initAndShowStage(root);
+        }catch(IOException ex){
+            Alert alert=new Alert(Alert.AlertType.ERROR,"No se ha podido abrir la ventana:"+ex.getMessage(),ButtonType.OK);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/gestiontaller/gui/style/help_clientes.css").toExternalForm());
+            alert.showAndWait();
+        }
+
+    } 
 }
