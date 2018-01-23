@@ -406,11 +406,14 @@ public class ClientesController implements Initializable {
      */
     private void actionBuscar() {
         String criteria = tfBuscar.getText().trim();
+//        Integer criteriaId = Integer.parseInt(tfBuscar.getText().trim());
         
         boolean res = false;
 
+//        if (criteriaId != 0) {   
         if (!criteria.isEmpty()) {
             ObservableList<ClienteBean> searchResults = FXCollections.observableArrayList(clientesLogicController.getClienteByNombre(criteria));
+//            ObservableList<ClienteBean> searchResultsId = FXCollections.observableArrayList(clientesLogicController.getClientesById(criteriaId));
             
             if (!searchResults.isEmpty()) {
                 clientesData.setAll(searchResults);
