@@ -6,8 +6,13 @@ import gestiontaller.gui.controller.clientes.ClientesController;
 import gestiontaller.gui.controller.facturas.FacturasController;
 import gestiontaller.gui.controller.piezas.PiezasController;
 import gestiontaller.gui.controller.reparaciones.ReparacionesController;
+
+import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
+import gestiontaller.logic.controller.FacturasManagerImp;
+
 import gestiontaller.logic.controller.ClientesManagerImplementation;
 import gestiontaller.logic.controller.FacturasManagerTestDataGenerator;
+
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.interfaces.FacturasManager;
 import java.io.IOException;
@@ -172,7 +177,7 @@ public class HomeController implements Initializable {
     @FXML
     private void loadFacturas() {
         try {
-            FacturasManager facturasLogicController = new FacturasManagerTestDataGenerator();
+            FacturasManager facturasLogicController = new FacturasManagerImp();
             FXMLLoader loader = new FXMLLoader(App.class.getResource("gui/view/facturas/modulo_facturas.fxml"));
             loader.setResources(bundle);
 
