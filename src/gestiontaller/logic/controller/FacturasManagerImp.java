@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ws.rs.core.GenericType;
-import rest.FacturaRESTClient;
+import gestiontaller.rest.FacturaRESTClient;
 
 /**
  * Facturas manager implementation
