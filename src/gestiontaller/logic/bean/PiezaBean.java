@@ -10,6 +10,12 @@ public class PiezaBean {
     private final SimpleStringProperty descripcion; 
     private final SimpleStringProperty fabricante;
     
+    public PiezaBean(){
+        this.id=new SimpleIntegerProperty();
+        this.descripcion=new SimpleStringProperty();
+        this.fabricante=new SimpleStringProperty();
+    }
+    
     /**
      * Contructor
      * 
@@ -40,5 +46,10 @@ public class PiezaBean {
     }
     public void setFabricante(String dni){
         this.descripcion.set(dni);
+    }
+    
+    @Override
+    public String toString(){
+        return this.getId().toString();
     }
 }

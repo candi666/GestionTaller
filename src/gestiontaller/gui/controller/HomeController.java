@@ -6,12 +6,8 @@ import gestiontaller.gui.controller.clientes.ClientesController;
 import gestiontaller.gui.controller.facturas.FacturasController;
 import gestiontaller.gui.controller.piezas.PiezasController;
 import gestiontaller.gui.controller.reparaciones.ReparacionesController;
-
-import gestiontaller.logic.controller.ClientesManagerTestDataGenerator;
 import gestiontaller.logic.controller.FacturasManagerImp;
-
 import gestiontaller.logic.controller.ClientesManagerImplementation;
-import gestiontaller.logic.controller.FacturasManagerTestDataGenerator;
 
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.interfaces.FacturasManager;

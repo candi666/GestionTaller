@@ -24,6 +24,7 @@ public class ClientesManagerImplementation implements ClientesManager{
     public Collection getAllClientes() {
         LOGGER.info("ClientesManager: Finding all clientes from REST service (XML).");
         List<ClienteBean> clientes = webClient.findAll_XML(new GenericType<List<ClienteBean>>() {});
+        LOGGER.info(String.valueOf(clientes.size()));
         return clientes;
     }
 

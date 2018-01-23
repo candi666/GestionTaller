@@ -10,10 +10,10 @@ import java.util.Collection;
  */
 public interface FacturasManager {
     public Collection getAllFacturas();
-    public FacturaBean getFacturaById(int id);
-    public FacturaBean getFacturaByReparacion(int idreparacion);
+    public FacturaBean getFacturaById(Integer id);
+    public FacturaBean getFacturaByReparacion(Integer idreparacion);
     public Collection getFacturasByDate(LocalDate fromDate, LocalDate toDate);
-    public Collection getFacturasByCliente(int idcliente, LocalDate fromDate, LocalDate toDate);
+    public Collection getFacturasByCliente(Integer idcliente, LocalDate fromDate, LocalDate toDate);
     public boolean createFactura(FacturaBean factura);
     public boolean updateFactura(FacturaBean factura);
     public boolean deleteFactura(FacturaBean factura);
