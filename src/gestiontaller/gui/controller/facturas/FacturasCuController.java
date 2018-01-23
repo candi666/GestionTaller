@@ -7,8 +7,10 @@ import gestiontaller.logic.bean.FacturaBean;
 import gestiontaller.logic.util.FieldValidator;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -173,14 +175,14 @@ public class FacturasCuController implements Initializable {
             btnCrear.setText(HomeController.bundle.getString("generic.crud.update"));
 
             // Prepara fechas
-            LocalDate fecha = LocalDate.parse(factura.getFecha(), dateFormatter);
-            LocalDate fechaVenc = LocalDate.parse(factura.getFechavenc(), dateFormatter);
+            LocalDate fecha = factura.getFecha().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate fechaVenc = factura.getFechavenc().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
             // Asignar valores de objeto seleccionado a los campos
             dpFecha.setValue(fecha);
             dpFechaVenc.setValue(fechaVenc);
-            cbReparacion.setValue(factura.getIdreparacion());
-            cbCliente.setValue(factura.getIdcliente());
+            cbReparacion.setValue(factura.getReparacion().getId());
+            cbCliente.setValue(factura.getCliente().getId());
             chbPagada.setSelected(factura.getPagada());
 
             // TODO FORMAT DOUBLE DOS DECIMALES
@@ -225,8 +227,8 @@ public class FacturasCuController implements Initializable {
     private void actionCrearMod() {
         if (formValid()) {
             // Preparar datos
-            String fecha = dpFecha.getValue().format(dateFormatter);
-            String fechavenc = dpFechaVenc.getValue().format(dateFormatter);
+            Date fecha = Date.from(dpFecha.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+            Date fechavenc = Date.from(dpFechaVenc.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
             Double total = Double.parseDouble(tfTotal.getText());
 
             // Caso modificar
@@ -234,8 +236,8 @@ public class FacturasCuController implements Initializable {
                 //factura.setFecha(fecha);
                 factura.setFechavenc(fechavenc);
                 factura.setTotal(total);
-                factura.setIdreparacion(cbReparacion.getValue());
-                factura.setIdcliente(cbCliente.getValue());
+                factura.setReparacion(cbReparacion.getValue());
+                factura.setCliente(cbCliente.getValue());
                 factura.setPagada(chbPagada.isSelected());
 
                 facturasController.actionCrearMod(factura);
