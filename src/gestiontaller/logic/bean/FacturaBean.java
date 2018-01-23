@@ -1,18 +1,26 @@
 package gestiontaller.logic.bean;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name="factura")
 public class FacturaBean {
+    
     private final SimpleIntegerProperty id;
-    private final SimpleStringProperty fecha;
-    private final SimpleStringProperty fechavenc;
+    private Date fecha;
+    private Date fechavenc;
     private final SimpleDoubleProperty total;
     private final SimpleBooleanProperty pagada;
-    private final SimpleIntegerProperty idreparacion;
-    private final SimpleIntegerProperty idcliente;
+    private final SimpleObjectProperty<ReparacionBean> reparacion;
+    private final SimpleObjectProperty<ClienteBean> cliente;
     
     /**
      * Constructor
@@ -24,37 +32,16 @@ public class FacturaBean {
      * @param idreparacion id de reparación asociada
      * @param idcliente id de cliente asociado
      */
-    public FacturaBean(Integer id, String fecha, String fechavenc, Double total,
-            Boolean pagada, Integer idreparacion, Integer idcliente){
+    public FacturaBean(Integer id, Date fecha, Date fechavenc, Double total,
+            Boolean pagada, ReparacionBean reparacion, ClienteBean cliente){
         this.id=new SimpleIntegerProperty(id);
-        this.fecha=new SimpleStringProperty(fecha);
-        this.fechavenc=new SimpleStringProperty(fechavenc);
+        this.fecha=fecha;
+        this.fechavenc=fechavenc;
         this.total=new SimpleDoubleProperty(total);
         this.pagada=new SimpleBooleanProperty(pagada);
-        this.idreparacion=new SimpleIntegerProperty(idreparacion);
-        this.idcliente=new SimpleIntegerProperty(idcliente); 
+        this.reparacion=new SimpleObjectProperty<ReparacionBean>(reparacion);
+        this.cliente=new SimpleObjectProperty<ClienteBean>(cliente);
     }
-    
-    /**
-     * Constructor sin id.
-     * @param fecha fecha
-     * @param fechavenc fecha de vencimiento
-     * @param total total
-     * @param pagada pagada
-     * @param idreparacion id de reparación asociada
-     * @param idcliente id de cliente asociado
-     */
-    public FacturaBean(String fecha, String fechavenc, Double total,
-            Boolean pagada, Integer idreparacion, Integer idcliente){
-        this.id=null;
-        this.fecha=new SimpleStringProperty(fecha);
-        this.fechavenc=new SimpleStringProperty(fechavenc);
-        this.total=new SimpleDoubleProperty(total);
-        this.pagada=new SimpleBooleanProperty(pagada);
-        this.idreparacion=new SimpleIntegerProperty(idreparacion);
-        this.idcliente=new SimpleIntegerProperty(idcliente); 
-    }
-    
 
     /* **** GETTERS & SETTERS **** */
 
@@ -66,54 +53,53 @@ public class FacturaBean {
         this.id.set(id);
     }
 
-    public String getFecha() {
-        return fecha.get();
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha.set(fecha);
-    }
-
-    public String getFechavenc() {
-        return fechavenc.get();
-    }
-
-    public void setFechavenc(String fechavenc) {
-        this.fechavenc.set(fechavenc);
-    }
-
-    public Double getTotal() {
-        return total.get();
-    }
-
-    public void setTotal(Double total) {
-        this.total.set(total);
-    }
-
-    public Boolean getPagada() {
-        return pagada.get();
-    }
-
-    public void setPagada(Boolean pagada) {
-        this.pagada.set(pagada);
-    }
-
-    public Integer getIdreparacion() {
-        return idreparacion.get();
-    }
-
-    public void setIdreparacion(Integer idreparacion) {
-        this.idreparacion.set(idreparacion);
-    }
-
-    public Integer getIdcliente() {
-        return idcliente.get();
-    }
-
-    public void setIdcliente(Integer idcliente) {
-        this.idcliente.set(idcliente);
+    public void setFecha(Date fecha){
+        this.fecha=fecha;
     }
     
+    public Date getFechavenc() {
+        return fechavenc;
+    }
+    
+    public void setFechavenc(Date fechavenc){
+        this.fechavenc=fechavenc;
+    }
+    
+    public Double getTotal(){
+        return total.get();
+    }
+    
+    public void setTotal(Double total){
+        this.total.set(total);
+    }
+    
+    public Boolean getPagada(){
+        return pagada.get();
+    }
+   
+    public void setPagada(Boolean pagada){
+        this.pagada.set(pagada);
+    }
+    
+    public ReparacionBean getReparacion(){
+        return reparacion.get();
+    }
+    
+    public void setReparacion(ReparacionBean reparacion){
+        this.reparacion.set(reparacion);
+    }
+    
+    public ClienteBean getCliente(){
+        return cliente.get();
+    }
+    
+    public void setCliente(ClienteBean cliente){
+        this.cliente.set(cliente);
+    }
     
 
     
