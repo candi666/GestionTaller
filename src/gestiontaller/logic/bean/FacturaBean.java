@@ -1,5 +1,6 @@
 package gestiontaller.logic.bean;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "factura")
-public class FacturaBean {
+public class FacturaBean implements Serializable{
 
     private final SimpleIntegerProperty id;
     private SimpleObjectProperty<Date> fecha;
@@ -44,7 +45,7 @@ public class FacturaBean {
      */
     public FacturaBean(Integer id, Date fecha, Date fechavenc, Double total,
             Boolean pagada, ReparacionBean reparacion, ClienteBean cliente) {
-        this.id = new SimpleIntegerProperty(id);
+        this.id = id==0 ? new SimpleIntegerProperty() : new SimpleIntegerProperty(id);
         this.fecha = new SimpleObjectProperty<Date>(fecha);
         this.fechavenc = new SimpleObjectProperty<Date>(fechavenc);
         this.total = new SimpleDoubleProperty(total);

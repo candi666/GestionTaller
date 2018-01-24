@@ -90,7 +90,16 @@ public class FacturasManagerImp implements FacturasManager {
 
     @Override
     public boolean createFactura(FacturaBean factura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean res = false;
+        
+        logger.info("FacturasManager: Create factura {"+factura.getId()+"}.");
+        try{
+            webClient.create_XML(factura);
+            res = true;
+        }catch(Exception ex){
+            //TODO Add DeleteFacturaException
+        }
+        return res;
     }
 
     @Override
@@ -100,7 +109,16 @@ public class FacturasManagerImp implements FacturasManager {
 
     @Override
     public boolean deleteFactura(FacturaBean factura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean res = false;
+        
+        logger.info("FacturasManager: Deleting factura id {"+factura.getId()+"}.");
+        try{
+            webClient.delete(factura.getId());
+            res = true;
+        }catch(Exception ex){
+            //TODO Add DeleteFacturaException
+        }
+        return res;
     }
 
 }

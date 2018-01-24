@@ -303,7 +303,7 @@ public class FacturasController implements Initializable {
                 }
             };
         });
-        
+
         tcIdReparacion.setCellValueFactory(new PropertyValueFactory<>("reparacion"));
         tcIdCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
 
@@ -466,34 +466,23 @@ public class FacturasController implements Initializable {
      * @param factura If null entonces crear factura
      */
     public void actionCrearMod(FacturaBean factura) {
-        /* facturasData: lista con todas las facturas
-        *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
-         */
-        int cpindex = pgFacturas.getCurrentPageIndex();
-
-        // Caso nueva factura
-        if (factura.getId() == 0) {
-            if (facturasLogicController.createFactura(factura)) {
-                reloadTable();
-                int pcount = pgFacturas.getPageCount();
-
-                // Si esta llena la pagina actual...
-                if ((facturasData.size() - 2) > (pcount) * rowsPerPage) {
-                    pgFacturas.setPageCount(pcount + 1);
-
-                }
-
-                pgFacturas.setCurrentPageIndex(pcount + 1);
-            }
-
-        } else { // Caso modificar factura
-
-            facturasLogicController.updateFactura(factura);
-            reloadTable();
-            tvFacturas.refresh();
-            pgFacturas.setCurrentPageIndex(cpindex);
-            tvFacturas.getSelectionModel().select(factura);
-        }
+//        /* facturasData: lista con todas las facturas
+//        *  tvFacturas.getItems(): lista de facturas en la tabla actualmente.
+//         */
+//        int cpindex = pgFacturas.getCurrentPageIndex();
+//
+//        // Caso nueva factura
+//        if (factura.getId() == 0) {
+//            
+//
+//        } else { // Caso modificar factura
+//
+//            facturasLogicController.updateFactura(factura);
+//            reloadTable();
+//            tvFacturas.refresh();
+//            pgFacturas.setCurrentPageIndex(cpindex);
+//            tvFacturas.getSelectionModel().select(factura);
+//        }
 
     }
 
@@ -521,8 +510,8 @@ public class FacturasController implements Initializable {
         // TODO Implementar busqueda en bases de datos.
 
         String criteria = tfBuscar.getText().trim();
-        LocalDate fromDate = dpFromDate.getValue()==null ? LocalDate.now().minusYears(10) : dpFromDate.getValue();
-        LocalDate toDate = dpToDate.getValue()==null ? LocalDate.now() : dpToDate.getValue();
+        LocalDate fromDate = dpFromDate.getValue() == null ? LocalDate.now().minusYears(10) : dpFromDate.getValue();
+        LocalDate toDate = dpToDate.getValue() == null ? LocalDate.now() : dpToDate.getValue();
 
         boolean res = false;
 
@@ -858,6 +847,20 @@ public class FacturasController implements Initializable {
      */
     public void setFacturasManager(FacturasManager facturasLogicController) {
         this.facturasLogicController = facturasLogicController;
+    }
+
+    public Pagination getPgFacturas() {
+        return pgFacturas;
+    }
+
+    public void recalcPage() {
+        int pcount = pgFacturas.getPageCount();
+        // Si esta llena la pagina actual...
+        if ((facturasData.size() - 2) > (pcount) * rowsPerPage) {
+            pgFacturas.setPageCount(pcount + 1);
+
+        }
+        pgFacturas.setCurrentPageIndex(pcount + 1);
     }
 
 }
