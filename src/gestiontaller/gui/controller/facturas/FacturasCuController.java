@@ -100,6 +100,8 @@ public class FacturasCuController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -210,6 +212,7 @@ public class FacturasCuController implements Initializable {
             lblTitulo.setText(HomeController.bundle.getString("app.gui.facturas.cu.title.add"));
             dpFecha.setValue(LocalDate.now());
             dpFechaVenc.setValue(dpFecha.getValue().plusMonths(1));
+            initComboBoxes(null, null);
         }
 
     }
@@ -243,6 +246,8 @@ public class FacturasCuController implements Initializable {
             Date fechavenc = Date.from(dpFechaVenc.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
             Double total = Double.parseDouble(tfTotal.getText());
 
+            int cpindex = facturasController.getPgFacturas().getCurrentPageIndex();
+
             // Caso modificar
             if (factura != null) {
                 //factura.setFecha(fecha);
@@ -254,12 +259,21 @@ public class FacturasCuController implements Initializable {
                 factura.setCliente(cbCliente.getValue());
                 factura.setPagada(chbPagada.isSelected());
 
-                facturasController.actionCrearMod(factura);
+                if (facturasLogicController.updateFactura(factura)) {
+                    facturasController.reloadTable();
+                    facturasController.getTvFacturas().refresh();
+                    facturasController.getPgFacturas().setCurrentPageIndex(cpindex);
+                    facturasController.getTvFacturas().getSelectionModel().select(factura);
+                }
 
             } else { // Caso Crear
                 FacturaBean newFactura = new FacturaBean(0, fecha, fechavenc, total,
                         chbPagada.isSelected(), cbReparacion.getValue(), cbCliente.getValue());
-                facturasController.actionCrearMod(newFactura);
+
+                if (facturasLogicController.createFactura(newFactura)) {
+                    facturasController.reloadTable();
+                    facturasController.recalcPage();
+                }
             }
 
             stage.close();
@@ -269,6 +283,8 @@ public class FacturasCuController implements Initializable {
 
     /**
      * Populate Reparacion and Cliente comboboxes
+     * @param reparacion
+     * @param cliente
      */
     public void initComboBoxes(ReparacionBean reparacion, ClienteBean cliente) {
 //        cbReparacion.getItems().clear();
@@ -294,22 +310,21 @@ public class FacturasCuController implements Initializable {
         });
         //selected value showed in combo box
         cbReparacion.setConverter(new StringConverter<ReparacionBean>() {
-              @Override
-              public String toString(ReparacionBean reparacion) {
-                if (reparacion == null){
-                  return null;
+            @Override
+            public String toString(ReparacionBean reparacion) {
+                if (reparacion == null) {
+                    return null;
                 } else {
-                  return reparacion.getId()+", "+reparacion.getDescripcion();
+                    return reparacion.getId() + ", " + reparacion.getDescripcion();
                 }
-              }
+            }
 
             @Override
             public ReparacionBean fromString(String id) {
                 return reparacion;
             }
         });
-        
-        
+
         cbCliente.setItems(FXCollections.observableArrayList(clientesLogicController.getAllClientes()));
         cbCliente.setCellFactory(new Callback<ListView<ClienteBean>, ListCell<ClienteBean>>() {
             @Override
@@ -329,14 +344,14 @@ public class FacturasCuController implements Initializable {
             }
         });
         cbCliente.setConverter(new StringConverter<ClienteBean>() {
-              @Override
-              public String toString(ClienteBean cliente) {
-                if (cliente == null){
-                  return null;
+            @Override
+            public String toString(ClienteBean cliente) {
+                if (cliente == null) {
+                    return null;
                 } else {
-                  return cliente.getId()+", "+cliente.getNombre()+" "+cliente.getApellidos();
+                    return cliente.getId() + ", " + cliente.getNombre() + " " + cliente.getApellidos();
                 }
-              }
+            }
 
             @Override
             public ClienteBean fromString(String id) {

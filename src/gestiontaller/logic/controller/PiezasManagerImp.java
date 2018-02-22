@@ -21,10 +21,17 @@ public class PiezasManagerImp implements PiezasManager{
     private static final Logger logger = Logger.getLogger(FacturasManagerImp.class.getName());
     private PiezaRESTClient webClient;
     
+    /**
+     *
+     */
     public PiezasManagerImp(){
         webClient = new PiezaRESTClient();
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Collection getAllPiezas() {
         logger.info("PiezasManager: Finding all piezas from REST service (XML).");
@@ -32,21 +39,41 @@ public class PiezasManagerImp implements PiezasManager{
         return piezas;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public PiezaBean getPiezaById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param factura
+     * @return
+     */
     @Override
     public boolean createPieza(PiezaBean factura) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param factura
+     * @return
+     */
     @Override
     public boolean updatePieza(PiezaBean factura) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param factura
+     * @return
+     */
     @Override
     public boolean deletePieza(PiezaBean factura) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

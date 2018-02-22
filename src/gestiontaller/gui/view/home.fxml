@@ -7,7 +7,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="400.0" maxWidth="500.0" minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" styleClass="anchor-pane" stylesheets="@../style/styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.HomeController">
+<AnchorPane maxHeight="400.0" maxWidth="500.0" minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" styleClass="anchor-pane" stylesheets="@../style/styles.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestiontaller.gui.controller.HomeController">
    <children>
       <MenuBar layoutY="2.0" styleClass="top-menu-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -32,7 +32,7 @@
             </Menu>
             <Menu fx:id="mAyuda" mnemonicParsing="false" text="Ayuda">
                <items>
-                  <MenuItem disable="true" mnemonicParsing="false" text="Manual" />
+                  <MenuItem fx:id="miJavaDoc" mnemonicParsing="false" onAction="#launchHelpWebView" text="JavaDoc" />
                </items>
             </Menu>
         </menus>

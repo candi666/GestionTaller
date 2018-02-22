@@ -56,6 +56,8 @@ public class PiezasController implements Initializable {
 // </editor-fold>
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

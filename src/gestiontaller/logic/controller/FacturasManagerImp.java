@@ -30,10 +30,17 @@ public class FacturasManagerImp implements FacturasManager {
     private static final Logger logger = Logger.getLogger(FacturasManagerImp.class.getName());
     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /**
+     *
+     */
     public FacturasManagerImp() {
         webClient = new FacturaRESTClient();
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Collection getAllFacturas() {
         logger.info("FacturasManager: Finding all facturas from REST service (XML).");
@@ -42,12 +49,22 @@ public class FacturasManagerImp implements FacturasManager {
         return facturas;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public FacturaBean getFacturaById(Integer id) {
         logger.info("FacturasManager: Finding factura by id {" + id + "} from REST service (XML).");
         return webClient.find_XML(FacturaBean.class, id);
     }
 
+    /**
+     *
+     * @param idreparacion
+     * @return
+     */
     @Override
     public FacturaBean getFacturaByReparacion(Integer idreparacion) {
         logger.info("FacturasManager: Finding factura by reparacion {" + idreparacion + "} from REST service (XML).");
@@ -70,6 +87,13 @@ public class FacturasManagerImp implements FacturasManager {
         return facturas;
     }
 
+    /**
+     *
+     * @param idcliente
+     * @param fromDate
+     * @param toDate
+     * @return
+     */
     @Override
     public Collection getFacturasByCliente(Integer idcliente, LocalDate fromDate, LocalDate toDate) {
         
@@ -88,19 +112,61 @@ public class FacturasManagerImp implements FacturasManager {
         return filteredList == null ? facturas : filteredList;
     }
 
+    /**
+     *
+     * @param factura
+     * @return
+     */
     @Override
     public boolean createFactura(FacturaBean factura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean res = false;
+        
+        logger.info("FacturasManager: Create factura");
+        try{
+            webClient.create_XML(factura);
+            res = true;
+        }catch(Exception ex){
+            //TODO Add DeleteFacturaException
+        }
+        return res;
     }
 
+    /**
+     *
+     * @param factura
+     * @return
+     */
     @Override
     public boolean updateFactura(FacturaBean factura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean res = false;
+        
+        logger.info("FacturasManager: Update factura {"+factura.getId()+"}.");
+        try{
+            webClient.update_XML(factura);
+            res = true;
+        }catch(Exception ex){
+            //TODO Add DeleteFacturaException
+        }
+        return res;
     }
 
+    /**
+     *
+     * @param factura
+     * @return
+     */
     @Override
     public boolean deleteFactura(FacturaBean factura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean res = false;
+        
+        logger.info("FacturasManager: Deleting factura id {"+factura.getId()+"}.");
+        try{
+            webClient.delete(factura.getId());
+            res = true;
+        }catch(Exception ex){
+            //TODO Add DeleteFacturaException
+        }
+        return res;
     }
 
 }
