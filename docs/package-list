@@ -1,0 +1,12 @@
+gestiontaller
+gestiontaller.config
+gestiontaller.gui.controller
+gestiontaller.gui.controller.clientes
+gestiontaller.gui.controller.facturas
+gestiontaller.gui.controller.piezas
+gestiontaller.gui.controller.reparaciones
+gestiontaller.logic.bean
+gestiontaller.logic.controller
+gestiontaller.logic.interfaces
+gestiontaller.logic.util
+gestiontaller.rest
