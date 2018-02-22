@@ -301,14 +301,8 @@ public class HomeController implements Initializable {
         wvStage.setTitle("Gestión Taller - JavaDoc");
         wvStage.setScene(scene);
         wvStage.show();
-        String url = "#";
-        try {
-            url = Paths.get("dist/javadoc/index.html").toUri().toURL().toString();
-            System.out.println(url);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        wv.getEngine().load(url);
+
+        wv.getEngine().load("https://candi666.github.io/GestionTaller/");
     }
 
 }
