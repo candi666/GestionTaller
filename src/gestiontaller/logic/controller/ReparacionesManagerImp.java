@@ -16,10 +16,17 @@ public class ReparacionesManagerImp implements ReparacionesManager{
     private static final Logger logger = Logger.getLogger(FacturasManagerImp.class.getName());
     private ReparacionRESTClient webClient;
     
+    /**
+     *
+     */
     public ReparacionesManagerImp(){
         webClient = new ReparacionRESTClient();
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public Collection getAllReparaciones() {
         logger.info("ReparacionesManager: Finding all reparaciones from REST service (XML).");
@@ -27,21 +34,41 @@ public class ReparacionesManagerImp implements ReparacionesManager{
         return reparaciones;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public ReparacionBean getReparacionById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param reparacion
+     * @return
+     */
     @Override
     public boolean createReparacion(ReparacionBean reparacion) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param reparacion
+     * @return
+     */
     @Override
     public boolean updateReparacion(ReparacionBean reparacion) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param reparacion
+     * @return
+     */
     @Override
     public boolean deleteReparacion(ReparacionBean reparacion) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

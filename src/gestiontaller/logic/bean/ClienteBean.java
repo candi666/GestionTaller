@@ -4,6 +4,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author Carlos
+ */
 @XmlRootElement(name="cliente")
 public class ClienteBean {
     private final SimpleIntegerProperty id;
@@ -32,6 +36,9 @@ public class ClienteBean {
         this.telefono=new SimpleStringProperty(telefono);
     }
     
+    /**
+     *
+     */
     public ClienteBean(){
         this.id=new SimpleIntegerProperty(0);
         this.dni=new SimpleStringProperty(null);
@@ -41,39 +48,98 @@ public class ClienteBean {
         this.telefono=new SimpleStringProperty(null);
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getId(){
         return this.id.get();
     }
+
+    /**
+     *
+     * @param id
+     */
     public void setId(Integer id){
         this.id.set(id);
     }
+
+    /**
+     *
+     * @return
+     */
     public String getDni(){
         return this.dni.get();
     }
+
+    /**
+     *
+     * @param dni
+     */
     public void setDni(String dni){
         this.dni.set(dni);
     }
+
+    /**
+     *
+     * @return
+     */
     public String getNombre(){
         return this.nombre.get();
     }
+
+    /**
+     *
+     * @param nombre
+     */
     public void setNombre(String nombre){
         this.nombre.set(nombre);
     }
+
+    /**
+     *
+     * @return
+     */
     public String getApellidos(){
         return this.apellidos.get();
     }
+
+    /**
+     *
+     * @param apellidos
+     */
     public void setApellidos(String apellidos){
         this.apellidos.set(apellidos);
     }
+
+    /**
+     *
+     * @return
+     */
     public String getEmail(){
         return this.email.get();
     }
+
+    /**
+     *
+     * @param email
+     */
     public void setEmail(String email){
         this.email.set(email);
     }
+
+    /**
+     *
+     * @return
+     */
     public String getTelefono(){
         return this.telefono.get();
     }
+
+    /**
+     *
+     * @param telefono
+     */
     public void setTelefono(String telefono){
         this.telefono.set(telefono);
     }

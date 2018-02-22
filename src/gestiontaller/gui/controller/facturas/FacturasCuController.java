@@ -100,6 +100,8 @@ public class FacturasCuController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -281,6 +283,8 @@ public class FacturasCuController implements Initializable {
 
     /**
      * Populate Reparacion and Cliente comboboxes
+     * @param reparacion
+     * @param cliente
      */
     public void initComboBoxes(ReparacionBean reparacion, ClienteBean cliente) {
 //        cbReparacion.getItems().clear();

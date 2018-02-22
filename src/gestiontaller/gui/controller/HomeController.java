@@ -12,7 +12,9 @@ import gestiontaller.logic.controller.ClientesManagerImplementation;
 import gestiontaller.logic.interfaces.ClientesManager;
 import gestiontaller.logic.interfaces.FacturasManager;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -33,8 +35,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.web.PopupFeatures;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 /**
  *
@@ -43,7 +51,15 @@ import javafx.stage.WindowEvent;
 public class HomeController implements Initializable {
 
     private static final Logger logger = Logger.getLogger(HomeController.class.getName());
+
+    /**
+     *
+     */
     public static ResourceBundle bundle;
+
+    /**
+     *
+     */
     public static Locale locale;
 
     private Stage stage;
@@ -72,10 +88,9 @@ public class HomeController implements Initializable {
     @FXML
     private MenuItem mniFacturas;
 
-        /* -----------------------------------------------------------------------*/
+    /* -----------------------------------------------------------------------*/
  /*                                     INIT                                    */
  /* -----------------------------------------------------------------------*/
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO get actual local language
@@ -121,12 +136,13 @@ public class HomeController implements Initializable {
     private void handleWindowShowing(WindowEvent event) {
         handleActionEvents();
         initAccelerators();
-        
+
     }
-    
+
     /**
      * Carga lenguaje para la aplicación
-     * @param lang 
+     *
+     * @param lang
      */
     private void loadLang(String lang) {
         locale = new Locale(lang);
@@ -136,12 +152,13 @@ public class HomeController implements Initializable {
     /**
      * Definición de aceleradores
      */
-    private void initAccelerators(){
+    private void initAccelerators() {
         mniClientes.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
         mniFacturas.setAccelerator(new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
         mISalir.setAccelerator(KeyCombination.keyCombination("shortcut+Q"));
     }
-        /* -----------------------------------------------------------------------*/
+
+    /* -----------------------------------------------------------------------*/
  /*                                ACTIONS                         */
  /* -----------------------------------------------------------------------*/
     /**
@@ -188,7 +205,7 @@ public class HomeController implements Initializable {
             logger.log(Level.SEVERE, "Error al cargar modulo facturas.", ex);
         }
     }
-    
+
     /**
      * Iniciar y mostrar ventana de piezas
      */
@@ -208,7 +225,7 @@ public class HomeController implements Initializable {
             logger.log(Level.SEVERE, "Error al cargar modulo piezas.", ex);
         }
     }
-    
+
     /**
      * Iniciar y mostrar ventana de reparaciones
      */
@@ -229,7 +246,7 @@ public class HomeController implements Initializable {
         }
     }
 
-        /* -----------------------------------------------------------------------*/
+    /* -----------------------------------------------------------------------*/
  /*                                HANDLERS                            */
  /* -----------------------------------------------------------------------*/
     /**
@@ -242,7 +259,7 @@ public class HomeController implements Initializable {
         logger.info("Fin de ejecución.");
         Platform.exit();
     }
-    
+
     /**
      * Especifica comportamiento onAction de botones.
      */
@@ -253,5 +270,45 @@ public class HomeController implements Initializable {
         btnPiezas.setOnAction(e -> loadPiezas());
 
     }
-    
+
+    /**
+     *
+     */
+    @FXML
+    public void launchHelpWebView() {
+        WebView wv = new WebView();
+        wv.getEngine().setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
+
+            @Override
+            public WebEngine call(PopupFeatures p) {
+                Stage stage = new Stage(StageStyle.UTILITY);
+                WebView wv2 = new WebView();
+                stage.setScene(new Scene(wv2));
+                stage.show();
+                return wv2.getEngine();
+            }
+        });
+
+        StackPane root = new StackPane();
+        root.getChildren().add(wv);
+
+        Scene scene = new Scene(root, 300, 250);
+        
+        Stage wvStage = new Stage();
+        wvStage.setMaximized(true);
+        wvStage.setMinHeight(500);
+        wvStage.setMinWidth(800);
+        wvStage.setTitle("Gestión Taller - JavaDoc");
+        wvStage.setScene(scene);
+        wvStage.show();
+        String url = "#";
+        try {
+            url = Paths.get("dist/javadoc/index.html").toUri().toURL().toString();
+            System.out.println(url);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        wv.getEngine().load(url);
+    }
+
 }

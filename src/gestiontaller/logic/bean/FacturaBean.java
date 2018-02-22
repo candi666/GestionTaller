@@ -11,6 +11,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author Carlos
+ */
 @XmlRootElement(name = "factura")
 public class FacturaBean implements Serializable{
 
@@ -22,7 +26,9 @@ public class FacturaBean implements Serializable{
     private final SimpleObjectProperty<ReparacionBean> reparacion;
     private final SimpleObjectProperty<ClienteBean> cliente;
 
-    
+    /**
+     *
+     */
     public FacturaBean(){
         this.id = new SimpleIntegerProperty();
         this.fecha = new SimpleObjectProperty<Date>();
@@ -40,8 +46,8 @@ public class FacturaBean implements Serializable{
      * @param fechavenc fecha de vencimiento
      * @param total total
      * @param pagada pagada
-     * @param idreparacion id de reparación asociada
-     * @param idcliente id de cliente asociado
+     * @param reparacion
+     * @param cliente
      */
     public FacturaBean(Integer id, Date fecha, Date fechavenc, Double total,
             Boolean pagada, ReparacionBean reparacion, ClienteBean cliente) {
@@ -59,56 +65,108 @@ public class FacturaBean implements Serializable{
         return id.get();
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(Integer id) {
         this.id.set(id);
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getFecha() {
         return fecha.get();
     }
 
+    /**
+     *
+     * @param fecha
+     */
     public void setFecha(Date fecha) {
         this.fecha.set(fecha);
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getFechavenc() {
         return fechavenc.get();
     }
 
+    /**
+     *
+     * @param fechavenc
+     */
     public void setFechavenc(Date fechavenc) {
         this.fechavenc.set(fechavenc);
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getTotal() {
         return total.get();
     }
 
+    /**
+     *
+     * @param total
+     */
     public void setTotal(Double total) {
         this.total.set(total);
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean getPagada() {
         return pagada.get();
     }
 
+    /**
+     *
+     * @param pagada
+     */
     public void setPagada(Boolean pagada) {
         this.pagada.set(pagada);
     }
 
+    /**
+     *
+     * @return
+     */
     @XmlElement(name="reparacion")
     public ReparacionBean getReparacion() {
         return reparacion.get();
     }
 
+    /**
+     *
+     * @param reparacion
+     */
     public void setReparacion(ReparacionBean reparacion) {
         this.reparacion.set(reparacion);
     }
 
+    /**
+     *
+     * @return
+     */
     @XmlElement(name="cliente")
     public ClienteBean getCliente() {
         return cliente.get();
     }
 
+    /**
+     *
+     * @param cliente
+     */
     public void setCliente(ClienteBean cliente) {
         this.cliente.set(cliente);
     }

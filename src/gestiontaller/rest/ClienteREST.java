@@ -28,46 +28,98 @@ public class ClienteREST {
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/ServidorGestionTaller/webresources";
 
+    /**
+     *
+     */
     public ClienteREST() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("cliente");
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param id
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T find_XML(Class<T> responseType, Integer id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
     
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findAll_XML(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param dni
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findByDni_XML(GenericType<T> responseType, String dni) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dni/{0}", new Object[]{dni}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param nombre
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findByName_XML(GenericType<T> responseType, String nombre) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("nombre/{0}", new Object[]{nombre}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
     
+    /**
+     *
+     * @param requestEntity
+     * @throws ClientErrorException
+     */
     public void create_XML(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
+    /**
+     *
+     * @param requestEntity
+     * @throws ClientErrorException
+     */
     public void update_XML(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
+    /**
+     *
+     * @param id
+     * @throws ClientErrorException
+     */
     public void delete(Integer id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
     
+    /**
+     *
+     */
     public void close() {
         client.close();
     }

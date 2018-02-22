@@ -24,6 +24,10 @@ public class Help_clientesController {
     @FXML
     private WebView webView;
 
+    /**
+     *
+     * @param root
+     */
     public void initAndShowStage(Parent root) {
         Scene scene = new Scene(root);
         Stage stage = new Stage();

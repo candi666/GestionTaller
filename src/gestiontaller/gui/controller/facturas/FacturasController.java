@@ -131,6 +131,8 @@ public class FacturasController implements Initializable {
     // </editor-fold>
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -849,10 +851,17 @@ public class FacturasController implements Initializable {
         this.facturasLogicController = facturasLogicController;
     }
 
+    /**
+     *
+     * @return
+     */
     public Pagination getPgFacturas() {
         return pgFacturas;
     }
 
+    /**
+     *
+     */
     public void recalcPage() {
         int pcount = pgFacturas.getPageCount();
         // Si esta llena la pagina actual...

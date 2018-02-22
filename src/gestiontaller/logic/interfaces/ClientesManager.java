@@ -10,12 +10,55 @@ import java.util.Collection;
  */
 public interface ClientesManager {
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public ClienteBean getClientesById(Integer id);
+
+    /**
+     *
+     * @return
+     */
     public Collection getAllClientes();
+
+    /**
+     *
+     * @param dni
+     * @return
+     */
     public Collection getClientesByDni(String dni);
+
+    /**
+     *
+     * @param nombre
+     * @return
+     */
     public Collection getClienteByNombre(String nombre);
+
+    /**
+     *
+     * @param criteria
+     * @return
+     */
     public Collection getClientesByCriteria(String criteria);
+
+    /**
+     *
+     * @param cliente
+     */
     public void deleteCliente(ClienteBean cliente);
+
+    /**
+     *
+     * @param cliente
+     */
     public void createCliente(ClienteBean cliente);
+
+    /**
+     *
+     * @param cliente
+     */
     public void updateCliente(ClienteBean cliente);
 }
